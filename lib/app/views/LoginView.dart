@@ -16,19 +16,13 @@ class LoginView extends StatelessWidget {
         child: Column(
           children: [
             TitleText(text: 'ProgFile'),
-            SizedBox(
-              height: 80,
-            ),
+            SizedBox(height: 80),
             FormText(text: 'Email:'),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10),
             FormTextField(),
             SizedBox(height: 10),
             FormText(text: 'Senha:'),
-            SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10),
             FormTextField(),
             SizedBox(height: 20),
             MainButton(text: 'Entrar'),

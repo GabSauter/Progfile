@@ -20,6 +20,7 @@ class FormTextField extends StatelessWidget {
           ),
           fillColor: Colors.transparent,
         ),
+        //obscureText: isPassword,
       ),
     );
   }

@@ -18,7 +18,9 @@ class SecondaryButton extends StatelessWidget {
                   side: const BorderSide(width: 1, color: Color(0xFF482FF7)),
                   borderRadius: BorderRadius.circular(15.0)),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed('/register');
+            },
             child: Text(
               text,
               style: const TextStyle(fontWeight: FontWeight.bold),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:progfile/app/views/RegisterView.dart';
 
 import 'app/views/LoginView.dart';
 
@@ -13,10 +14,15 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          fontFamily: 'Inter',
-          primaryColor: const Color(0xFF482FF7),
-          scaffoldBackgroundColor: const Color(0xFFF8F7F5)),
-      home: const LoginView(),
+        fontFamily: 'Inter',
+        primaryColor: const Color(0xFF482FF7),
+        scaffoldBackgroundColor: const Color(0xFFF8F7F5),
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginView(),
+        '/register': (context) => const RegisterView(),
+      },
     );
   }
 }
