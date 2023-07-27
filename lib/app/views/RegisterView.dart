@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:progfile/app/controllers/register_controller.dart';
 import 'package:progfile/app/views/components/back_button.dart';
 
 import 'components/form_text.dart';
@@ -7,37 +8,50 @@ import 'components/main_button.dart';
 import 'components/title_text.dart';
 
 class RegisterView extends StatelessWidget {
-  const RegisterView({super.key});
+  final RegisterController registerController = RegisterController();
+
+  RegisterView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Column(
         children: [
-          BackCustomButton(),
+          const BackCustomButton(),
           Padding(
-            padding: EdgeInsets.only(top: 10, right: 50, left: 50, bottom: 5),
+            padding:
+                const EdgeInsets.only(top: 10, right: 50, left: 50, bottom: 5),
             child: Column(
               children: [
-                TitleText(text: 'ProgFile'),
-                SizedBox(height: 40),
-                FormText(text: 'Nome:'),
-                SizedBox(height: 10),
-                FormTextField(),
-                SizedBox(height: 10),
-                FormText(text: 'Email:'),
-                SizedBox(height: 10),
-                FormTextField(),
-                SizedBox(height: 10),
-                FormText(text: 'Senha:'),
-                SizedBox(height: 10),
-                FormTextField(),
-                SizedBox(height: 10),
-                FormText(text: 'Confirmar Senha:'),
-                SizedBox(height: 10),
-                FormTextField(),
-                SizedBox(height: 20),
-                MainButton(text: 'Cadastrar'),
+                const TitleText(text: 'ProgFile'),
+                const SizedBox(height: 40),
+                const FormText(text: 'Nome:'),
+                const SizedBox(height: 10),
+                FormTextField(
+                    textEditingController: registerController.nameController),
+                const SizedBox(height: 10),
+                const FormText(text: 'Email:'),
+                const SizedBox(height: 10),
+                FormTextField(
+                    textEditingController: registerController.emailController),
+                const SizedBox(height: 10),
+                const FormText(text: 'Senha:'),
+                const SizedBox(height: 10),
+                FormTextField(
+                    textEditingController:
+                        registerController.passwordController),
+                const SizedBox(height: 10),
+                const FormText(text: 'Confirmar Senha:'),
+                const SizedBox(height: 10),
+                FormTextField(
+                    textEditingController:
+                        registerController.confirmPasswordController),
+                const SizedBox(height: 20),
+                MainButton(
+                  text: 'Cadastrar',
+                  route: '/',
+                  onPressedCallback: () {},
+                ),
               ],
             ),
           ),

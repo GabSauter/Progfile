@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class SecondaryButton extends StatelessWidget {
   final String text;
-  const SecondaryButton({super.key, required this.text});
+  final String route;
+  const SecondaryButton({super.key, required this.text, required this.route});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class SecondaryButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15.0)),
             ),
             onPressed: () {
-              Navigator.of(context).pushNamed('/register');
+              Navigator.of(context).pushNamed(route);
             },
             child: Text(
               text,

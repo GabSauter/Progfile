@@ -20,8 +20,8 @@ class MainApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const LoginView(),
-        '/register': (context) => const RegisterView(),
+        '/': (context) => LoginView(),
+        '/register': (context) => RegisterView(),
       },
     );
   }
