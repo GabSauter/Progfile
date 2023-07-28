@@ -8,6 +8,7 @@ import 'package:progfile/app/views/components/title_text.dart';
 
 class LoginView extends StatelessWidget {
   final LoginController loginController = LoginController();
+  final _formKey = GlobalKey<FormState>();
 
   LoginView({super.key});
 
@@ -18,33 +19,44 @@ class LoginView extends StatelessWidget {
         child: Padding(
           padding:
               const EdgeInsets.only(top: 40, right: 50, left: 50, bottom: 5),
-          child: Column(
-            children: [
-              const TitleText(text: 'ProgFile'),
-              const SizedBox(height: 80),
-              const FormText(text: 'Email:'),
-              const SizedBox(height: 10),
-              FormTextField(
-                  textEditingController: loginController.emailController),
-              const SizedBox(height: 10),
-              const FormText(text: 'Senha:'),
-              const SizedBox(height: 10),
-              FormTextField(
-                  textEditingController: loginController.passwordController),
-              const SizedBox(height: 20),
-              MainButton(
-                text: 'Entrar',
-                route: '/home',
-                onPressedCallback: () {
-                  validateFields(context);
-                },
-              ),
-              const SizedBox(height: 10),
-              const SecondaryButton(
-                text: 'Cadastrar',
-                route: '/register',
-              )
-            ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                const TitleText(text: 'ProgFile'),
+                const SizedBox(height: 80),
+                const FormText(text: 'Email:'),
+                const SizedBox(height: 10),
+                FormTextField(
+                  textEditingController: loginController.emailController,
+                  validator: (value) {
+                    return validateEmail(value);
+                  },
+                ),
+                const SizedBox(height: 10),
+                const FormText(text: 'Senha:'),
+                const SizedBox(height: 10),
+                FormTextField(
+                  textEditingController: loginController.passwordController,
+                  validator: (value) {
+                    return validatePassword(value);
+                  },
+                ),
+                const SizedBox(height: 20),
+                MainButton(
+                  text: 'Entrar',
+                  route: '/home',
+                  onPressedCallback: () {
+                    validateFields(context);
+                  },
+                ),
+                const SizedBox(height: 10),
+                const SecondaryButton(
+                  text: 'Cadastrar',
+                  route: '/register',
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -52,10 +64,31 @@ class LoginView extends StatelessWidget {
   }
 
   validateFields(BuildContext context) {
-    if (loginController.validateFields() && loginController.login()) {
-      Navigator.pushNamed(context, '/home');
-    } else {
-      // Show error message
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Entrando!"),
+        ),
+      );
+      //Navigator.pushNamed(context, '/home');
     }
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    } else if (!value.contains("@")) {
+      return "O email precisa ter o @";
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor.";
+    } else if (value.length < 8) {
+      return "A senha precisa ter pelo menos 8 characteres";
+    }
+    return null;
   }
 }

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
 class FormTextField extends StatelessWidget {
-  final TextEditingController textEditingController; // Mark it as final
+  final TextEditingController textEditingController;
+  final String? Function(String?)? validator;
 
-  const FormTextField({Key? key, required this.textEditingController})
+  const FormTextField(
+      {Key? key, required this.textEditingController, required this.validator})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 50,
-      child: TextField(
+      child: TextFormField(
+        validator: validator,
         controller: textEditingController,
         cursorColor: const Color(0xFF482FF7),
         decoration: InputDecoration(

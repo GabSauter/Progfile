@@ -7,7 +7,7 @@ class RegisterController {
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
-  bool validateFields() {
-    return true;
+  bool confirmPassword() {
+    return passwordController.text == confirmPasswordController.text;
   }
 }
