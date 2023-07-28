@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/views/RegisterView.dart';
+import 'package:progfile/app/views/register_view.dart';
 
-import 'app/views/LoginView.dart';
+import 'app/views/login_view.dart';
 
 void main() {
   runApp(const MainApp());
