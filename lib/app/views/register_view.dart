@@ -87,12 +87,7 @@ class RegisterView extends StatelessWidget {
   validateFields(BuildContext context) {
     if (registerController.validateForm(context)) {
       if (registerController.confirmPassword()) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Cadastrando!"),
-          ),
-        );
-        //Navigator.pushNamed(context, '/home');
+        registerController.signUp(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

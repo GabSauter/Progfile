@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:progfile/app/views/home_view.dart';
 import 'package:progfile/app/views/register_view.dart';
 
 import 'app/views/login_view.dart';
@@ -31,6 +32,7 @@ class MainApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginView(),
         '/register': (context) => RegisterView(),
+        '/home': (context) => const HomeView(),
       },
     );
   }

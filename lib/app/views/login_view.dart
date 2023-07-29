@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/login_controller.dart';
 import 'package:progfile/app/views/components/form_password_textfield.dart';
@@ -48,12 +49,7 @@ class LoginView extends StatelessWidget {
                   route: '/home',
                   onPressedCallback: () {
                     if (loginController.validateForm(context)) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Entrando!"),
-                        ),
-                      );
-                      //Navigator.pushNamed(context, '/home');
+                      sigin(context);
                     }
                   },
                 ),
@@ -68,5 +64,17 @@ class LoginView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  sigin(BuildContext context) {
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: loginController.emailController.text,
+            password: loginController.passwordController.text)
+        .then((value) {
+      Navigator.pushNamed(context, '/home');
+    }).onError((error, stackTrace) {
+      print("Error ${error.toString()}");
+    });
   }
 }

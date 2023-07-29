@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegisterController {
@@ -34,10 +35,21 @@ class RegisterController {
   }
 
   bool confirmPassword() {
-    return passwordController.text == confirmPasswordController.text;
+    return (passwordController.text == confirmPasswordController.text);
   }
 
   bool validateForm(BuildContext context) {
     return formKey.currentState!.validate();
+  }
+
+  void signUp(BuildContext context) {
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text)
+        .then((value) {
+      Navigator.pushNamed(context, '/home');
+    }).onError((error, stackTrace) {
+      print("Error ${error.toString()}");
+    });
   }
 }
