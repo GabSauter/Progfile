@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/login_controller.dart';
+import 'package:progfile/app/views/components/form_password_textfield.dart';
 import 'package:progfile/app/views/components/form_text.dart';
 import 'package:progfile/app/views/components/form_textfield.dart';
 import 'package:progfile/app/views/components/main_button.dart';
@@ -35,7 +36,7 @@ class LoginView extends StatelessWidget {
                 const SizedBox(height: 10),
                 const FormText(text: 'Senha:'),
                 const SizedBox(height: 10),
-                FormTextField(
+                FormPasswordTextField(
                   textEditingController: loginController.passwordController,
                   validator: (value) {
                     return loginController.validatePassword(value);

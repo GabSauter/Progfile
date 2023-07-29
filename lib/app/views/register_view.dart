@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/register_controller.dart';
 import 'package:progfile/app/views/components/back_button.dart';
+import 'package:progfile/app/views/components/form_password_textfield.dart';
 
 import 'components/form_text.dart';
 import 'components/form_textfield.dart';
@@ -48,7 +49,7 @@ class RegisterView extends StatelessWidget {
                     const SizedBox(height: 10),
                     const FormText(text: 'Senha:'),
                     const SizedBox(height: 10),
-                    FormTextField(
+                    FormPasswordTextField(
                       textEditingController:
                           registerController.passwordController,
                       validator: (value) {
@@ -58,7 +59,7 @@ class RegisterView extends StatelessWidget {
                     const SizedBox(height: 10),
                     const FormText(text: 'Confirmar Senha:'),
                     const SizedBox(height: 10),
-                    FormTextField(
+                    FormPasswordTextField(
                       textEditingController:
                           registerController.confirmPasswordController,
                       validator: (value) {
