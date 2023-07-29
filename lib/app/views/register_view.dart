@@ -9,7 +9,6 @@ import 'components/title_text.dart';
 
 class RegisterView extends StatelessWidget {
   final RegisterController registerController = RegisterController();
-  final _formKey = GlobalKey<FormState>();
 
   RegisterView({super.key});
 
@@ -24,7 +23,7 @@ class RegisterView extends StatelessWidget {
               padding: const EdgeInsets.only(
                   top: 10, right: 50, left: 50, bottom: 5),
               child: Form(
-                key: _formKey,
+                key: registerController.formKey,
                 child: Column(
                   children: [
                     const TitleText(text: 'ProgFile'),
@@ -34,7 +33,7 @@ class RegisterView extends StatelessWidget {
                     FormTextField(
                       textEditingController: registerController.nameController,
                       validator: (value) {
-                        return validateName(value);
+                        return registerController.validateName(value);
                       },
                     ),
                     const SizedBox(height: 10),
@@ -43,7 +42,7 @@ class RegisterView extends StatelessWidget {
                     FormTextField(
                       textEditingController: registerController.emailController,
                       validator: (value) {
-                        return validateEmail(value);
+                        return registerController.validateEmail(value);
                       },
                     ),
                     const SizedBox(height: 10),
@@ -53,7 +52,7 @@ class RegisterView extends StatelessWidget {
                       textEditingController:
                           registerController.passwordController,
                       validator: (value) {
-                        return validatePassword(value);
+                        return registerController.validatePassword(value);
                       },
                     ),
                     const SizedBox(height: 10),
@@ -63,7 +62,7 @@ class RegisterView extends StatelessWidget {
                       textEditingController:
                           registerController.confirmPasswordController,
                       validator: (value) {
-                        return validatePassword(value);
+                        return registerController.validatePassword(value);
                       },
                     ),
                     const SizedBox(height: 20),
@@ -85,7 +84,7 @@ class RegisterView extends StatelessWidget {
   }
 
   validateFields(BuildContext context) {
-    if (_formKey.currentState!.validate()) {
+    if (registerController.validateForm(context)) {
       if (registerController.confirmPassword()) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -114,30 +113,5 @@ class RegisterView extends StatelessWidget {
         );
       }
     }
-  }
-
-  String? validateName(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor";
-    }
-    return null;
-  }
-
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor";
-    } else if (!value.contains("@")) {
-      return "O email precisa ter o @";
-    }
-    return null;
-  }
-
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor.";
-    } else if (value.length < 8) {
-      return "A senha precisa ter pelo menos 8 characteres";
-    }
-    return null;
   }
 }
