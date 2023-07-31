@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginController {
   final TextEditingController emailController = TextEditingController();
@@ -27,8 +28,20 @@ class LoginController {
     return formKey.currentState!.validate();
   }
 
-  bool login() {
-    // acess database and validade email and password
-    return true;
+  void signIn(
+    BuildContext context,
+    void Function(String, BuildContext)
+        onErrorCallback, // Corrected parameter type here
+  ) {
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text)
+        .then((value) {
+      Navigator.pushNamed(context, '/home');
+    }).catchError((error) {
+      print("Error ${error.toString()}");
+      onErrorCallback(error.toString(),
+          context); // Execute the callback function with the error message
+    });
   }
 }
