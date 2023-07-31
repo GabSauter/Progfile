@@ -28,11 +28,8 @@ class LoginController {
     return formKey.currentState!.validate();
   }
 
-  void signIn(
-    BuildContext context,
-    void Function(String, BuildContext)
-        onErrorCallback, // Corrected parameter type here
-  ) {
+  void signIn(BuildContext context,
+      void Function(String, BuildContext) onErrorCallback) {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
@@ -40,8 +37,7 @@ class LoginController {
       Navigator.pushNamed(context, '/home');
     }).catchError((error) {
       print("Error ${error.toString()}");
-      onErrorCallback(error.toString(),
-          context); // Execute the callback function with the error message
+      onErrorCallback(error.toString(), context);
     });
   }
 }

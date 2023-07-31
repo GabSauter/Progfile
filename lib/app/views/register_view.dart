@@ -13,6 +13,29 @@ class RegisterView extends StatelessWidget {
 
   RegisterView({super.key});
 
+  void showErrorSnackBar(String errorMessage, BuildContext context) {
+    final snackBar = SnackBar(
+      duration: const Duration(seconds: 5),
+      content: Column(
+        children: [
+          const Icon(Icons.error, color: Colors.white),
+          const SizedBox(height: 10),
+          Text(
+            errorMessage,
+            style: const TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+      backgroundColor: Colors.red,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void onSignUp(BuildContext context) {
+    registerController.signUp(context, showErrorSnackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +94,9 @@ class RegisterView extends StatelessWidget {
                       text: 'Cadastrar',
                       route: '/',
                       onPressedCallback: () {
-                        validateFields(context);
+                        if (registerController.validateForm(context)) {
+                          onSignUp(context);
+                        }
                       },
                     ),
                   ],
@@ -82,32 +107,5 @@ class RegisterView extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  validateFields(BuildContext context) {
-    if (registerController.validateForm(context)) {
-      if (registerController.confirmPassword()) {
-        registerController.signUp(context);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            duration: Duration(seconds: 5),
-            content: Column(
-              children: [
-                Icon(Icons.error, color: Colors.white),
-                SizedBox(height: 10),
-                Text(
-                  "Os campos de senha e confirmar a senha devem ser iguais.",
-                  style: TextStyle(color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-            backgroundColor:
-                Colors.red, // Set the background color of the SnackBar
-          ),
-        );
-      }
-    }
   }
 }

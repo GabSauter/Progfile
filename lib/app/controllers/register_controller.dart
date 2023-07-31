@@ -42,7 +42,8 @@ class RegisterController {
     return formKey.currentState!.validate();
   }
 
-  void signUp(BuildContext context) {
+  void signUp(BuildContext context,
+      void Function(String, BuildContext) onErrorCallback) {
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
@@ -50,6 +51,7 @@ class RegisterController {
       Navigator.pushNamed(context, '/home');
     }).onError((error, stackTrace) {
       print("Error ${error.toString()}");
+      onErrorCallback(error.toString(), context);
     });
   }
 }
