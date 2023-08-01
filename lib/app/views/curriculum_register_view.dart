@@ -1,13 +1,43 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class CurriculumRegisterView extends StatelessWidget {
-  const CurriculumRegisterView({super.key});
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+class CurriculumRegisterView extends StatefulWidget {
+  @override
+  _CurriculumRegisterViewState createState() => _CurriculumRegisterViewState();
+}
+
+class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
+  File? _image;
+
+  Future<void> _getImageFromCamera() async {
+    final imagePicker = ImagePicker();
+    final pickedImage = await imagePicker.pickImage(source: ImageSource.camera);
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
+
+  Future<void> _getImageFromGallery() async {
+    final imagePicker = ImagePicker();
+    final pickedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Criar Curriculo'),
+        title: Text('Curriculum Registration'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -15,8 +45,16 @@ class CurriculumRegisterView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             CircleAvatar(
-              radius: 80.0,
-              backgroundImage: AssetImage('assets/default_avatar.png'),
+              radius: 50.0,
+              backgroundImage: _image != null ? FileImage(_image!) : null,
+              child: _image == null
+                  ? IconButton(
+                      icon: Icon(Icons.camera_alt),
+                      onPressed: () async {
+                        await _showImageSourceSelectionDialog();
+                      },
+                    )
+                  : null,
             ),
             SizedBox(height: 16.0),
             TextFormField(
@@ -93,5 +131,45 @@ class CurriculumRegisterView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _showImageSourceSelectionDialog() async {
+    // Request camera and storage permissions
+    if (await Permission.camera.request().isGranted &&
+        await Permission.storage.request().isGranted) {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Select Image Source'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  GestureDetector(
+                    child: Text('Camera'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      _getImageFromCamera();
+                    },
+                  ),
+                  SizedBox(height: 16.0),
+                  GestureDetector(
+                    child: Text('Gallery'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      _getImageFromGallery();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      // Handle permission denied or restricted
+      // You can show an error message or request permissions again.
+      // For simplicity, this example will not handle the error case.
+    }
   }
 }
