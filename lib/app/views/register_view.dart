@@ -6,6 +6,7 @@ import 'package:progfile/app/views/components/form_password_textfield.dart';
 import 'components/form_text.dart';
 import 'components/form_textfield.dart';
 import 'components/main_button.dart';
+import 'components/snackbar_helper.dart';
 import 'components/title_text.dart';
 
 class RegisterView extends StatelessWidget {
@@ -14,22 +15,7 @@ class RegisterView extends StatelessWidget {
   RegisterView({super.key});
 
   void showErrorSnackBar(String errorMessage, BuildContext context) {
-    final snackBar = SnackBar(
-      duration: const Duration(seconds: 5),
-      content: Column(
-        children: [
-          const Icon(Icons.error, color: Colors.white),
-          const SizedBox(height: 10),
-          Text(
-            errorMessage,
-            style: const TextStyle(color: Colors.white),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-      backgroundColor: Colors.red,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    SnackBarHelper.showErrorSnackBar(errorMessage, context);
   }
 
   void onSignUp(BuildContext context) {

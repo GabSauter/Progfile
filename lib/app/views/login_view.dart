@@ -7,14 +7,15 @@ import 'package:progfile/app/views/components/main_button.dart';
 import 'package:progfile/app/views/components/secondary_button.dart';
 import 'package:progfile/app/views/components/title_text.dart';
 
+import 'components/snackbar_helper.dart';
+
 class LoginView extends StatelessWidget {
   final LoginController loginController = LoginController();
 
   LoginView({super.key});
 
   void showErrorSnackBar(String errorMessage, BuildContext context) {
-    final snackBar = SnackBar(content: Text(errorMessage));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    SnackBarHelper.showErrorSnackBar(errorMessage, context);
   }
 
   void onSignIn(BuildContext context) {
