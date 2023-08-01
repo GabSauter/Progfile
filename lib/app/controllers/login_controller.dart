@@ -34,7 +34,7 @@ class LoginController {
         .signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
         .then((value) {
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/home');
     }).catchError((error) {
       print("Error ${error.toString()}");
       onErrorCallback(error.toString(), context);

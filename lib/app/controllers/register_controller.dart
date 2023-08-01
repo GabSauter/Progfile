@@ -48,7 +48,7 @@ class RegisterController {
         .createUserWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
         .then((value) {
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/home');
     }).onError((error, stackTrace) {
       print("Error ${error.toString()}");
       onErrorCallback(error.toString(), context);
