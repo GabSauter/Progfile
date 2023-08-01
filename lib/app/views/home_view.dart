@@ -1,10 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:progfile/app/controllers/home_controller.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  final HomeController homeController = HomeController();
+
+  HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +22,12 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  logout(BuildContext context) {
-    FirebaseAuth.instance.signOut().then((value) {
-      Navigator.pushNamed(context, '/');
-    }).onError((error, stackTrace) {
-      print("Error ${error.toString()}");
-    });
+  void showErrorSnackBar(String errorMessage, BuildContext context) {
+    final snackBar = SnackBar(content: Text(errorMessage));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void logout(BuildContext context) {
+    homeController.logout(context, showErrorSnackBar);
   }
 }
