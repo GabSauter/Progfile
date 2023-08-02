@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:progfile/app/views/certificate_view.dart';
 import 'package:progfile/app/views/curriculum_register_view.dart';
 import 'package:progfile/app/views/home_view.dart';
 import 'package:progfile/app/views/register_view.dart';
@@ -35,6 +36,7 @@ class MainApp extends StatelessWidget {
         '/register': (context) => RegisterView(),
         '/home': (context) => HomeView(),
         '/registerCurriculum': (context) => CurriculumRegisterView(),
+        '/certificate': (context) => CertificateView(),
       },
     );
   }

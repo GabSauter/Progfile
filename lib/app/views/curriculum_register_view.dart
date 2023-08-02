@@ -72,7 +72,9 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
               child: const Text('Adicionar Curso'),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/certificate');
+              },
               child: const Text('Adicionar Certificado'),
             ),
             const SizedBox(height: 16.0),

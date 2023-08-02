@@ -13,6 +13,7 @@ dependencies:
   firebase_auth: ^4.7.2
   image_picker: ^1.0.1
   permission_handler: ^10.4.3
+  intl: ^0.18.1
 
 
 dev_dependencies:
