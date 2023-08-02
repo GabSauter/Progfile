@@ -50,7 +50,6 @@ class RegisterController {
         .then((value) {
       Navigator.pushReplacementNamed(context, '/home');
     }).onError((error, stackTrace) {
-      print("Error ${error.toString()}");
       onErrorCallback(error.toString(), context);
     });
   }

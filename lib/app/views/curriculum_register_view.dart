@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CurriculumRegisterView extends StatefulWidget {
+  const CurriculumRegisterView({super.key});
+
   @override
   _CurriculumRegisterViewState createState() => _CurriculumRegisterViewState();
 }
@@ -37,55 +39,52 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Curriculum Registration'),
+        title: const Text('Curriculum Registration'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CircleAvatar(
-              radius: 50.0,
-              backgroundImage: _image != null ? FileImage(_image!) : null,
-              child: _image == null
-                  ? IconButton(
-                      icon: Icon(Icons.camera_alt),
-                      onPressed: () async {
-                        await _showImageSourceSelectionDialog();
-                      },
-                    )
-                  : null,
+            GestureDetector(
+              onTap: () async {
+                await _showImageSourceSelectionDialog();
+              },
+              child: CircleAvatar(
+                radius: 70.0,
+                backgroundImage: _image != null ? FileImage(_image!) : null,
+                child: _image == null ? const Icon(Icons.camera_alt) : null,
+              ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Nome'),
+              decoration: const InputDecoration(labelText: 'Nome'),
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Número do celular'),
+              decoration: const InputDecoration(labelText: 'Número do celular'),
             ),
-            SizedBox(height: 16.0),
-            // Button to add course
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {},
-              child: Text('Adicionar Curso'),
+              child: const Text('Adicionar Curso'),
             ),
             ElevatedButton(
               onPressed: () {},
-              child: Text('Adicionar Certificado'),
+              child: const Text('Adicionar Certificado'),
             ),
-            SizedBox(height: 16.0),
-            // Textfields for GitHub repository URL, Address, Occupation area, and Grade
+            const SizedBox(height: 16.0),
             TextFormField(
-              decoration: InputDecoration(labelText: 'URL Repositorio GitHub'),
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Endereço'),
+              decoration:
+                  const InputDecoration(labelText: 'URL Repositorio GitHub'),
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Área De Atuação'),
+              decoration: const InputDecoration(labelText: 'Endereço'),
+            ),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Área De Atuação'),
             ),
             DropdownButtonFormField<String>(
               items: ['Estágio', 'Junior', 'Senior']
@@ -94,38 +93,28 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
                         child: Text(grade),
                       ))
                   .toList(),
-              onChanged: (selectedGrade) {
-                // Implement action for grade selection
-              },
+              onChanged: (selectedGrade) {},
               value: null,
-              decoration: InputDecoration(labelText: 'Grau'),
+              decoration: const InputDecoration(labelText: 'Grau'),
             ),
-            SizedBox(height: 16.0),
-            // Button to add idiom
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {},
-              child: Text('Adicionar Idioma'),
+              child: const Text('Adicionar Idioma'),
             ),
-            // Button to add competence
             ElevatedButton(
-              onPressed: () {
-                // Implement action to add a competence
-              },
-              child: Text('Adicionar Competência'),
+              onPressed: () {},
+              child: const Text('Adicionar Competência'),
             ),
-            SizedBox(height: 16.0),
-            // Textfield to add 'About You'
+            const SizedBox(height: 16.0),
             TextFormField(
               maxLines: 4,
-              decoration: InputDecoration(labelText: 'About You'),
+              decoration: const InputDecoration(labelText: 'About You'),
             ),
-            SizedBox(height: 16.0),
-            // Button to conclude the registration
+            const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () {
-                // Implement action to conclude the registration
-              },
-              child: Text('Concluir'),
+              onPressed: () {},
+              child: const Text('Concluir'),
             ),
           ],
         ),
@@ -134,27 +123,26 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
   }
 
   Future<void> _showImageSourceSelectionDialog() async {
-    // Request camera and storage permissions
     if (await Permission.camera.request().isGranted &&
         await Permission.storage.request().isGranted) {
       return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Select Image Source'),
+            title: const Text('Selecione o tipo de imagem'),
             content: SingleChildScrollView(
               child: ListBody(
                 children: [
                   GestureDetector(
-                    child: Text('Camera'),
+                    child: const Text('Camera'),
                     onTap: () {
                       Navigator.pop(context);
                       _getImageFromCamera();
                     },
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   GestureDetector(
-                    child: Text('Gallery'),
+                    child: const Text('Galeria'),
                     onTap: () {
                       Navigator.pop(context);
                       _getImageFromGallery();
@@ -167,9 +155,35 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
         },
       );
     } else {
-      // Handle permission denied or restricted
-      // You can show an error message or request permissions again.
-      // For simplicity, this example will not handle the error case.
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Permissão requerida'),
+            content: const Text(
+                'Precisamos de sua permissão para camera e armazenamento.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _requestPermissionsAgain();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> _requestPermissionsAgain() async {
+    if (!await Permission.camera.isGranted) {
+      await Permission.camera.request();
+    }
+
+    if (!await Permission.storage.isGranted) {
+      await Permission.storage.request();
     }
   }
 }

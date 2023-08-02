@@ -36,7 +36,6 @@ class LoginController {
         .then((value) {
       Navigator.pushReplacementNamed(context, '/home');
     }).catchError((error) {
-      print("Error ${error.toString()}");
       onErrorCallback(error.toString(), context);
     });
   }

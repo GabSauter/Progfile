@@ -7,7 +7,6 @@ class HomeController {
     FirebaseAuth.instance.signOut().then((value) {
       Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
     }).onError((error, stackTrace) {
-      print("Error ${error.toString()}");
       onErrorCallback(error.toString(), context);
     });
   }
