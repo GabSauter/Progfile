@@ -19,5 +19,17 @@ class UserModel {
     }
   }
 
+  Future<String> signUp() async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _email,
+        password: _password,
+      );
+      return "Registrado";
+    } catch (error) {
+      return error.toString();
+    }
+  }
+
   String get name => _name;
 }

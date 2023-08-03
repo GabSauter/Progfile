@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:progfile/app/models/user_model.dart';
 
 class RegisterController {
   final TextEditingController nameController = TextEditingController();
@@ -42,15 +42,9 @@ class RegisterController {
     return formKey.currentState!.validate();
   }
 
-  void signUp(BuildContext context,
-      void Function(String, BuildContext) onErrorCallback) {
-    FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text)
-        .then((value) {
-      Navigator.pushReplacementNamed(context, '/home');
-    }).onError((error, stackTrace) {
-      onErrorCallback(error.toString(), context);
-    });
+  Future<String> signUp() async {
+    UserModel userModel = UserModel(
+        nameController.text, emailController.text, passwordController.text);
+    return await userModel.signUp();
   }
 }

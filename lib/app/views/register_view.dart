@@ -18,8 +18,14 @@ class RegisterView extends StatelessWidget {
     SnackBarHelper.showErrorSnackBar(errorMessage, context);
   }
 
-  void onSignUp(BuildContext context) {
-    registerController.signUp(context, showErrorSnackBar);
+  void onSignUp(BuildContext context) async {
+    String registerResult = await registerController.signUp();
+
+    if (registerResult == "Registrado") {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      showErrorSnackBar(registerResult, context);
+    }
   }
 
   @override
