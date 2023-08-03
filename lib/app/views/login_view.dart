@@ -18,8 +18,14 @@ class LoginView extends StatelessWidget {
     SnackBarHelper.showErrorSnackBar(errorMessage, context);
   }
 
-  void onSignIn(BuildContext context) {
-    loginController.signIn(context, showErrorSnackBar);
+  void onSignIn(BuildContext context) async {
+    String loginResult = await loginController.signIn();
+
+    if (loginResult == "Logado") {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      showErrorSnackBar(loginResult, context);
+    }
   }
 
   @override

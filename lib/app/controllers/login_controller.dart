@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:progfile/app/models/user_model.dart';
 
 class LoginController {
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -28,15 +29,9 @@ class LoginController {
     return formKey.currentState!.validate();
   }
 
-  void signIn(BuildContext context,
-      void Function(String, BuildContext) onErrorCallback) {
-    FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text)
-        .then((value) {
-      Navigator.pushReplacementNamed(context, '/home');
-    }).catchError((error) {
-      onErrorCallback(error.toString(), context);
-    });
+  Future<String> signIn() async {
+    UserModel userModel = UserModel(
+        nameController.text, emailController.text, passwordController.text);
+    return await userModel.signIn();
   }
 }
