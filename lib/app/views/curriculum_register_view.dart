@@ -8,7 +8,7 @@ class CurriculumRegisterView extends StatefulWidget {
   const CurriculumRegisterView({super.key});
 
   @override
-  _CurriculumRegisterViewState createState() => _CurriculumRegisterViewState();
+  State<CurriculumRegisterView> createState() => _CurriculumRegisterViewState();
 }
 
 class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
@@ -127,55 +127,59 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
   Future<void> _showImageSourceSelectionDialog() async {
     if (await Permission.camera.request().isGranted &&
         await Permission.storage.request().isGranted) {
-      return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Selecione o tipo de imagem'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: [
-                  GestureDetector(
-                    child: const Text('Camera'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      _getImageFromCamera();
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  GestureDetector(
-                    child: const Text('Galeria'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      _getImageFromGallery();
-                    },
-                  ),
-                ],
+      if (context.mounted) {
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Selecione o tipo de imagem'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: [
+                    GestureDetector(
+                      child: const Text('Camera'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        _getImageFromCamera();
+                      },
+                    ),
+                    const SizedBox(height: 16.0),
+                    GestureDetector(
+                      child: const Text('Galeria'),
+                      onTap: () {
+                        Navigator.pop(context);
+                        _getImageFromGallery();
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      );
+            );
+          },
+        );
+      }
     } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Permissão requerida'),
-            content: const Text(
-                'Precisamos de sua permissão para camera e armazenamento.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _requestPermissionsAgain();
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Permissão requerida'),
+              content: const Text(
+                  'Precisamos de sua permissão para camera e armazenamento.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _requestPermissionsAgain();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 

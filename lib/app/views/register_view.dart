@@ -21,10 +21,12 @@ class RegisterView extends StatelessWidget {
   void onSignUp(BuildContext context) async {
     String registerResult = await registerController.signUp();
 
-    if (registerResult == "Registrado") {
-      Navigator.pushReplacementNamed(context, '/home');
-    } else {
-      showErrorSnackBar(registerResult, context);
+    if (context.mounted) {
+      if (registerResult == "Registrado") {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        showErrorSnackBar(registerResult, context);
+      }
     }
   }
 

@@ -17,7 +17,7 @@ class CertificateListScreen extends StatefulWidget {
   const CertificateListScreen({super.key});
 
   @override
-  _CertificateListScreenState createState() => _CertificateListScreenState();
+  State<CertificateListScreen> createState() => _CertificateListScreenState();
 }
 
 class _CertificateListScreenState extends State<CertificateListScreen> {

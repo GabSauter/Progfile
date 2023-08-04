@@ -16,11 +16,12 @@ class HomeView extends StatelessWidget {
 
   void onSignOut(BuildContext context) async {
     String signOutResult = await homeController.signOut();
-
-    if (signOutResult == "Logout") {
-      Navigator.pushReplacementNamed(context, '/');
-    } else {
-      showErrorSnackBar(signOutResult, context);
+    if (context.mounted) {
+      if (signOutResult == "Logout") {
+        Navigator.pushReplacementNamed(context, '/');
+      } else {
+        showErrorSnackBar(signOutResult, context);
+      }
     }
   }
 
