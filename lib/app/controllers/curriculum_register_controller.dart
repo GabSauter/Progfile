@@ -19,9 +19,13 @@ class CurriculumRegisterController extends ChangeNotifier {
   Future<void> handleImageSelection(BuildContext context) async {
     if (await Permission.camera.request().isGranted &&
         await Permission.storage.request().isGranted) {
-      _showImageSourceSelectionDialog(context);
+      if (context.mounted) {
+        _showImageSourceSelectionDialog(context);
+      }
     } else {
-      _requestPermissionsAgain(context);
+      if (context.mounted) {
+        _requestPermissionsAgain(context);
+      }
     }
   }
 
@@ -83,7 +87,9 @@ class CurriculumRegisterController extends ChangeNotifier {
       await Permission.storage.request();
     }
 
-    handleImageSelection(context);
+    if (context.mounted) {
+      handleImageSelection(context);
+    }
   }
 
   File? get image => _image;
