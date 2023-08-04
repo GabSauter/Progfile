@@ -1,8 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+
+import '../controllers/curriculum_register_controller.dart';
+import 'components/image_take.dart';
 
 class CurriculumRegisterView extends StatefulWidget {
   const CurriculumRegisterView({super.key});
@@ -12,27 +12,12 @@ class CurriculumRegisterView extends StatefulWidget {
 }
 
 class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
-  File? _image;
+  final _controller = CurriculumRegisterController();
 
-  Future<void> _getImageFromCamera() async {
-    final imagePicker = ImagePicker();
-    final pickedImage = await imagePicker.pickImage(source: ImageSource.camera);
-    if (pickedImage != null) {
-      setState(() {
-        _image = File(pickedImage.path);
-      });
-    }
-  }
-
-  Future<void> _getImageFromGallery() async {
-    final imagePicker = ImagePicker();
-    final pickedImage =
-        await imagePicker.pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        _image = File(pickedImage.path);
-      });
-    }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -48,22 +33,28 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
           children: [
             GestureDetector(
               onTap: () async {
-                await _showImageSourceSelectionDialog();
+                final controller = Provider.of<CurriculumRegisterController>(
+                    context,
+                    listen: false);
+                await controller.handleImageSelection(context);
               },
-              child: CircleAvatar(
-                radius: 70.0,
-                backgroundImage: _image != null ? FileImage(_image!) : null,
-                child: _image == null ? const Icon(Icons.camera_alt) : null,
+              child: Consumer<CurriculumRegisterController>(
+                builder: (context, controller, _) {
+                  return ImageDisplay(image: controller.image);
+                },
               ),
             ),
             const SizedBox(height: 16.0),
             TextFormField(
+              controller: _controller.nomeController,
               decoration: const InputDecoration(labelText: 'Nome'),
             ),
             TextFormField(
+              controller: _controller.emailController,
               decoration: const InputDecoration(labelText: 'Email'),
             ),
             TextFormField(
+              controller: _controller.numeroCelularController,
               decoration: const InputDecoration(labelText: 'Número do celular'),
             ),
             const SizedBox(height: 16.0),
@@ -79,13 +70,17 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
             ),
             const SizedBox(height: 16.0),
             TextFormField(
-              decoration:
-                  const InputDecoration(labelText: 'URL Repositorio GitHub'),
+              controller: _controller.urlRepositorioGitHubController,
+              decoration: const InputDecoration(
+                labelText: 'URL Repositorio GitHub',
+              ),
             ),
             TextFormField(
+              controller: _controller.enderecoController,
               decoration: const InputDecoration(labelText: 'Endereço'),
             ),
             TextFormField(
+              controller: _controller.areaAtuacaoController,
               decoration: const InputDecoration(labelText: 'Área De Atuação'),
             ),
             DropdownButtonFormField<String>(
@@ -95,8 +90,12 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
                         child: Text(grade),
                       ))
                   .toList(),
-              onChanged: (selectedGrade) {},
-              value: null,
+              onChanged: (selectedGrade) {
+                setState(() {
+                  _controller.selectedGrau = selectedGrade;
+                });
+              },
+              value: _controller.selectedGrau,
               decoration: const InputDecoration(labelText: 'Grau'),
             ),
             const SizedBox(height: 16.0),
@@ -110,6 +109,7 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
             ),
             const SizedBox(height: 16.0),
             TextFormField(
+              controller: _controller.aboutYouController,
               maxLines: 4,
               decoration: const InputDecoration(labelText: 'About You'),
             ),
@@ -122,74 +122,5 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
         ),
       ),
     );
-  }
-
-  Future<void> _showImageSourceSelectionDialog() async {
-    if (await Permission.camera.request().isGranted &&
-        await Permission.storage.request().isGranted) {
-      if (context.mounted) {
-        return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Selecione o tipo de imagem'),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: [
-                    GestureDetector(
-                      child: const Text('Camera'),
-                      onTap: () {
-                        Navigator.pop(context);
-                        _getImageFromCamera();
-                      },
-                    ),
-                    const SizedBox(height: 16.0),
-                    GestureDetector(
-                      child: const Text('Galeria'),
-                      onTap: () {
-                        Navigator.pop(context);
-                        _getImageFromGallery();
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      }
-    } else {
-      if (context.mounted) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Permissão requerida'),
-              content: const Text(
-                  'Precisamos de sua permissão para camera e armazenamento.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    _requestPermissionsAgain();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    }
-  }
-
-  Future<void> _requestPermissionsAgain() async {
-    if (!await Permission.camera.isGranted) {
-      await Permission.camera.request();
-    }
-
-    if (!await Permission.storage.isGranted) {
-      await Permission.storage.request();
-    }
   }
 }

@@ -4,7 +4,9 @@ import 'package:progfile/app/views/certificate_view.dart';
 import 'package:progfile/app/views/curriculum_register_view.dart';
 import 'package:progfile/app/views/home_view.dart';
 import 'package:progfile/app/views/register_view.dart';
+import 'package:provider/provider.dart';
 
+import 'app/controllers/curriculum_register_controller.dart';
 import 'app/views/login_view.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -25,32 +27,34 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Inter',
-        primaryColor: const Color(0xFF482FF7),
-        scaffoldBackgroundColor: const Color(0xFFF8F7F5),
-      ),
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text("Ops! Deu algo errado."));
-          } else if (snapshot.hasData) {
-            return HomeView();
-          } else {
-            return LoginView();
-          }
-        },
-      ),
-      routes: {
-        '/register': (context) => RegisterView(),
-        '/home': (context) => HomeView(),
-        '/registerCurriculum': (context) => CurriculumRegisterView(),
-        '/certificate': (context) => CertificateView(),
-      },
-    );
+    return ChangeNotifierProvider(
+        create: (_) => CurriculumRegisterController(),
+        child: MaterialApp(
+          theme: ThemeData(
+            fontFamily: 'Inter',
+            primaryColor: const Color(0xFF482FF7),
+            scaffoldBackgroundColor: const Color(0xFFF8F7F5),
+          ),
+          home: StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return const Center(child: Text("Ops! Deu algo errado."));
+              } else if (snapshot.hasData) {
+                return HomeView();
+              } else {
+                return LoginView();
+              }
+            },
+          ),
+          routes: {
+            '/register': (context) => RegisterView(),
+            '/home': (context) => HomeView(),
+            '/registerCurriculum': (context) => CurriculumRegisterView(),
+            '/certificate': (context) => CertificateView(),
+          },
+        ));
   }
 }
