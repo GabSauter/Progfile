@@ -14,8 +14,14 @@ class HomeView extends StatelessWidget {
     SnackBarHelper.showErrorSnackBar(errorMessage, context);
   }
 
-  void logout(BuildContext context) {
-    homeController.logout(context, showErrorSnackBar);
+  void onSignOut(BuildContext context) async {
+    String signOutResult = await homeController.signOut();
+
+    if (signOutResult == "Logout") {
+      Navigator.pushReplacementNamed(context, '/');
+    } else {
+      showErrorSnackBar(signOutResult, context);
+    }
   }
 
   @override
@@ -41,7 +47,7 @@ class HomeView extends StatelessWidget {
             const SizedBox(height: 10),
             MainButton(
               text: 'Logout',
-              onPressedCallback: () => logout(context),
+              onPressedCallback: () => onSignOut(context),
             )
           ],
         ),

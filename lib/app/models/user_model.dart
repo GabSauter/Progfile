@@ -31,5 +31,14 @@ class UserModel {
     }
   }
 
+  Future<String> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return "Logout";
+    } catch (error) {
+      return error.toString();
+    }
+  }
+
   String get name => _name;
 }
