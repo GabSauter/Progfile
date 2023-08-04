@@ -84,7 +84,6 @@ class RegisterView extends StatelessWidget {
                     const SizedBox(height: 20),
                     MainButton(
                       text: 'Cadastrar',
-                      route: '/',
                       onPressedCallback: () {
                         if (registerController.validateForm(context)) {
                           onSignUp(context);

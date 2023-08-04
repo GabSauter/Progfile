@@ -61,7 +61,6 @@ class LoginView extends StatelessWidget {
                 const SizedBox(height: 20),
                 MainButton(
                   text: 'Entrar',
-                  route: '/home',
                   onPressedCallback: () {
                     if (loginController.validateForm(context)) {
                       onSignIn(context);

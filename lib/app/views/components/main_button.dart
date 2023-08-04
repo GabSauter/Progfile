@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
 class MainButton extends StatelessWidget {
-  final String route;
   final String text;
   final VoidCallback onPressedCallback;
 
   const MainButton({
     Key? key,
     required this.text,
-    required this.route,
     required this.onPressedCallback,
   }) : super(key: key);
 
