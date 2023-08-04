@@ -21,7 +21,7 @@ class CertificateListScreen extends StatefulWidget {
 }
 
 class _CertificateListScreenState extends State<CertificateListScreen> {
-  final List<Certificate> _certificates = [];
+  final List<CertificateModel> _certificates = [];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _CertificateListScreenState extends State<CertificateListScreen> {
         itemCount: _certificates.length,
         itemBuilder: (context, index) {
           return Dismissible(
-            key: Key(_certificates[index].nome),
+            key: Key(_certificates[index].name),
             direction: DismissDirection.endToStart,
             background: Container(
               alignment: AlignmentDirectional.centerEnd,
@@ -49,10 +49,10 @@ class _CertificateListScreenState extends State<CertificateListScreen> {
               });
             },
             child: ListTile(
-              title: Text(_certificates[index].nome),
-              subtitle: Text(_certificates[index].organizacao),
+              title: Text(_certificates[index].name),
+              subtitle: Text(_certificates[index].organization),
               trailing: Text(
-                  DateFormat.yMMMd().format(_certificates[index].dataEmissao)),
+                  DateFormat.yMMMd().format(_certificates[index].omissionDate)),
               onTap: () =>
                   _showAddCertificateDialog(certificate: _certificates[index]),
             ),
@@ -66,13 +66,13 @@ class _CertificateListScreenState extends State<CertificateListScreen> {
     );
   }
 
-  void _showAddCertificateDialog({Certificate? certificate}) {
+  void _showAddCertificateDialog({CertificateModel? certificate}) {
     showDialog(
       context: context,
       builder: (context) {
-        String nome = certificate?.nome ?? '';
-        String organizacao = certificate?.organizacao ?? '';
-        DateTime? dataEmissao = certificate?.dataEmissao;
+        String name = certificate?.name ?? '';
+        String organization = certificate?.organization ?? '';
+        DateTime? omissionDate = certificate?.omissionDate;
 
         return AlertDialog(
           title: Text(certificate != null
@@ -84,19 +84,19 @@ class _CertificateListScreenState extends State<CertificateListScreen> {
               TextField(
                 decoration:
                     const InputDecoration(labelText: 'Nome do Certificado'),
-                onChanged: (value) => nome = value,
-                controller: TextEditingController(text: nome),
+                onChanged: (value) => name = value,
+                controller: TextEditingController(text: name),
               ),
               TextField(
                 decoration:
                     const InputDecoration(labelText: 'Organização Emissora'),
-                onChanged: (value) => organizacao = value,
-                controller: TextEditingController(text: organizacao),
+                onChanged: (value) => organization = value,
+                controller: TextEditingController(text: organization),
               ),
               ElevatedButton(
                 onPressed: () async {
                   DateTime currentDate = DateTime.now();
-                  DateTime initialDate = dataEmissao ?? currentDate;
+                  DateTime initialDate = omissionDate ?? currentDate;
                   DateTime? selectedDate = await showDatePicker(
                     context: context,
                     initialDate: initialDate,
@@ -107,7 +107,7 @@ class _CertificateListScreenState extends State<CertificateListScreen> {
 
                   if (selectedDate != null) {
                     setState(() {
-                      dataEmissao = DateTime(selectedDate.year,
+                      omissionDate = DateTime(selectedDate.year,
                           selectedDate.month, selectedDate.day);
                     });
                   }
@@ -125,23 +125,23 @@ class _CertificateListScreenState extends State<CertificateListScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (nome.isNotEmpty &&
-                    organizacao.isNotEmpty &&
-                    dataEmissao != null) {
+                if (name.isNotEmpty &&
+                    organization.isNotEmpty &&
+                    omissionDate != null) {
                   if (certificate != null) {
                     // Editing an existing certificate
                     setState(() {
-                      certificate.nome = nome;
-                      certificate.organizacao = organizacao;
-                      certificate.dataEmissao = dataEmissao!;
+                      certificate.name = name;
+                      certificate.organization = organization;
+                      certificate.omissionDate = omissionDate!;
                     });
                   } else {
                     // Adding a new certificate
                     setState(() {
-                      _certificates.add(Certificate(
-                        nome: nome,
-                        organizacao: organizacao,
-                        dataEmissao: dataEmissao!,
+                      _certificates.add(CertificateModel(
+                        name: name,
+                        organization: organization,
+                        omissionDate: omissionDate!,
                       ));
                     });
                   }

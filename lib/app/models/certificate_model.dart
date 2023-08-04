@@ -1,10 +1,18 @@
-class Certificate {
-  String nome;
-  String organizacao;
-  DateTime dataEmissao;
+class CertificateModel {
+  String name;
+  String organization;
+  DateTime omissionDate;
 
-  Certificate(
-      {required this.nome,
-      required this.organizacao,
-      required this.dataEmissao});
+  CertificateModel(
+      {required this.name,
+      required this.organization,
+      required this.omissionDate});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'organization': organization,
+      'date': omissionDate.toUtc(),
+    };
+  }
 }
