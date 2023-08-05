@@ -12,9 +12,7 @@ class CurriculumService {
           () => print("Deu certo"),
         )
         .catchError(
-      (error, StackTrace) {
-        print("Deu certo " + error.toString());
-      },
-    );
+          (error, stackTrace) => print("Deu errado: $error"),
+        );
   }
 }

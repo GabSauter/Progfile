@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/user_model.dart';
+import 'package:progfile/app/services/user_service.dart';
 
 class LoginController {
   final TextEditingController nameController = TextEditingController();
@@ -30,8 +31,8 @@ class LoginController {
   }
 
   Future<String> signIn() async {
-    UserModel userModel = UserModel(
+    UserModel user = UserModel(
         nameController.text, emailController.text, passwordController.text);
-    return await userModel.signIn();
+    return await UserService().signIn(user);
   }
 }

@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 class UserModel {
   final String _name;
   final String _email;
@@ -7,38 +5,7 @@ class UserModel {
 
   UserModel(this._name, this._email, this._password);
 
-  Future<String> signIn() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _email,
-        password: _password,
-      );
-      return "Logado";
-    } catch (error) {
-      return error.toString();
-    }
-  }
-
-  Future<String> signUp() async {
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _email,
-        password: _password,
-      );
-      return "Registrado";
-    } catch (error) {
-      return error.toString();
-    }
-  }
-
-  Future<String> signOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      return "Logout";
-    } catch (error) {
-      return error.toString();
-    }
-  }
-
   String get name => _name;
+  String get email => _email;
+  String get password => _password;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/user_model.dart';
+import 'package:progfile/app/services/user_service.dart';
 
 class RegisterController {
   final TextEditingController nameController = TextEditingController();
@@ -43,8 +44,8 @@ class RegisterController {
   }
 
   Future<String> signUp() async {
-    UserModel userModel = UserModel(
+    UserModel user = UserModel(
         nameController.text, emailController.text, passwordController.text);
-    return await userModel.signUp();
+    return await UserService().signUp(user);
   }
 }

@@ -1,8 +1,7 @@
-import '../models/user_model.dart';
+import 'package:progfile/app/services/user_service.dart';
 
 class HomeController {
   Future<String> signOut() async {
-    UserModel userModel = UserModel("", "", "");
-    return await userModel.signOut();
+    return await UserService().signOut();
   }
 }
