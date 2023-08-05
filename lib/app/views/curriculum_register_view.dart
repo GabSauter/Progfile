@@ -44,7 +44,7 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
             ),
             const SizedBox(height: 16.0),
             TextFormField(
-              controller: _controller.nomeController,
+              controller: _controller.nameController,
               decoration: const InputDecoration(labelText: 'Nome'),
             ),
             TextFormField(
@@ -52,7 +52,7 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
               decoration: const InputDecoration(labelText: 'Email'),
             ),
             TextFormField(
-              controller: _controller.numeroCelularController,
+              controller: _controller.phoneNumberController,
               decoration: const InputDecoration(labelText: 'Número do celular'),
             ),
             const SizedBox(height: 16.0),
@@ -68,17 +68,17 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
             ),
             const SizedBox(height: 16.0),
             TextFormField(
-              controller: _controller.urlRepositorioGitHubController,
+              controller: _controller.githubRepositoryUrlController,
               decoration: const InputDecoration(
                 labelText: 'URL Repositorio GitHub',
               ),
             ),
             TextFormField(
-              controller: _controller.enderecoController,
+              controller: _controller.addressController,
               decoration: const InputDecoration(labelText: 'Endereço'),
             ),
             TextFormField(
-              controller: _controller.areaAtuacaoController,
+              controller: _controller.fieldOfStudyController,
               decoration: const InputDecoration(labelText: 'Área De Atuação'),
             ),
             DropdownButtonFormField<String>(
@@ -90,10 +90,10 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
                   .toList(),
               onChanged: (selectedGrade) {
                 setState(() {
-                  _controller.selectedGrau = selectedGrade;
+                  _controller.selectedDegree = selectedGrade;
                 });
               },
-              value: _controller.selectedGrau,
+              value: _controller.selectedDegree,
               decoration: const InputDecoration(labelText: 'Grau'),
             ),
             const SizedBox(height: 16.0),

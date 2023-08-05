@@ -5,15 +5,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CurriculumRegisterController {
-  final TextEditingController nomeController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController numeroCelularController = TextEditingController();
-  final TextEditingController urlRepositorioGitHubController =
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController githubRepositoryUrlController =
       TextEditingController();
-  final TextEditingController enderecoController = TextEditingController();
-  final TextEditingController areaAtuacaoController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController fieldOfStudyController = TextEditingController();
   final TextEditingController aboutYouController = TextEditingController();
-  String? selectedGrau;
+  String? selectedDegree;
 
   final _image = ValueNotifier<File?>(null);
 
@@ -35,7 +35,7 @@ class CurriculumRegisterController {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Selecione o tipo de imagem'),
+          title: const Text('Select Image Type'),
           content: SingleChildScrollView(
             child: ListBody(
               children: [
@@ -48,7 +48,7 @@ class CurriculumRegisterController {
                 ),
                 const SizedBox(height: 16.0),
                 GestureDetector(
-                  child: const Text('Galeria'),
+                  child: const Text('Gallery'),
                   onTap: () {
                     Navigator.pop(context);
                     _getImageFromGallery(context);
