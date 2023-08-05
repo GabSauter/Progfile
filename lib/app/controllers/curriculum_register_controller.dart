@@ -5,14 +5,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CurriculumRegisterController {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController githubRepositoryUrlController =
-      TextEditingController();
-  final TextEditingController addressController = TextEditingController();
-  final TextEditingController fieldOfStudyController = TextEditingController();
-  final TextEditingController aboutYouController = TextEditingController();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneNumberController = TextEditingController();
+  final githubRepositoryUrlController = TextEditingController();
+  final addressController = TextEditingController();
+  final fieldOfStudyController = TextEditingController();
+  final aboutYouController = TextEditingController();
   String? selectedDegree;
 
   final _image = ValueNotifier<File?>(null);

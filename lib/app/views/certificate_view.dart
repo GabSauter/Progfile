@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../controllers/certificate_controller.dart';
 import '../models/certificate_model.dart';
 
-class CertificateView extends StatelessWidget {
+class CertificateView extends StatefulWidget {
   const CertificateView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: CertificateListScreen(),
-    );
-  }
+  State<CertificateView> createState() => _CertificateView();
 }
 
-class CertificateListScreen extends StatefulWidget {
-  const CertificateListScreen({super.key});
-
-  @override
-  State<CertificateListScreen> createState() => _CertificateListScreenState();
-}
-
-class _CertificateListScreenState extends State<CertificateListScreen> {
-  final List<CertificateModel> _certificates = [];
+class _CertificateView extends State<CertificateView> {
+  final _certificateController = CertificateController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +20,12 @@ class _CertificateListScreenState extends State<CertificateListScreen> {
         title: const Text('Certificados'),
       ),
       body: ListView.builder(
-        itemCount: _certificates.length,
+        itemCount: _certificateController.getCertificatesCount(),
         itemBuilder: (context, index) {
+          CertificateModel certificate =
+              _certificateController.getCertificate(index);
           return Dismissible(
-            key: Key(_certificates[index].name),
+            key: Key(certificate.name),
             direction: DismissDirection.endToStart,
             background: Container(
               alignment: AlignmentDirectional.centerEnd,
@@ -44,17 +36,17 @@ class _CertificateListScreenState extends State<CertificateListScreen> {
               ),
             ),
             onDismissed: (direction) {
-              setState(() {
-                _certificates.removeAt(index);
-              });
+              _certificateController.removeCertificate(index);
             },
             child: ListTile(
-              title: Text(_certificates[index].name),
-              subtitle: Text(_certificates[index].organization),
+              title: Text(certificate.name),
+              subtitle: Text(certificate.organization),
               trailing: Text(
-                  DateFormat.yMMMd().format(_certificates[index].omissionDate)),
-              onTap: () =>
-                  _showAddCertificateDialog(certificate: _certificates[index]),
+                certificate.omissionDate != null
+                    ? DateFormat.yMMMd().format(certificate.omissionDate!)
+                    : 'No date',
+              ),
+              onTap: () => _showAddCertificateDialog(certificate: certificate),
             ),
           );
         },
@@ -85,13 +77,13 @@ class _CertificateListScreenState extends State<CertificateListScreen> {
                 decoration:
                     const InputDecoration(labelText: 'Nome do Certificado'),
                 onChanged: (value) => name = value,
-                controller: TextEditingController(text: name),
+                controller: _certificateController.nameController,
               ),
               TextField(
                 decoration:
                     const InputDecoration(labelText: 'Organização Emissora'),
                 onChanged: (value) => organization = value,
-                controller: TextEditingController(text: organization),
+                controller: _certificateController.organizationController,
               ),
               ElevatedButton(
                 onPressed: () async {
@@ -106,10 +98,8 @@ class _CertificateListScreenState extends State<CertificateListScreen> {
                   );
 
                   if (selectedDate != null) {
-                    setState(() {
-                      omissionDate = DateTime(selectedDate.year,
-                          selectedDate.month, selectedDate.day);
-                    });
+                    omissionDate = DateTime(selectedDate.year,
+                        selectedDate.month, selectedDate.day);
                   }
                 },
                 child: const Text('Selecione o Mês e Ano de Emissão'),
@@ -130,20 +120,17 @@ class _CertificateListScreenState extends State<CertificateListScreen> {
                     omissionDate != null) {
                   if (certificate != null) {
                     // Editing an existing certificate
-                    setState(() {
-                      certificate.name = name;
-                      certificate.organization = organization;
-                      certificate.omissionDate = omissionDate!;
-                    });
+                    _certificateController.editCertificate(
+                        certificate, name, organization, omissionDate);
+                    setState(() {});
                   } else {
                     // Adding a new certificate
-                    setState(() {
-                      _certificates.add(CertificateModel(
-                        name: name,
-                        organization: organization,
-                        omissionDate: omissionDate!,
-                      ));
-                    });
+                    _certificateController.addCertificate(CertificateModel(
+                      name: name,
+                      organization: organization,
+                      omissionDate: omissionDate,
+                    ));
+                    setState(() {});
                   }
                   Navigator.pop(context);
                 }

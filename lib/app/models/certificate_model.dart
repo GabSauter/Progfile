@@ -1,7 +1,7 @@
 class CertificateModel {
   String name;
   String organization;
-  DateTime omissionDate;
+  DateTime? omissionDate;
 
   CertificateModel(
       {required this.name,
@@ -12,7 +12,7 @@ class CertificateModel {
     return {
       'name': name,
       'organization': organization,
-      'date': omissionDate.toUtc(),
+      'date': omissionDate?.toUtc(),
     };
   }
 }
