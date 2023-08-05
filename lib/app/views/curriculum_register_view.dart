@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../controllers/curriculum_register_controller.dart';
 import 'components/image_take.dart';
@@ -16,7 +17,6 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -33,14 +33,12 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
           children: [
             GestureDetector(
               onTap: () async {
-                final controller = Provider.of<CurriculumRegisterController>(
-                    context,
-                    listen: false);
-                await controller.handleImageSelection(context);
+                await _controller.handleImageSelection(context);
               },
-              child: Consumer<CurriculumRegisterController>(
-                builder: (context, controller, _) {
-                  return ImageDisplay(image: controller.image);
+              child: ValueListenableBuilder<File?>(
+                valueListenable: _controller.image,
+                builder: (context, value, child) {
+                  return ImageDisplay(image: value);
                 },
               ),
             ),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class CurriculumRegisterController extends ChangeNotifier {
+class CurriculumRegisterController {
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController numeroCelularController = TextEditingController();
@@ -14,7 +14,8 @@ class CurriculumRegisterController extends ChangeNotifier {
   final TextEditingController areaAtuacaoController = TextEditingController();
   final TextEditingController aboutYouController = TextEditingController();
   String? selectedGrau;
-  File? _image;
+
+  final _image = ValueNotifier<File?>(null);
 
   Future<void> handleImageSelection(BuildContext context) async {
     if (await Permission.camera.request().isGranted &&
@@ -92,10 +93,9 @@ class CurriculumRegisterController extends ChangeNotifier {
     }
   }
 
-  File? get image => _image;
+  ValueNotifier<File?> get image => _image;
 
   void _setImage(File image) {
-    _image = image;
-    notifyListeners();
+    _image.value = image;
   }
 }
