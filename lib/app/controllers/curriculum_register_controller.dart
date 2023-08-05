@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:progfile/app/models/curriculum_model.dart';
+import 'package:progfile/app/services/curriculum_service.dart';
 
 class CurriculumRegisterController {
   final nameController = TextEditingController();
@@ -15,6 +17,25 @@ class CurriculumRegisterController {
   String? selectedDegree;
 
   final _image = ValueNotifier<File?>(null);
+
+  Future<void> createCurriculum() async {
+    var curriculum = CurriculumModel(
+        image: _image.value,
+        name: nameController.text,
+        email: emailController.text,
+        phoneNumber: phoneNumberController.text,
+        gitHubRepositoryUrl: githubRepositoryUrlController.text,
+        address: addressController.text,
+        fieldOfExpertise: fieldOfStudyController.text,
+        degree: selectedDegree == null ? '' : selectedDegree.toString(),
+        aboutYou: aboutYouController.text,
+        courses: [],
+        certificates: [],
+        languages: [],
+        skills: []);
+
+    await CurriculumService().createCurriculum(curriculum);
+  }
 
   Future<void> handleImageSelection(BuildContext context) async {
     if (await Permission.camera.request().isGranted &&

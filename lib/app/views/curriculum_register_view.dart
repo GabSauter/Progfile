@@ -113,7 +113,9 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                _controller.createCurriculum();
+              },
               child: const Text('Concluir'),
             ),
           ],

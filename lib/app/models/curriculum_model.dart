@@ -6,7 +6,7 @@ import 'package:progfile/app/models/course_model.dart';
 import 'package:progfile/app/models/language_model.dart';
 
 class CurriculumModel {
-  File image;
+  File? image;
   String name;
   String email;
   String phoneNumber;
