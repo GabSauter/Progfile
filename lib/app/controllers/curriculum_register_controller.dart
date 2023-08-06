@@ -14,6 +14,7 @@ class CurriculumRegisterController {
   final addressController = TextEditingController();
   final fieldOfStudyController = TextEditingController();
   final aboutYouController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   String? selectedDegree;
 
   final _image = ValueNotifier<File?>(null);
@@ -117,5 +118,83 @@ class CurriculumRegisterController {
 
   void _setImage(File image) {
     _image.value = image;
+  }
+
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    }
+    return null;
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    } else if (!value.contains("@")) {
+      return "O email precisa ter o @";
+    }
+    return null;
+  }
+
+  String? validatePhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor.";
+    }
+
+    String sanitizedNumber = value.replaceAll(RegExp(r'\D'), '');
+
+    if (sanitizedNumber.length != 10) {
+      return 'O número de telefone precisa ter 10 digitos.';
+    }
+
+    return null;
+  }
+
+  String? validateAboutYou(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    }
+    return null;
+  }
+
+  String? validateFieldOfStudy(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    }
+    return null;
+  }
+
+  String? validateAddress(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    }
+    return null;
+  }
+
+  String? validateGithubRepository(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    }
+
+    return null;
+  }
+
+  String? validateGithubUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    }
+
+    return null;
+  }
+
+  String? validateDropdownValue(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    }
+    return null;
+  }
+
+  bool validateForm(BuildContext context) {
+    return formKey.currentState!.validate();
   }
 }
