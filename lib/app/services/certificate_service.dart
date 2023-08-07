@@ -50,6 +50,7 @@ class CertificateService {
         organization: doc.get("organization"),
         omissionDate: (doc.get("date") as Timestamp?)?.toDate(),
       );
+      certificate.id = doc.id;
       certificates.add(certificate);
     }
 

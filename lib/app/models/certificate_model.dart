@@ -1,4 +1,5 @@
 class CertificateModel {
+  late String id;
   String name;
   String organization;
   DateTime? omissionDate;

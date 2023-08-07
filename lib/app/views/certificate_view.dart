@@ -19,36 +19,56 @@ class _CertificateView extends State<CertificateView> {
       appBar: AppBar(
         title: const Text('Certificados'),
       ),
-      body: ListView.builder(
-        itemCount: _certificateController.getCertificatesCount(),
-        itemBuilder: (context, index) {
-          CertificateModel certificate =
-              _certificateController.getCertificate(index);
-          return Dismissible(
-            key: Key(certificate.name),
-            direction: DismissDirection.endToStart,
-            background: Container(
-              alignment: AlignmentDirectional.centerEnd,
-              color: Colors.red,
-              child: const Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                child: Icon(Icons.delete, color: Colors.white),
-              ),
-            ),
-            onDismissed: (direction) {
-              _certificateController.removeCertificate(index);
-            },
-            child: ListTile(
-              title: Text(certificate.name),
-              subtitle: Text(certificate.organization),
-              trailing: Text(
-                certificate.omissionDate != null
-                    ? DateFormat.yMMMd().format(certificate.omissionDate!)
-                    : 'No date',
-              ),
-              onTap: () => _showAddCertificateDialog(certificate: certificate),
-            ),
-          );
+      body: FutureBuilder(
+        future: _certificateController.getCertificates(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return Dismissible(
+                    key: Key(snapshot.data![index].name),
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      alignment: AlignmentDirectional.centerEnd,
+                      color: Colors.red,
+                      child: const Padding(
+                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                        child: Icon(Icons.delete, color: Colors.white),
+                      ),
+                    ),
+                    onDismissed: (direction) {
+                      _certificateController
+                          .removeCertificate(snapshot.data![index].id);
+                    },
+                    child: ListTile(
+                      title: Text(snapshot.data![index].name),
+                      subtitle: Text(snapshot.data![index].organization),
+                      trailing: Text(
+                        snapshot.data![index].omissionDate != null
+                            ? DateFormat.yMMMd()
+                                .format(snapshot.data![index].omissionDate!)
+                            : 'No date',
+                      ),
+                      onTap: () => _showAddCertificateDialog(
+                          certificate: snapshot.data![index]),
+                    ),
+                  );
+                },
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            } else {
+              return const Center(child: Text("Algo deu errado."));
+            }
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -62,8 +82,10 @@ class _CertificateView extends State<CertificateView> {
     showDialog(
       context: context,
       builder: (context) {
-        String name = certificate?.name ?? '';
-        String organization = certificate?.organization ?? '';
+        _certificateController.nameController =
+            TextEditingController(text: certificate?.name ?? '');
+        _certificateController.organizationController =
+            TextEditingController(text: certificate?.organization ?? '');
         DateTime? omissionDate = certificate?.omissionDate;
 
         return AlertDialog(
@@ -76,13 +98,11 @@ class _CertificateView extends State<CertificateView> {
               TextField(
                 decoration:
                     const InputDecoration(labelText: 'Nome do Certificado'),
-                onChanged: (value) => name = value,
                 controller: _certificateController.nameController,
               ),
               TextField(
                 decoration:
                     const InputDecoration(labelText: 'Organização Emissora'),
-                onChanged: (value) => organization = value,
                 controller: _certificateController.organizationController,
               ),
               ElevatedButton(
@@ -115,19 +135,22 @@ class _CertificateView extends State<CertificateView> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (name.isNotEmpty &&
-                    organization.isNotEmpty &&
+                if (_certificateController.nameController.text.isNotEmpty &&
+                    _certificateController
+                        .organizationController.text.isNotEmpty &&
                     omissionDate != null) {
                   if (certificate != null) {
-                    // Editing an existing certificate
                     _certificateController.editCertificate(
-                        certificate, name, organization, omissionDate);
+                        certificate,
+                        _certificateController.nameController.text,
+                        _certificateController.organizationController.text,
+                        omissionDate);
                     setState(() {});
                   } else {
-                    // Adding a new certificate
                     _certificateController.addCertificate(CertificateModel(
-                      name: name,
-                      organization: organization,
+                      name: _certificateController.nameController.text,
+                      organization:
+                          _certificateController.organizationController.text,
                       omissionDate: omissionDate,
                     ));
                     setState(() {});

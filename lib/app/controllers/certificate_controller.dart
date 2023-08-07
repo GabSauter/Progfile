@@ -1,34 +1,31 @@
 import 'package:flutter/widgets.dart';
+import 'package:progfile/app/services/certificate_service.dart';
 
 import '../models/certificate_model.dart';
 
 class CertificateController {
-  final nameController = TextEditingController();
-  final organizationController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController organizationController = TextEditingController();
   DateTime? omissionDate;
 
-  final List<CertificateModel> _certificates = [];
-
-  int getCertificatesCount() {
-    return _certificates.length;
+  Future<List<CertificateModel>> getCertificates() async {
+    return await CertificateService().getCertificates();
   }
 
-  CertificateModel getCertificate(int index) {
-    return _certificates[index];
-  }
-
-  void addCertificate(CertificateModel certificate) {
-    _certificates.add(certificate);
+  void addCertificate(CertificateModel certificate) async {
+    await CertificateService().createCertificate(certificate);
   }
 
   void editCertificate(CertificateModel certificate, String name,
-      String organization, DateTime? omissionDate) {
+      String organization, DateTime? omissionDate) async {
     certificate.name = name;
     certificate.organization = organization;
     certificate.omissionDate = omissionDate;
+
+    await CertificateService().editCertificate(certificate.id, certificate);
   }
 
-  void removeCertificate(int index) {
-    _certificates.removeAt(index);
+  void removeCertificate(String id) async {
+    await CertificateService().deleteCertificate(id);
   }
 }
