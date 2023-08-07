@@ -43,9 +43,9 @@ class RegisterController {
     return formKey.currentState!.validate();
   }
 
-  Future<String> signUp() async {
+  Future<void> signUp() async {
     UserModel user = UserModel(
         nameController.text, emailController.text, passwordController.text);
-    return await UserService().signUp(user);
+    await UserService().signUp(user);
   }
 }

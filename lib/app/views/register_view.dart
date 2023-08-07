@@ -14,19 +14,14 @@ class RegisterView extends StatelessWidget {
 
   RegisterView({super.key});
 
-  void showErrorSnackBar(String errorMessage, BuildContext context) {
-    SnackBarHelper.showErrorSnackBar(errorMessage, context);
-  }
-
   void onSignUp(BuildContext context) async {
-    String registerResult = await registerController.signUp();
-
-    if (context.mounted) {
-      if (registerResult == "Registrado") {
+    try {
+      await registerController.signUp();
+      if (context.mounted) {
         Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        showErrorSnackBar(registerResult, context);
       }
+    } catch (e) {
+      SnackBarHelper.showErrorSnackBar(e.toString(), context);
     }
   }
 

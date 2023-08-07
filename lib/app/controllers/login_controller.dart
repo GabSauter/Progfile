@@ -30,9 +30,9 @@ class LoginController {
     return formKey.currentState!.validate();
   }
 
-  Future<String> signIn() async {
+  Future<void> signIn() async {
     UserModel user = UserModel(
         nameController.text, emailController.text, passwordController.text);
-    return await UserService().signIn(user);
+    await UserService().signIn(user);
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../controllers/curriculum_register_controller.dart';
 import 'components/image_take.dart';
+import 'components/snackbar_helper.dart';
 
 class CurriculumRegisterView extends StatefulWidget {
   const CurriculumRegisterView({super.key});
@@ -14,6 +15,13 @@ class CurriculumRegisterView extends StatefulWidget {
 
 class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
   final _controller = CurriculumRegisterController();
+
+  void createCurriculum() {
+    if (_controller.validateForm(context)) {
+      _controller.createCurriculum().onError((e, stackTrace) =>
+          SnackBarHelper.showErrorSnackBar(e.toString(), context));
+    }
+  }
 
   @override
   void dispose() {
@@ -148,9 +156,7 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
-                  if (_controller.validateForm(context)) {
-                    _controller.createCurriculum();
-                  }
+                  createCurriculum();
                 },
                 child: const Text('Concluir'),
               ),

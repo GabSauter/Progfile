@@ -5,14 +5,6 @@ class CurriculumService {
   final _db = FirebaseFirestore.instance;
 
   Future<void> createCurriculum(CurriculumModel curriculum) async {
-    await _db
-        .collection("curriculum")
-        .add(curriculum.toMap())
-        .whenComplete(
-          () => print("Deu certo"),
-        )
-        .catchError(
-          (error, stackTrace) => print("Deu errado: $error"),
-        );
+    await _db.collection("curriculum").add(curriculum.toMap());
   }
 }
