@@ -16,10 +16,16 @@ class CurriculumRegisterView extends StatefulWidget {
 class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
   final _controller = CurriculumRegisterController();
 
-  void createCurriculum() {
+  void createCurriculum() async {
     if (_controller.validateForm(context)) {
-      _controller.createCurriculum().onError((e, stackTrace) =>
-          SnackBarHelper.showErrorSnackBar(e.toString(), context));
+      try {
+        await _controller.createCurriculum();
+        if (context.mounted) {
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+      } catch (e) {
+        SnackBarHelper.showErrorSnackBar(e.toString(), context);
+      }
     }
   }
 
