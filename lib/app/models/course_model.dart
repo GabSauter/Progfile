@@ -1,4 +1,5 @@
 class CourseModel {
+  late String id;
   String name;
   String university;
   String degree;

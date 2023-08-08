@@ -10,7 +10,7 @@ class CertificateController {
   DateTime? omissionDate;
 
   Future<List<CertificateModel>> getCertificates() async {
-    return await CertificateService().getCertificates();
+    return await CertificateService().getAll();
   }
 
   void addCertificate() async {
@@ -19,7 +19,7 @@ class CertificateController {
       organization: organizationController.text,
       omissionDate: omissionDate,
     );
-    await CertificateService().createCertificate(certificate);
+    await CertificateService().create(certificate);
   }
 
   void editCertificate(CertificateModel certificate) async {
@@ -27,10 +27,10 @@ class CertificateController {
     certificate.organization = organizationController.text;
     certificate.omissionDate = omissionDate;
 
-    await CertificateService().editCertificate(certificate.id, certificate);
+    await CertificateService().edit(certificate.id, certificate);
   }
 
   void removeCertificate(String id) async {
-    await CertificateService().deleteCertificate(id);
+    await CertificateService().delete(id);
   }
 }

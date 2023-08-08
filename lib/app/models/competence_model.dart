@@ -1,4 +1,5 @@
 class CompetenceModel {
+  late String id;
   String name;
   String degree;
 

@@ -1,4 +1,5 @@
 class LanguageModel {
+  late String id;
   String name;
   String degree;
 

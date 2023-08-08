@@ -5,7 +5,7 @@ import 'package:progfile/app/models/certificate_model.dart';
 class CertificateService {
   final _db = FirebaseFirestore.instance;
 
-  Future<void> createCertificate(CertificateModel certificate) async {
+  Future<void> create(CertificateModel certificate) async {
     await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -14,8 +14,7 @@ class CertificateService {
         .set(certificate.toMap());
   }
 
-  Future<void> editCertificate(
-      String certificateId, CertificateModel certificate) async {
+  Future<void> edit(String certificateId, CertificateModel certificate) async {
     await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -24,25 +23,25 @@ class CertificateService {
         .set(certificate.toMap());
   }
 
-  Future<void> deleteCertificate(String certificateId) async {
-    DocumentReference certificateRef = _db
+  Future<void> delete(String certificateId) async {
+    DocumentReference ref = _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection("certificate")
         .doc(certificateId);
 
-    await certificateRef.delete();
+    await ref.delete();
   }
 
-  Future<List<CertificateModel>> getCertificates() async {
+  Future<List<CertificateModel>> getAll() async {
     List<CertificateModel> certificates = [];
 
-    CollectionReference certificateCollection = _db
+    CollectionReference collection = _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection("certificate");
 
-    QuerySnapshot snapshot = await certificateCollection.get();
+    QuerySnapshot snapshot = await collection.get();
 
     for (QueryDocumentSnapshot doc in snapshot.docs) {
       CertificateModel certificate = CertificateModel(
