@@ -4,6 +4,7 @@ import 'package:progfile/app/services/certificate_service.dart';
 import '../models/certificate_model.dart';
 
 class CertificateController {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController organizationController = TextEditingController();
   DateTime? omissionDate;
@@ -12,14 +13,18 @@ class CertificateController {
     return await CertificateService().getCertificates();
   }
 
-  void addCertificate(CertificateModel certificate) async {
+  void addCertificate() async {
+    CertificateModel certificate = CertificateModel(
+      name: nameController.text,
+      organization: organizationController.text,
+      omissionDate: omissionDate,
+    );
     await CertificateService().createCertificate(certificate);
   }
 
-  void editCertificate(CertificateModel certificate, String name,
-      String organization, DateTime? omissionDate) async {
-    certificate.name = name;
-    certificate.organization = organization;
+  void editCertificate(CertificateModel certificate) async {
+    certificate.name = nameController.text;
+    certificate.organization = organizationController.text;
     certificate.omissionDate = omissionDate;
 
     await CertificateService().editCertificate(certificate.id, certificate);

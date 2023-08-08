@@ -86,45 +86,67 @@ class _CertificateView extends State<CertificateView> {
             TextEditingController(text: certificate?.name ?? '');
         _certificateController.organizationController =
             TextEditingController(text: certificate?.organization ?? '');
-        DateTime? omissionDate = certificate?.omissionDate;
+        _certificateController.omissionDate = certificate?.omissionDate;
 
         return AlertDialog(
           title: Text(certificate != null
               ? 'Editar Certificado'
               : 'Adicionar Certificado'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration:
-                    const InputDecoration(labelText: 'Nome do Certificado'),
-                controller: _certificateController.nameController,
-              ),
-              TextField(
-                decoration:
-                    const InputDecoration(labelText: 'Organização Emissora'),
-                controller: _certificateController.organizationController,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  DateTime currentDate = DateTime.now();
-                  DateTime initialDate = omissionDate ?? currentDate;
-                  DateTime? selectedDate = await showDatePicker(
-                    context: context,
-                    initialDate: initialDate,
-                    firstDate: DateTime(1900),
-                    lastDate: currentDate,
-                    initialDatePickerMode: DatePickerMode.year,
-                  );
+          content: Form(
+            key: _certificateController.formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  decoration:
+                      const InputDecoration(labelText: 'Nome do Certificado'),
+                  controller: _certificateController.nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Informe o nome do certificado';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  decoration:
+                      const InputDecoration(labelText: 'Organização Emissora'),
+                  controller: _certificateController.organizationController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Informe a organização emissora';
+                    }
+                    return null;
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    DateTime currentDate = DateTime.now();
+                    DateTime initialDate =
+                        _certificateController.omissionDate ?? currentDate;
+                    DateTime? selectedDate = await showDatePicker(
+                      context: context,
+                      initialDate: initialDate,
+                      firstDate: DateTime(1900),
+                      lastDate: currentDate,
+                      initialDatePickerMode: DatePickerMode.year,
+                    );
 
-                  if (selectedDate != null) {
-                    omissionDate = DateTime(selectedDate.year,
-                        selectedDate.month, selectedDate.day);
-                  }
-                },
-                child: const Text('Selecione o Mês e Ano de Emissão'),
-              ),
-            ],
+                    if (selectedDate != null) {
+                      _certificateController.omissionDate = DateTime(
+                          selectedDate.year,
+                          selectedDate.month,
+                          selectedDate.day);
+                    }
+                  },
+                  child: const Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Selecione a data de Emissão',
+                      )),
+                ),
+              ],
+            ),
           ),
           actions: [
             ElevatedButton(
@@ -135,24 +157,13 @@ class _CertificateView extends State<CertificateView> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (_certificateController.nameController.text.isNotEmpty &&
-                    _certificateController
-                        .organizationController.text.isNotEmpty &&
-                    omissionDate != null) {
+                if (_certificateController.formKey.currentState!.validate() &&
+                    _certificateController.omissionDate != null) {
                   if (certificate != null) {
-                    _certificateController.editCertificate(
-                        certificate,
-                        _certificateController.nameController.text,
-                        _certificateController.organizationController.text,
-                        omissionDate);
+                    _certificateController.editCertificate(certificate);
                     setState(() {});
                   } else {
-                    _certificateController.addCertificate(CertificateModel(
-                      name: _certificateController.nameController.text,
-                      organization:
-                          _certificateController.organizationController.text,
-                      omissionDate: omissionDate,
-                    ));
+                    _certificateController.addCertificate();
                     setState(() {});
                   }
                   Navigator.pop(context);

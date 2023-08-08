@@ -21,19 +21,16 @@ class CurriculumRegisterController {
 
   Future<void> createCurriculum() async {
     var curriculum = CurriculumModel(
-        image: _image.value,
-        name: nameController.text,
-        email: emailController.text,
-        phoneNumber: phoneNumberController.text,
-        gitHubRepositoryUrl: githubRepositoryUrlController.text,
-        address: addressController.text,
-        fieldOfExpertise: fieldOfStudyController.text,
-        degree: selectedDegree == null ? '' : selectedDegree.toString(),
-        aboutYou: aboutYouController.text,
-        courses: [],
-        certificates: [],
-        languages: [],
-        skills: []);
+      image: _image.value,
+      name: nameController.text,
+      email: emailController.text,
+      phoneNumber: phoneNumberController.text,
+      gitHubRepositoryUrl: githubRepositoryUrlController.text,
+      address: addressController.text,
+      fieldOfExpertise: fieldOfStudyController.text,
+      degree: selectedDegree == null ? '' : selectedDegree.toString(),
+      aboutYou: aboutYouController.text,
+    );
 
     await CurriculumService().createCurriculum(curriculum);
   }
