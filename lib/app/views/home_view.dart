@@ -39,7 +39,8 @@ class HomeView extends StatelessWidget {
             const SizedBox(height: 10),
             MainButton(
               text: 'Procurar Currículo',
-              onPressedCallback: () => {},
+              onPressedCallback: () =>
+                  {Navigator.pushNamed(context, '/search')},
             ),
             const SizedBox(height: 10),
             MainButton(
