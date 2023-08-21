@@ -34,8 +34,13 @@ class HomeView extends StatelessWidget {
             MainButton(
               text: 'Criar Currículo',
               onPressedCallback: () =>
-                  {Navigator.pushNamed(context, '/registerCurriculum')},
+                  {Navigator.pushNamed(context, '/curriculumRegister')},
             ),
+            const SizedBox(height: 10),
+            MainButton(
+                text: 'Meu Curriculo',
+                onPressedCallback: () =>
+                    {Navigator.pushNamed(context, '/myCurriculum')}),
             const SizedBox(height: 10),
             MainButton(
               text: 'Procurar Currículo',
