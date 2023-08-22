@@ -28,29 +28,7 @@ class MyCurriculumView extends StatelessWidget {
               thickness: 1,
               height: 50,
             ),
-            const Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'GitHub:',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      'https://github.com/Ninjaalpha01',
-                      style: TextStyle(decoration: TextDecoration.underline),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40),
-                RepositoryCard(),
-                RepositoryCard(),
-              ],
-            ),
+            githubInfo,
             const SizedBox(height: 40),
             const SecondaryButton(
               text: 'Editar Currículo',
@@ -68,12 +46,42 @@ class MyCurriculumView extends StatelessWidget {
     );
   }
 
+  Widget get githubInfo {
+    return const Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              'GitHub:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(width: 10),
+            Text(
+              '/Ninjaalpha01',
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 40),
+        RepositoryCard(),
+        SizedBox(height: 20),
+        RepositoryCard(),
+      ],
+    );
+  }
+
   Container userAcademicInfo(BuildContext context) {
     List<Widget> about = [
       const Text(
         'Sobre:',
         style: TextStyle(
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -88,33 +96,39 @@ class MyCurriculumView extends StatelessWidget {
       const Text(
         'Formação Acadêmica:',
         style: TextStyle(
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
       ),
       const SizedBox(height: 5),
       const Text('Design Gráfico',
-          style: TextStyle(decoration: TextDecoration.underline)),
-      const Text('Tecnico - UEPG'),
-      const Text('2018-2020'),
+          style: TextStyle(
+            decoration: TextDecoration.underline,
+            fontSize: 16,
+          )),
+      const Text('Tecnico - UEPG', style: TextStyle(fontSize: 16)),
+      const Text('2018-2020', style: TextStyle(fontSize: 16)),
       const SizedBox(height: 10),
       const Text('Bacharelado em Ciencia da Computacao',
-          style: TextStyle(decoration: TextDecoration.underline)),
-      const Text('Graduacao - UTFPR'),
-      const Text('2020-2024'),
+          style: TextStyle(
+            decoration: TextDecoration.underline,
+            fontSize: 16,
+          )),
+      const Text('Graduacao - UTFPR', style: TextStyle(fontSize: 16)),
+      const Text('2020-2024', style: TextStyle(fontSize: 16)),
     ];
     List<Widget> languages = [
       const Text(
         'Idiomas:',
         style: TextStyle(
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
       ),
       const SizedBox(height: 5),
-      const Text('Ingles - Avancado'),
+      const Text('Ingles - Avancado', style: TextStyle(fontSize: 16)),
       const SizedBox(height: 10),
-      const Text('Espanhol - Basico'),
+      const Text('Espanhol - Basico', style: TextStyle(fontSize: 16)),
     ];
     List<Widget> skills = [
       const Column(
@@ -123,7 +137,7 @@ class MyCurriculumView extends StatelessWidget {
           Text(
             'Competências:',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -133,11 +147,11 @@ class MyCurriculumView extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  Text('Flutter'),
+                  Text('Flutter', style: TextStyle(fontSize: 16)),
                   SizedBox(height: 10),
-                  Text('Dart'),
+                  Text('Dart', style: TextStyle(fontSize: 16)),
                   SizedBox(height: 10),
-                  Text('Java'),
+                  Text('Java', style: TextStyle(fontSize: 16)),
                   SizedBox(height: 10),
                 ],
               ),
@@ -160,9 +174,9 @@ class MyCurriculumView extends StatelessWidget {
       Center(
         child: MainButton(
           text: 'Meus Certificados',
-          onPressedCallback: () => {Navigator.pushNamed(context, '/home')},
-          buttonWidth: 200,
-          buttonHeight: 40,
+          onPressedCallback: () =>
+              {Navigator.pushNamed(context, '/certificate')},
+          buttonWidth: 250,
         ),
       ),
     ];
@@ -192,7 +206,7 @@ class MyCurriculumView extends StatelessWidget {
         Text(
           'Roger Rodrigues',
           style: TextStyle(
-            fontSize: 25,
+            fontSize: 28,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -200,7 +214,7 @@ class MyCurriculumView extends StatelessWidget {
         Text(
           'Desenvolvedor de Software',
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 18,
           ),
         ),
         SizedBox(height: 20),
@@ -209,16 +223,25 @@ class MyCurriculumView extends StatelessWidget {
           children: [
             Icon(Icons.email),
             SizedBox(width: 10),
-            Text('teste@gmail.com'),
+            Text(
+              'teste@gmail.com',
+              style: TextStyle(fontSize: 16),
+            ),
           ],
         ),
         SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Ponta Grossa - PR'),
-            SizedBox(width: 40),
-            Text('(19) 99619-0935')
+            Text(
+              'Ponta Grossa - PR',
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(width: 30),
+            Text(
+              '(19) 99619-0935',
+              style: TextStyle(fontSize: 16),
+            )
           ],
         ),
       ],
