@@ -33,6 +33,8 @@ class MyCurriculumView extends StatelessWidget {
             const SecondaryButton(
               text: 'Editar Currículo',
               route: '/curriculumRegister',
+              //Aqui fazer a chamada pra pegar os dados que foram carregados do
+              //usuario e mostrar um preview nos campos do criar curriculo
             ),
             const SizedBox(height: 20),
             MainButton(
