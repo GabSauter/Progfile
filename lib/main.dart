@@ -8,6 +8,7 @@ import 'package:progfile/app/views/search_view.dart';
 import 'app/views/login_view.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'app/views/my_curriculum_view.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -26,6 +27,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Inter',
         primaryColor: const Color(0xFF482FF7),
@@ -49,7 +51,8 @@ class MainApp extends StatelessWidget {
       routes: {
         '/register': (context) => RegisterView(),
         '/home': (context) => HomeView(),
-        '/registerCurriculum': (context) => CurriculumRegisterView(),
+        '/myCurriculum': (context) => MyCurriculumView(),
+        '/curriculumRegister': (context) => CurriculumRegisterView(),
         '/certificate': (context) => CertificateView(),
         '/search': (context) => SearchView(),
       },
