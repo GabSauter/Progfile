@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/views/components/form_textfield.dart';
 
 class SearchView extends StatefulWidget {
+  const SearchView({super.key});
+
   @override
   _SearchViewState createState() => _SearchViewState();
 }
@@ -52,40 +53,52 @@ class _SearchViewState extends State<SearchView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                validator: (value) {
-                  return "";
-                },
-                controller: _searchController,
-                onFieldSubmitted: _searchResumes,
-                cursorColor: const Color(0xFF482FF7),
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 2, color: Color(0xFF482FF7)),
-                    borderRadius: BorderRadius.circular(15.0),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    validator: (value) {
+                      return "";
+                    },
+                    controller: _searchController,
+                    onFieldSubmitted: _searchResumes,
+                    cursorColor: const Color(0xFF482FF7),
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            width: 2, color: Color(0xFF482FF7)),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            width: 1, color: Color(0xFF482FF7)),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: Colors.transparent,
+                      hintText: "Procurar por currículos",
+                    ),
+                    //obscureText: isPassword,
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 1, color: Color(0xFF482FF7)),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  fillColor: Colors.transparent,
-                  hintText: "Procurar por currículos",
-                  suffixIcon: IconButton(
+                ),
+                const SizedBox(width: 6),
+                Container(
+                  decoration: BoxDecoration(
                     color: const Color(0xFF482FF7),
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  height: 60,
+                  width: 60,
+                  child: IconButton(
+                    color: Colors.white,
                     icon: const Icon(Icons.search),
                     onPressed: () {
                       _searchResumes(_searchController.text);
                     },
                   ),
                 ),
-                //obscureText: isPassword,
-              ),
+              ],
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                 itemCount: filteredResumes.length,
