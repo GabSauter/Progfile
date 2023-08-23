@@ -1,35 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/views/components/form_textfield.dart';
+
+import '../models/curriculum_model.dart';
+import '../controllers/search_controller.dart';
 
 class SearchView extends StatefulWidget {
+  const SearchView({super.key});
+
   @override
-  _SearchViewState createState() => _SearchViewState();
+  SearchViewState createState() => SearchViewState();
 }
 
-class _SearchViewState extends State<SearchView> {
-  TextEditingController _searchController = TextEditingController();
-  List<String> resumes = [
-    "John Doe",
-    "Jane Smith",
-    "Alex Johnson",
-    "Emily Brown",
-    "Michael Williams"
-  ];
+class SearchViewState extends State<SearchView> {
+  final _searchController = SearchCurriculumController();
 
-  List<String> filteredResumes = [];
+  List<CurriculumModel> filteredResumes = [];
 
   @override
   void initState() {
     super.initState();
-    filteredResumes = resumes;
+    filteredResumes = _searchController.resumes;
   }
 
   void _searchResumes(String searchText) {
     setState(() {
-      filteredResumes = resumes
-          .where((resume) =>
-              resume.toLowerCase().contains(searchText.toLowerCase()))
-          .toList();
+      filteredResumes = _searchController.searchResumes(searchText);
     });
   }
 
@@ -52,40 +46,53 @@ class _SearchViewState extends State<SearchView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              height: 50,
-              child: TextFormField(
-                validator: (value) {
-                  return "";
-                },
-                controller: _searchController,
-                onFieldSubmitted: _searchResumes,
-                cursorColor: const Color(0xFF482FF7),
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 2, color: Color(0xFF482FF7)),
-                    borderRadius: BorderRadius.circular(15.0),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    validator: (value) {
+                      return "";
+                    },
+                    controller: _searchController.searchTextController,
+                    onFieldSubmitted: _searchResumes,
+                    cursorColor: const Color(0xFF482FF7),
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            width: 2, color: Color(0xFF482FF7)),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                            width: 1, color: Color(0xFF482FF7)),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      fillColor: Colors.transparent,
+                      hintText: "Procurar por currículos",
+                    ),
+                    //obscureText: isPassword,
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 1, color: Color(0xFF482FF7)),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  fillColor: Colors.transparent,
-                  hintText: "Procurar por currículos",
-                  suffixIcon: IconButton(
+                ),
+                const SizedBox(width: 6),
+                Container(
+                  decoration: BoxDecoration(
                     color: const Color(0xFF482FF7),
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  height: 60,
+                  width: 60,
+                  child: IconButton(
+                    color: Colors.white,
                     icon: const Icon(Icons.search),
                     onPressed: () {
-                      _searchResumes(_searchController.text);
+                      _searchResumes(
+                          _searchController.searchTextController.text);
                     },
                   ),
                 ),
-                //obscureText: isPassword,
-              ),
+              ],
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                 itemCount: filteredResumes.length,
@@ -106,16 +113,16 @@ class _SearchViewState extends State<SearchView> {
                         radius: 40,
                       ),
                       title: Text(
-                        filteredResumes[index],
+                        filteredResumes[index].name,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: const Column(
+                      subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 6.0),
-                          Text("Desenvolvedor Web"),
-                          SizedBox(height: 6.0),
-                          Text("Estágio"),
+                          const SizedBox(height: 6.0),
+                          Text(filteredResumes[index].fieldOfExpertise),
+                          const SizedBox(height: 6.0),
+                          Text(filteredResumes[index].degree),
                         ],
                       ),
                     ),
