@@ -1,0 +1,129 @@
+import 'package:flutter/material.dart';
+import 'package:progfile/app/models/course_model.dart';
+
+import '../controllers/course_controller.dart';
+
+class CourseView extends StatefulWidget {
+  const CourseView({super.key});
+
+  @override
+  State<CourseView> createState() => _CourseViewState();
+}
+
+class _CourseViewState extends State<CourseView> {
+  final _courseController = CourseController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Certificados'),
+      ),
+      body: FutureBuilder(
+        future: _courseController.getCourses(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return Dismissible(
+                    key: Key(snapshot.data![index].name),
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      alignment: AlignmentDirectional.centerEnd,
+                      color: Colors.red,
+                      child: const Padding(
+                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                        child: Icon(Icons.delete, color: Colors.white),
+                      ),
+                    ),
+                    onDismissed: (direction) {
+                      _courseController.removeCourse(snapshot.data![index].id);
+                    },
+                    child: ListTile(
+                      title: Text(snapshot.data![index].name),
+                      subtitle: const Text('data'),
+                      trailing: const Text('No date'),
+                      onTap: () => _showAddCertificateDialog(
+                          course: snapshot.data![index]),
+                    ),
+                  );
+                },
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            } else {
+              return const Center(child: Text("Algo deu errado."));
+            }
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddCertificateDialog(),
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  void _showAddCertificateDialog({CourseModel? course}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        _courseController.nameController =
+            TextEditingController(text: course?.name ?? '');
+
+        return AlertDialog(
+          title: Text(course != null ? 'Editar Curso' : 'Adicionar Curso'),
+          content: Form(
+            key: _courseController.formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Nome do Curso'),
+                  controller: _courseController.nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Informe o nome do curso';
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (_courseController.formKey.currentState!.validate()) {
+                  if (course != null) {
+                    _courseController.editCourse(course);
+                    setState(() {});
+                  } else {
+                    _courseController.addCourse();
+                    setState(() {});
+                  }
+                  Navigator.pop(context);
+                }
+              },
+              child: Text(course != null ? 'Salvar Edição' : 'Salvar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}

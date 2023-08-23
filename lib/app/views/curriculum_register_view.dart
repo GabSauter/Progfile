@@ -6,14 +6,14 @@ import '../controllers/curriculum_register_controller.dart';
 import 'components/image_take.dart';
 import 'components/snackbar_helper.dart';
 
-class CurriculumRegisterView extends StatefulWidget {
-  const CurriculumRegisterView({super.key});
+class CurriculumEditView extends StatefulWidget {
+  const CurriculumEditView({super.key});
 
   @override
-  State<CurriculumRegisterView> createState() => _CurriculumRegisterViewState();
+  State<CurriculumEditView> createState() => _CurriculumEditViewState();
 }
 
-class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
+class _CurriculumEditViewState extends State<CurriculumEditView> {
   final _controller = CurriculumRegisterController();
 
   void createCurriculum() async {
@@ -39,6 +39,13 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Curriculum Registration'),
+        backgroundColor: Theme.of(context).primaryColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -83,7 +90,9 @@ class _CurriculumRegisterViewState extends State<CurriculumRegisterView> {
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/course');
+                },
                 child: const Text('Adicionar Curso'),
               ),
               ElevatedButton(

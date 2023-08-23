@@ -14,6 +14,13 @@ class MyCurriculumView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meu Currículo'),
+        backgroundColor: Theme.of(context).primaryColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
@@ -32,7 +39,7 @@ class MyCurriculumView extends StatelessWidget {
             const SizedBox(height: 40),
             const SecondaryButton(
               text: 'Editar Currículo',
-              route: '/curriculumRegister',
+              route: '/curriculumEdit',
               //Aqui fazer a chamada pra pegar os dados que foram carregados do
               //usuario e mostrar um preview nos campos do criar curriculo
             ),

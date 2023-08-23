@@ -5,6 +5,7 @@ import 'package:progfile/app/views/curriculum_register_view.dart';
 import 'package:progfile/app/views/home_view.dart';
 import 'package:progfile/app/views/register_view.dart';
 import 'package:progfile/app/views/search_view.dart';
+import 'app/views/course_view.dart';
 import 'app/views/login_view.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -52,9 +53,10 @@ class MainApp extends StatelessWidget {
         '/register': (context) => RegisterView(),
         '/home': (context) => HomeView(),
         '/myCurriculum': (context) => MyCurriculumView(),
-        '/curriculumRegister': (context) => CurriculumRegisterView(),
+        '/curriculumEdit': (context) => CurriculumEditView(),
         '/certificate': (context) => CertificateView(),
         '/search': (context) => SearchView(),
+        '/course': (context) => CourseView(),
       },
     );
   }
