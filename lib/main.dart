@@ -31,8 +31,10 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Inter',
-        primaryColor: const Color(0xFF482FF7),
-        scaffoldBackgroundColor: const Color(0xFFF8F7F5),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: const Color(0xFF482FF7),
+          secondary: const Color(0xFF46C3DB),
+        ),
       ),
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -47,6 +49,9 @@ class MainApp extends StatelessWidget {
           } else {
             return LoginView();
           }
+          // } else {
+          //   return HomeView();
+          // }
         },
       ),
       routes: {

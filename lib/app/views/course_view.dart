@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/course_model.dart';
+import 'package:progfile/app/views/components/main_button.dart';
 
 import '../controllers/course_controller.dart';
 
@@ -17,7 +18,14 @@ class _CourseViewState extends State<CourseView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Certificados'),
+        title: const Text('Cursos'),
+        backgroundColor: Theme.of(context).primaryColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: FutureBuilder(
         future: _courseController.getCourses(),
@@ -43,10 +51,10 @@ class _CourseViewState extends State<CourseView> {
                     },
                     child: ListTile(
                       title: Text(snapshot.data![index].name),
-                      subtitle: const Text('data'),
-                      trailing: const Text('No date'),
-                      onTap: () => _showAddCertificateDialog(
-                          course: snapshot.data![index]),
+                      subtitle: const Text('Universidade'),
+                      trailing: const Text('Periodo de tempo'),
+                      onTap: () =>
+                          _showAddCourseDialog(course: snapshot.data![index]),
                     ),
                   );
                 },
@@ -66,13 +74,13 @@ class _CourseViewState extends State<CourseView> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddCertificateDialog(),
+        onPressed: () => _showAddCourseDialog(),
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  void _showAddCertificateDialog({CourseModel? course}) {
+  void _showAddCourseDialog({CourseModel? course}) {
     showDialog(
       context: context,
       builder: (context) {
@@ -96,30 +104,100 @@ class _CourseViewState extends State<CourseView> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Instituição'),
+                  controller: _courseController.nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Informe o nome da Instituição';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                DropdownButton(
+                  value: 'Tec',
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'Tec',
+                      child: Text('Tecnico'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Tecno',
+                      child: Text('Tecnologo'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Grad',
+                      child: Text('Graduacao'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Pos',
+                      child: Text('Pos-Graduacao'),
+                    ),
+                  ],
+                  onChanged: (value) {},
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Ano de Início'),
+                  controller: _courseController.nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Informe o nome do curso';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  decoration:
+                      const InputDecoration(labelText: 'Ano de Término'),
+                  controller: _courseController.nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Informe o nome do curso';
+                    }
+                    return null;
+                  },
+                ),
+                // ],
+                // ),
               ],
             ),
           ),
           actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (_courseController.formKey.currentState!.validate()) {
-                  if (course != null) {
-                    _courseController.editCourse(course);
-                    setState(() {});
-                  } else {
-                    _courseController.addCourse();
-                    setState(() {});
-                  }
-                  Navigator.pop(context);
-                }
-              },
-              child: Text(course != null ? 'Salvar Edição' : 'Salvar'),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  MainButton(
+                    text: 'Cancelar',
+                    onPressedCallback: () {
+                      Navigator.pop(context);
+                    },
+                    buttonWidth: 100,
+                    buttonHeight: 45,
+                  ),
+                  MainButton(
+                    text: course != null ? 'Salvar Edição' : 'Salvar',
+                    onPressedCallback: () {
+                      if (_courseController.formKey.currentState!.validate()) {
+                        if (course != null) {
+                          _courseController.editCourse(course);
+                          setState(() {});
+                        } else {
+                          _courseController.addCourse();
+                          setState(() {});
+                        }
+                        Navigator.pop(context);
+                      }
+                    },
+                    buttonWidth: 100,
+                    buttonHeight: 45,
+                  ),
+                ],
+              ),
             ),
           ],
         );
