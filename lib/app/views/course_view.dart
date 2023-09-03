@@ -96,6 +96,35 @@ class _CourseViewState extends State<CourseView> {
                     return null;
                   },
                 ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        decoration: const InputDecoration(labelText: 'Início'),
+                        controller: _courseController.startDateController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Informe a data inicial';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 8), // Espaço entre os campos
+                    Expanded(
+                      child: TextFormField(
+                        decoration: const InputDecoration(labelText: 'Término'),
+                        controller: _courseController.finishDateController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Informe a data final';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
