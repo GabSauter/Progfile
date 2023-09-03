@@ -14,7 +14,6 @@ class MyCurriculumView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meu Currículo'),
-        backgroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/course_model.dart';
+import 'package:progfile/app/views/components/form_textfield.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 
 import '../controllers/course_controller.dart';
@@ -19,7 +20,6 @@ class _CourseViewState extends State<CourseView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cursos'),
-        backgroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -51,8 +51,10 @@ class _CourseViewState extends State<CourseView> {
                     },
                     child: ListTile(
                       title: Text(snapshot.data![index].name),
-                      subtitle: const Text('Universidade'),
-                      trailing: const Text('Periodo de tempo'),
+                      subtitle: Text(snapshot.data![index].university),
+                      trailing: Text(
+                        '${snapshot.data![index].startDate} - ${snapshot.data![index].finishDate}',
+                      ),
                       onTap: () =>
                           _showAddCourseDialog(course: snapshot.data![index]),
                     ),
@@ -86,17 +88,28 @@ class _CourseViewState extends State<CourseView> {
       builder: (context) {
         _courseController.nameController =
             TextEditingController(text: course?.name ?? '');
+        _courseController.universityController =
+            TextEditingController(text: course?.university ?? '');
+        _courseController.startDateController =
+            TextEditingController(text: course?.startDate ?? '');
+        _courseController.finishDateController =
+            TextEditingController(text: course?.finishDate ?? '');
+        _courseController.degreeController =
+            TextEditingController(text: course?.degree ?? '');
 
         return AlertDialog(
+          scrollable: true,
           title: Text(course != null ? 'Editar Curso' : 'Adicionar Curso'),
           content: Form(
             key: _courseController.formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Nome do Curso'),
-                  controller: _courseController.nameController,
+                const SizedBox(height: 20),
+                FormTextField(
+                  isDialog: true,
+                  labelText: 'Nome do Curso',
+                  textEditingController: _courseController.nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Informe o nome do curso';
@@ -104,10 +117,11 @@ class _CourseViewState extends State<CourseView> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Instituição'),
-                  controller: _courseController.nameController,
+                const SizedBox(height: 15),
+                FormTextField(
+                  isDialog: true,
+                  labelText: 'Instituição',
+                  textEditingController: _courseController.universityController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Informe o nome da Instituição';
@@ -115,53 +129,54 @@ class _CourseViewState extends State<CourseView> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 DropdownButton(
                   value: 'Tec',
                   items: const [
                     DropdownMenuItem(
                       value: 'Tec',
-                      child: Text('Tecnico'),
+                      child: Text('Técnico'),
                     ),
                     DropdownMenuItem(
                       value: 'Tecno',
-                      child: Text('Tecnologo'),
+                      child: Text('Tecnólogo'),
                     ),
                     DropdownMenuItem(
                       value: 'Grad',
-                      child: Text('Graduacao'),
+                      child: Text('Graduação'),
                     ),
                     DropdownMenuItem(
                       value: 'Pos',
-                      child: Text('Pos-Graduacao'),
+                      child: Text('Pós-Graduacao'),
                     ),
                   ],
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    _courseController.degreeController.text = value.toString();
+                  },
                 ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Ano de Início'),
-                  controller: _courseController.nameController,
+                const SizedBox(height: 15),
+                FormTextField(
+                  isDialog: true,
+                  labelText: 'Ano de Início',
+                  textEditingController: _courseController.startDateController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Informe o nome do curso';
+                      return 'Informe o ano de Início';
                     }
                     return null;
                   },
                 ),
-                TextFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Ano de Término'),
-                  controller: _courseController.nameController,
+                FormTextField(
+                  isDialog: true,
+                  labelText: 'Ano de Término',
+                  textEditingController: _courseController.finishDateController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Informe o nome do curso';
+                      return 'Informe o ano de Término';
                     }
                     return null;
                   },
                 ),
-                // ],
-                // ),
               ],
             ),
           ),
@@ -180,7 +195,7 @@ class _CourseViewState extends State<CourseView> {
                     buttonHeight: 45,
                   ),
                   MainButton(
-                    text: course != null ? 'Salvar Edição' : 'Salvar',
+                    text: 'Salvar',
                     onPressedCallback: () {
                       if (_courseController.formKey.currentState!.validate()) {
                         if (course != null) {

@@ -39,7 +39,6 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Curriculum Registration'),
-        backgroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

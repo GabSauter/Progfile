@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 class FormTextField extends StatelessWidget {
   final TextEditingController textEditingController;
   final String? Function(String?)? validator;
+  final String labelText;
+  final bool isDialog;
 
   const FormTextField(
-      {Key? key, required this.textEditingController, required this.validator})
+      {Key? key,
+      required this.textEditingController,
+      required this.validator,
+      this.labelText = '',
+      this.isDialog = false})
       : super(key: key);
 
   @override
@@ -17,6 +23,10 @@ class FormTextField extends StatelessWidget {
         controller: textEditingController,
         cursorColor: const Color(0xFF482FF7),
         decoration: InputDecoration(
+          labelText: labelText,
+          floatingLabelBehavior: isDialog
+              ? FloatingLabelBehavior.never
+              : FloatingLabelBehavior.auto,
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(width: 2, color: Color(0xFF482FF7)),
             borderRadius: BorderRadius.circular(15.0),
