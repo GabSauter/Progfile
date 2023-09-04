@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/course_model.dart';
+import 'package:progfile/app/views/components/form_dropdown.dart';
 import 'package:progfile/app/views/components/form_textfield.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 
@@ -130,7 +131,7 @@ class _CourseViewState extends State<CourseView> {
                   },
                 ),
                 const SizedBox(height: 15),
-                DropdownButton(
+                FormDropdown(
                   value: 'Tec',
                   items: const [
                     DropdownMenuItem(
@@ -155,28 +156,39 @@ class _CourseViewState extends State<CourseView> {
                   },
                 ),
                 const SizedBox(height: 15),
-                FormTextField(
-                  isDialog: true,
-                  labelText: 'Ano de Início',
-                  textEditingController: _courseController.startDateController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Informe o ano de Início';
-                    }
-                    return null;
-                  },
-                ),
-                FormTextField(
-                  isDialog: true,
-                  labelText: 'Ano de Término',
-                  textEditingController: _courseController.finishDateController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Informe o ano de Término';
-                    }
-                    return null;
-                  },
-                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: FormTextField(
+                        isDialog: true,
+                        labelText: 'Ano de Início',
+                        textEditingController:
+                            _courseController.startDateController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Informe o ano de Início';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: FormTextField(
+                        isDialog: true,
+                        labelText: 'Ano de Término',
+                        textEditingController:
+                            _courseController.finishDateController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Informe o ano de Término';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
