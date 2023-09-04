@@ -24,6 +24,7 @@ class FormDropdown extends StatelessWidget {
       borderRadius: BorderRadius.circular(15.0),
       iconEnabledColor: const Color(0xFF482FF7),
       menuMaxHeight: 300,
+      isExpanded: true,
     );
   }
 }

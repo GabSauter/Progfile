@@ -32,7 +32,7 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Inter',
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: const Color(0xFF482FF7),
+          primary:  const Color.fromARGB(255, 129, 110, 255),
           secondary: const Color(0xFF46C3DB),
         ),
       ),

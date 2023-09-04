@@ -13,7 +13,7 @@ class MainButton extends StatelessWidget {
     required this.onPressedCallback,
     this.buttonWidth = double.infinity,
     this.buttonHeight = 50,
-    this.buttonColor = const Color(0xFF482FF7),
+    this.buttonColor = const Color.fromARGB(255, 129, 110, 255),
   }) : super(key: key);
 
   @override
