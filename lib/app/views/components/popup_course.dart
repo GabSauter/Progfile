@@ -18,6 +18,13 @@ class PopupCourse extends StatefulWidget {
 
 class _PopupCourseState extends State<PopupCourse> {
   final _courseController = CourseController();
+  late String selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedValue = widget.course?.degree ?? 'Tec';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +38,6 @@ class _PopupCourseState extends State<PopupCourse> {
         TextEditingController(text: widget.course?.finishDate ?? '');
     _courseController.degreeController =
         TextEditingController(text: widget.course?.degree ?? '');
-
-    String selectedValue = widget.course?.degree ?? 'Tec';
 
     return AlertDialog(
       scrollable: true,
@@ -85,14 +90,14 @@ class _PopupCourseState extends State<PopupCourse> {
                 ),
                 DropdownMenuItem(
                   value: 'Pos',
-                  child: Text('Pós-Graduacao'),
+                  child: Text('Pós-Graduação'),
                 ),
               ],
               onChanged: (value) {
                 setState(() {
-                  selectedValue = value;
-                  _courseController.degreeController.text = value.toString();
+                  selectedValue = value.toString();
                 });
+                _courseController.degreeController.text = value.toString();
               },
             ),
             const SizedBox(height: 15),
@@ -154,10 +159,8 @@ class _PopupCourseState extends State<PopupCourse> {
                   if (_courseController.formKey.currentState!.validate()) {
                     if (widget.course != null) {
                       _courseController.editCourse(widget.course!);
-                      setState(() {});
                     } else {
                       _courseController.addCourse();
-                      setState(() {});
                     }
                     Navigator.pop(context);
                   }
@@ -171,4 +174,5 @@ class _PopupCourseState extends State<PopupCourse> {
       ],
     );
   }
+
 }

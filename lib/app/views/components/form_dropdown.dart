@@ -14,17 +14,32 @@ class FormDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
-      value: value,
-      items: items,
-      onChanged: onChanged,
-      alignment: Alignment.centerLeft,
-      icon: const Icon(Icons.arrow_drop_down_rounded),
-      iconSize: 30,
-      borderRadius: BorderRadius.circular(15.0),
-      iconEnabledColor: const Color(0xFF482FF7),
-      menuMaxHeight: 300,
-      isExpanded: true,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1, // Largura da borda
+          color: Theme.of(context).primaryColor, // Cor da borda primária
+        ),
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+        child: DropdownButton(
+          value: value,
+          items: items,
+          onChanged: onChanged,
+          borderRadius: BorderRadius.circular(15.0),
+          icon: const Icon(Icons.arrow_drop_down_rounded),
+          iconSize: 30,
+          iconEnabledColor: Theme.of(context).primaryColor,
+          menuMaxHeight: 300,
+          isExpanded: true,
+          underline: Container(
+            height: 0,
+            color: Colors.transparent,
+          ),
+        ),
+      ),
     );
   }
 }

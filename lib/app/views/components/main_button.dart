@@ -5,7 +5,7 @@ class MainButton extends StatelessWidget {
   final VoidCallback onPressedCallback;
   final double buttonWidth;
   final double buttonHeight;
-  final Color buttonColor;
+  final Color? buttonColor;
 
   const MainButton({
     Key? key,
@@ -13,7 +13,7 @@ class MainButton extends StatelessWidget {
     required this.onPressedCallback,
     this.buttonWidth = double.infinity,
     this.buttonHeight = 50,
-    this.buttonColor = const Color.fromARGB(255, 129, 110, 255),
+    this.buttonColor,
   }) : super(key: key);
 
   @override
@@ -23,7 +23,7 @@ class MainButton extends StatelessWidget {
       height: buttonHeight,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: buttonColor,
+          backgroundColor: buttonColor ?? Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
           elevation: 0,
           shape: RoundedRectangleBorder(

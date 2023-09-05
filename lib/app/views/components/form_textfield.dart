@@ -24,7 +24,7 @@ class FormTextField extends StatelessWidget {
       child: TextFormField(
         validator: validator,
         controller: textEditingController,
-        cursorColor: const Color(0xFF482FF7),
+        cursorColor: Theme.of(context).primaryColor,
         textAlign: textAlign,
         decoration: InputDecoration(
           labelText: labelText,

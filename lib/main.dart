@@ -31,6 +31,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Inter',
+        primaryColor: const Color.fromARGB(255, 129, 110, 255),
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary:  const Color.fromARGB(255, 129, 110, 255),
           secondary: const Color(0xFF46C3DB),
