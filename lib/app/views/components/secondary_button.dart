@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 class SecondaryButton extends StatelessWidget {
   final String text;
-  final String route;
+  final String? route;
   final Color? buttonColor;
+  final VoidCallback? onPressedCallback;
+
   const SecondaryButton({
     super.key,
     required this.text,
-    required this.route,
+    this.route,
     this.buttonColor,
+    this.onPressedCallback,
   });
 
   @override
@@ -30,7 +33,11 @@ class SecondaryButton extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.of(context).pushNamed(route);
+              if (onPressedCallback != null) {
+                onPressedCallback!();
+              } else if (route != null) {
+                Navigator.of(context).pushNamed(route!);
+              }
             },
             child: Text(
               text,
