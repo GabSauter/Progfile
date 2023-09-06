@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/course_model.dart';
-import 'package:progfile/app/views/components/popup_course.dart';
+import 'package:progfile/app/views/popups/popup_course.dart';
 
 import '../controllers/course_controller.dart';
 
@@ -85,7 +85,12 @@ class _CourseViewState extends State<CourseView> {
     showDialog(
       context: context,
       builder: (context) {
-        return PopupCourse(course: course);
+        return PopupCourse(
+          course: course,
+          onPopupClose: () => setState(() {
+            _courseController.getCourses();
+          }),
+        );
       },
     );
   }

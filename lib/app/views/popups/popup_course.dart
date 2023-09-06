@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/course_model.dart';
 import '../../controllers/course_controller.dart';
-import 'form_dropdown.dart';
-import 'form_textfield.dart';
-import 'main_button.dart';
+import '../components/form_dropdown.dart';
+import '../components/form_textfield.dart';
+import '../components/main_button.dart';
 
 class PopupCourse extends StatefulWidget {
   final CourseModel? course;
+  final Function? onPopupClose;
+
   const PopupCourse({
     super.key,
     required this.course,
+    this.onPopupClose,
   });
 
   @override
@@ -24,6 +27,13 @@ class _PopupCourseState extends State<PopupCourse> {
   void initState() {
     super.initState();
     selectedValue = widget.course?.degree ?? 'Tec';
+  }
+
+  void _onDialogClose() {
+    Navigator.of(context).pop();
+    if (widget.onPopupClose != null) {
+      widget.onPopupClose!();
+    }
   }
 
   @override
@@ -162,7 +172,7 @@ class _PopupCourseState extends State<PopupCourse> {
                     } else {
                       _courseController.addCourse();
                     }
-                    Navigator.pop(context);
+                    _onDialogClose();
                   }
                 },
                 buttonWidth: 100,

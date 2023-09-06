@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../controllers/certificate_controller.dart';
 import '../models/certificate_model.dart';
+import 'popups/popup_certificate.dart';
 
 class CertificateView extends StatefulWidget {
   const CertificateView({super.key});
@@ -72,7 +73,7 @@ class _CertificateView extends State<CertificateView> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddCertificateDialog(),
+        onPressed: () => {_showAddCertificateDialog()},
         child: const Icon(Icons.add),
       ),
     );
@@ -82,97 +83,12 @@ class _CertificateView extends State<CertificateView> {
     showDialog(
       context: context,
       builder: (context) {
-        _certificateController.nameController =
-            TextEditingController(text: certificate?.name ?? '');
-        _certificateController.organizationController =
-            TextEditingController(text: certificate?.organization ?? '');
-        _certificateController.omissionDate = certificate?.omissionDate;
-
-        return AlertDialog(
-          title: Text(certificate != null
-              ? 'Editar Certificado'
-              : 'Adicionar Certificado'),
-          content: Form(
-            key: _certificateController.formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Nome do Certificado'),
-                  controller: _certificateController.nameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Informe o nome do certificado';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Organização Emissora'),
-                  controller: _certificateController.organizationController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Informe a organização emissora';
-                    }
-                    return null;
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    DateTime currentDate = DateTime.now();
-                    DateTime initialDate =
-                        _certificateController.omissionDate ?? currentDate;
-                    DateTime? selectedDate = await showDatePicker(
-                      context: context,
-                      initialDate: initialDate,
-                      firstDate: DateTime(1900),
-                      lastDate: currentDate,
-                      initialDatePickerMode: DatePickerMode.year,
-                    );
-
-                    if (selectedDate != null) {
-                      _certificateController.omissionDate = DateTime(
-                          selectedDate.year,
-                          selectedDate.month,
-                          selectedDate.day);
-                    }
-                  },
-                  child: const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Selecione a data de Emissão',
-                      )),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (_certificateController.formKey.currentState!.validate() &&
-                    _certificateController.omissionDate != null) {
-                  if (certificate != null) {
-                    _certificateController.editCertificate(certificate);
-                    setState(() {});
-                  } else {
-                    _certificateController.addCertificate();
-                    setState(() {});
-                  }
-                  Navigator.pop(context);
-                }
-              },
-              child: Text(certificate != null ? 'Salvar Edição' : 'Salvar'),
-            ),
-          ],
-        );
+        return PopupCertificate(
+            certificate: certificate,
+            onPopupClose: () {
+              _certificateController.getCertificates();
+              setState(() {});
+            });
       },
     );
   }
