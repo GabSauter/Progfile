@@ -239,7 +239,7 @@ class MyCurriculumView extends StatelessWidget {
         ),
         SizedBox(height: 20),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
               'Ponta Grossa - PR',
