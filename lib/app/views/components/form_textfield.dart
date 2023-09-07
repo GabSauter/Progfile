@@ -7,15 +7,17 @@ class FormTextField extends StatelessWidget {
   final String labelText;
   final bool isDialog;
   final TextAlign textAlign;
+  final int? maxLines;
 
-  const FormTextField(
-      {Key? key,
-      required this.textEditingController,
-      required this.validator,
-      this.labelText = '',
-      this.isDialog = false,
-      this.textAlign = TextAlign.start})
-      : super(key: key);
+  const FormTextField({
+    Key? key,
+    required this.textEditingController,
+    required this.validator,
+    this.labelText = '',
+    this.isDialog = false,
+    this.textAlign = TextAlign.start,
+    this.maxLines,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class FormTextField extends StatelessWidget {
         controller: textEditingController,
         cursorColor: Theme.of(context).primaryColor,
         textAlign: textAlign,
+        maxLines: maxLines ?? 1,
         decoration: InputDecoration(
           labelText: labelText,
           counterText: '',

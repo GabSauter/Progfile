@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progfile/app/views/certificate_view.dart';
-import 'package:progfile/app/views/curriculum_register_view.dart';
+import 'package:progfile/app/views/curriculum_edit_view.dart';
 import 'package:progfile/app/views/home_view.dart';
 import 'package:progfile/app/views/register_view.dart';
 import 'package:progfile/app/views/search_view.dart';
