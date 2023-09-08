@@ -26,7 +26,7 @@ class _PopupCourseState extends State<PopupCourse> {
   @override
   void initState() {
     super.initState();
-    selectedValue = widget.course?.degree ?? 'Tec';
+    selectedValue = widget.course?.degree ?? 'Selecione';
   }
 
   void _onDialogClose() {
@@ -85,29 +85,23 @@ class _PopupCourseState extends State<PopupCourse> {
             const SizedBox(height: 15),
             FormDropdown(
               value: selectedValue,
-              items: const [
-                DropdownMenuItem(
-                  value: 'Tec',
-                  child: Text('Técnico'),
-                ),
-                DropdownMenuItem(
-                  value: 'Tecno',
-                  child: Text('Tecnólogo'),
-                ),
-                DropdownMenuItem(
-                  value: 'Grad',
-                  child: Text('Graduação'),
-                ),
-                DropdownMenuItem(
-                  value: 'Pos',
-                  child: Text('Pós-Graduação'),
-                ),
-              ],
+              items: ['Técnico', 'Tecnólogo', 'Graduação', 'Pós-Graduação']
+                  .map((grade) => DropdownMenuItem<String>(
+                        value: grade,
+                        child: Text(grade),
+                      ))
+                  .toList(),
               onChanged: (value) {
                 setState(() {
                   selectedValue = value.toString();
                 });
                 _courseController.degreeController.text = value.toString();
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Informe o grau de formação';
+                }
+                return null;
               },
             ),
             const SizedBox(height: 15),
@@ -184,5 +178,4 @@ class _PopupCourseState extends State<PopupCourse> {
       ],
     );
   }
-
 }

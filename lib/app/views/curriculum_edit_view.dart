@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:progfile/app/views/components/form_dropdown.dart';
+import 'package:progfile/app/views/components/form_text.dart';
 import 'package:progfile/app/views/components/form_textfield.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 
-import '../controllers/curriculum_register_controller.dart';
+import '../controllers/curriculum_edit_controller.dart';
 import 'components/image_take.dart';
 import 'components/snackbar_helper.dart';
 
@@ -49,7 +51,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Form(
           key: _controller.formKey,
           child: Column(
@@ -66,31 +68,64 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                   },
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
+              const FormText(
+                text: 'Nome:',
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+              ),
+              const SizedBox(height: 10),
               FormTextField(
                 textEditingController: _controller.nameController,
-                labelText: 'Nome',
                 validator: (value) {
                   return _controller.validateName(value);
                 },
               ),
               const SizedBox(height: 15),
+              const FormText(
+                text: 'Email:',
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+              ),
+              const SizedBox(height: 10),
               FormTextField(
                 textEditingController: _controller.emailController,
-                labelText: 'Email',
                 validator: (value) {
                   return _controller.validateEmail(value);
                 },
               ),
               const SizedBox(height: 15),
+              const FormText(
+                text: 'Celular:',
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+              ),
+              const SizedBox(height: 10),
               FormTextField(
                 textEditingController: _controller.phoneNumberController,
-                labelText: 'Número do celular',
                 validator: (value) {
                   return _controller.validatePhone(value);
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
+              const FormText(
+                text: 'Sobre Você:',
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+              ),
+              const SizedBox(height: 10),
+              FormTextField(
+                textEditingController: _controller.aboutYouController,
+                maxLines: 4,
+                validator: (value) {
+                  return _controller.validateAboutYou(value);
+                },
+              ),
+              const SizedBox(height: 25),
               MainButton(
                 onPressedCallback: () {
                   Navigator.pushNamed(context, '/course');
@@ -104,43 +139,75 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 },
                 text: 'Adicionar Certificado',
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
+              const FormText(
+                text: 'URL GitHub:',
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+              ),
+              const SizedBox(height: 10),
               FormTextField(
                 textEditingController:
                     _controller.githubRepositoryUrlController,
-                labelText: 'Nome do Repositorio do GitHub',
                 validator: (value) {
                   return _controller.validateGithubUsername(value);
                 },
               ),
               const SizedBox(height: 15),
+              const FormText(
+                text: 'Username Github:',
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+              ),
+              const SizedBox(height: 10),
               FormTextField(
                 textEditingController:
                     _controller.githubRepositoryUrlController,
-                labelText: 'Nome do Repositorio do GitHub',
                 validator: (value) {
                   return _controller.validateGithubRepository(value);
                 },
               ),
               const SizedBox(height: 15),
+              const FormText(
+                text: 'Endereço:',
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+              ),
+              const SizedBox(height: 10),
               FormTextField(
                 textEditingController: _controller.addressController,
-                labelText: 'Endereço',
                 validator: (value) {
                   return _controller.validateAddress(value);
                 },
               ),
               const SizedBox(height: 15),
+              const FormText(
+                text: 'Área de Estudo:',
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+              ),
+              const SizedBox(height: 10),
               FormTextField(
                 textEditingController: _controller.fieldOfStudyController,
-                labelText: 'Área de Estudo',
                 validator: (value) {
                   return _controller.validateFieldOfStudy(value);
                 },
               ),
-              const SizedBox(height: 20),
-              DropdownButtonFormField<String>(
-                items: ['Estágio', 'Junior', 'Senior']
+              const SizedBox(height: 25),
+              const FormText(
+                text: 'Nível de Desenvolvedor:',
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+              ),
+              const SizedBox(height: 10),
+              FormDropdown(
+                value: _controller.selectedDegree ?? 'Selecione',
+                items: ['Estagiário', 'Júnior', 'Sênior', 'Pleno']
                     .map((grade) => DropdownMenuItem<String>(
                           value: grade,
                           child: Text(grade),
@@ -151,13 +218,12 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                     _controller.selectedDegree = selectedGrade;
                   });
                 },
-                value: _controller.selectedDegree,
-                decoration: const InputDecoration(labelText: 'Grau'),
                 validator: (value) {
                   return _controller.validateDropdownValue(value);
                 },
+                errorText: 'Selecione o nível de desenvolvedor',
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
               MainButton(
                 onPressedCallback: () {},
                 text: 'Adicionar Idioma',
@@ -167,21 +233,13 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 onPressedCallback: () {},
                 text: 'Adicionar Competência',
               ),
-              const SizedBox(height: 20),
-              FormTextField(
-                textEditingController: _controller.aboutYouController,
-                maxLines: 4,
-                labelText: 'About You',
-                validator: (value) {
-                  return _controller.validateAboutYou(value);
-                },
-              ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 15),
               MainButton(
                 onPressedCallback: () {
                   createCurriculum();
                 },
                 text: 'Concluir',
+                buttonColor: Colors.green[500],
               ),
             ],
           ),
