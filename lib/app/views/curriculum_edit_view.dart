@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:progfile/app/views/components/form_text.dart';
 import 'package:progfile/app/views/components/form_textfield.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 

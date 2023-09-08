@@ -58,11 +58,11 @@ class MainApp extends StatelessWidget {
       routes: {
         '/register': (context) => RegisterView(),
         '/home': (context) => HomeView(),
-        '/myCurriculum': (context) => MyCurriculumView(),
-        '/curriculumEdit': (context) => CurriculumEditView(),
-        '/certificate': (context) => CertificateView(),
-        '/search': (context) => SearchView(),
-        '/course': (context) => CourseView(),
+        '/myCurriculum': (context) => const MyCurriculumView(),
+        '/curriculumEdit': (context) => const CurriculumEditView(),
+        '/certificate': (context) => const CertificateView(),
+        '/search': (context) => const SearchView(),
+        '/course': (context) => const CourseView(),
       },
     );
   }
