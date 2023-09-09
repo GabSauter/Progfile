@@ -30,7 +30,7 @@ class FormDropdown extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: FormField<String>(
           validator: (value) {
-            if (value == null || value == 'Selecione') {
+            if (value == null) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: errorText != null
@@ -55,15 +55,7 @@ class FormDropdown extends StatelessWidget {
                 isExpanded: true,
                 borderRadius: BorderRadius.circular(15.0),
                 value: value,
-                items: 'Selecione' == value
-                    ? [
-                        const DropdownMenuItem(
-                          value: 'Selecione',
-                          child: Text('Selecione'),
-                        ),
-                        ...items,
-                      ]
-                    : [...items],
+                items: [...items],
                 onChanged: (newValue) {
                   state.didChange(newValue);
                   onChanged!(newValue);

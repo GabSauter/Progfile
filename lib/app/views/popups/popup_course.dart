@@ -21,12 +21,16 @@ class PopupCourse extends StatefulWidget {
 
 class _PopupCourseState extends State<PopupCourse> {
   final _courseController = CourseController();
-  late String selectedValue;
+  String selectedValue = 'Técnico';
 
   @override
   void initState() {
     super.initState();
-    selectedValue = widget.course?.degree ?? 'Selecione';
+    _courseController.degreeController.text =
+        widget.course?.degree ?? 'Técnico';
+    selectedValue = _courseController.degreeController.text == ''
+        ? 'Técnico'
+        : _courseController.degreeController.text;
   }
 
   void _onDialogClose() {
@@ -38,16 +42,19 @@ class _PopupCourseState extends State<PopupCourse> {
 
   @override
   Widget build(BuildContext context) {
-    _courseController.nameController =
-        TextEditingController(text: widget.course?.name ?? '');
-    _courseController.universityController =
-        TextEditingController(text: widget.course?.university ?? '');
-    _courseController.startDateController =
-        TextEditingController(text: widget.course?.startDate ?? '');
-    _courseController.finishDateController =
-        TextEditingController(text: widget.course?.finishDate ?? '');
-    _courseController.degreeController =
-        TextEditingController(text: widget.course?.degree ?? '');
+    _courseController.nameController = TextEditingController(
+        text: widget.course?.name ?? _courseController.nameController.text);
+    _courseController.universityController = TextEditingController(
+        text: widget.course?.university ??
+            _courseController.universityController.text);
+    _courseController.startDateController = TextEditingController(
+        text: widget.course?.startDate ??
+            _courseController.startDateController.text);
+    _courseController.finishDateController = TextEditingController(
+        text: widget.course?.finishDate ??
+            _courseController.finishDateController.text);
+    _courseController.degreeController = TextEditingController(
+        text: widget.course?.degree ?? _courseController.degreeController.text);
 
     return AlertDialog(
       scrollable: true,
@@ -84,18 +91,30 @@ class _PopupCourseState extends State<PopupCourse> {
             ),
             const SizedBox(height: 15),
             FormDropdown(
-              value: selectedValue,
               items: ['Técnico', 'Tecnólogo', 'Graduação', 'Pós-Graduação']
                   .map((grade) => DropdownMenuItem<String>(
                         value: grade,
                         child: Text(grade),
                       ))
                   .toList(),
+              value: selectedValue,
               onChanged: (value) {
-                setState(() {
-                  selectedValue = value.toString();
-                });
-                _courseController.degreeController.text = value.toString();
+                selectedValue = value.toString();
+                _courseController.degreeController.text = selectedValue;
+
+                if (widget.course != null) {
+                  widget.course?.name = _courseController.nameController.text;
+                  widget.course?.degree =
+                      _courseController.degreeController.text;
+                  widget.course?.university =
+                      _courseController.universityController.text;
+                  widget.course?.startDate =
+                      _courseController.startDateController.text;
+                  widget.course?.degree ??
+                      _courseController.degreeController.text;
+                }
+
+                setState(() {});
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
