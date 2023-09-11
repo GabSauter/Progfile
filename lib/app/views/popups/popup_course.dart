@@ -171,6 +171,11 @@ class _PopupCourseState extends State<PopupCourse> {
               MainButton(
                 text: 'Cancelar',
                 onPressedCallback: () {
+                  _courseController.nameController.text = "";
+                  _courseController.universityController.text = "";
+                  _courseController.startDateController.text = "";
+                  _courseController.finishDateController.text = "";
+                  _courseController.degreeController.text = "";
                   Navigator.pop(context);
                 },
                 buttonWidth: 100,
