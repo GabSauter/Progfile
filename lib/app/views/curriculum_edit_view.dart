@@ -206,7 +206,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
               ),
               const SizedBox(height: 10),
               FormDropdown(
-                value: _controller.selectedDegree ?? 'Selecione',
+                value: _controller.selectedDegree ?? 'Estagiário',
                 items: ['Estagiário', 'Júnior', 'Sênior', 'Pleno']
                     .map((grade) => DropdownMenuItem<String>(
                           value: grade,
