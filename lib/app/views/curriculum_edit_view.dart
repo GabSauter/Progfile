@@ -187,7 +187,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                   return _controller.validateFieldOfStudy(value);
                 },
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: 15),
               const FormText(
                 text: 'Nível de Desenvolvedor:',
                 fontSize: 16,
