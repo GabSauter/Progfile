@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:progfile/app/views/components/form_dropdown.dart';
 import 'package:progfile/app/views/components/form_text.dart';
 import 'package:progfile/app/views/components/form_textfield.dart';
 import 'package:progfile/app/views/components/main_button.dart';
+import 'package:progfile/app/views/components/masked_textfield.dart';
 
 import '../controllers/curriculum_edit_controller.dart';
 import 'components/image_take.dart';
@@ -104,8 +106,8 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 fontWeight: FontWeight.normal,
               ),
               const SizedBox(height: 10),
-              FormTextField(
-                textEditingController: _controller.phoneNumberController,
+              MaskedTextField(
+                controller: _controller.phoneNumberController,
                 validator: (value) {
                   return _controller.validatePhone(value);
                 },
@@ -119,8 +121,9 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
               ),
               const SizedBox(height: 10),
               FormTextField(
-                textEditingController: _controller.aboutYouController,
                 maxLines: 4,
+                length: 200,
+                textEditingController: _controller.aboutYouController,
                 validator: (value) {
                   return _controller.validateAboutYou(value);
                 },
@@ -141,21 +144,6 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
               ),
               const SizedBox(height: 25),
               const FormText(
-                text: 'URL GitHub:',
-                fontSize: 16,
-                color: Colors.black,
-                fontWeight: FontWeight.normal,
-              ),
-              const SizedBox(height: 10),
-              FormTextField(
-                textEditingController:
-                    _controller.githubRepositoryUrlController,
-                validator: (value) {
-                  return _controller.validateGithubUsername(value);
-                },
-              ),
-              const SizedBox(height: 15),
-              const FormText(
                 text: 'Username Github:',
                 fontSize: 16,
                 color: Colors.black,
@@ -169,6 +157,8 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                   return _controller.validateGithubRepository(value);
                 },
               ),
+              const SizedBox(height: 10),
+              MainButton(text: 'Repositórios GitHub', onPressedCallback: () {}),
               const SizedBox(height: 15),
               const FormText(
                 text: 'Endereço:',

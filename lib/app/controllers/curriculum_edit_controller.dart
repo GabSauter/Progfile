@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progfile/app/models/curriculum_model.dart';
@@ -9,7 +10,7 @@ import 'package:progfile/app/services/curriculum_service.dart';
 class CurriculumRegisterController {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
-  final phoneNumberController = TextEditingController();
+  final phoneNumberController = MaskedTextController(mask: '(00) 00000-0000');
   final githubRepositoryUrlController = TextEditingController();
   final addressController = TextEditingController();
   final fieldOfStudyController = TextEditingController();

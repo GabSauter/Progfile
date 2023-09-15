@@ -8,6 +8,8 @@ class FormTextField extends StatelessWidget {
   final bool isDialog;
   final TextAlign textAlign;
   final int? maxLines;
+  final bool isNumeric;
+  final int length;
 
   const FormTextField({
     Key? key,
@@ -17,12 +19,13 @@ class FormTextField extends StatelessWidget {
     this.isDialog = false,
     this.textAlign = TextAlign.start,
     this.maxLines,
+    this.isNumeric = false,
+    this.length = 0,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
       child: TextFormField(
         validator: validator,
         controller: textEditingController,
@@ -45,14 +48,11 @@ class FormTextField extends StatelessWidget {
           ),
           fillColor: Colors.transparent,
         ),
-        keyboardType: (labelText == 'Início' || labelText == 'Término')
-            ? TextInputType.number
-            : TextInputType.text,
+        keyboardType: (isNumeric) ? TextInputType.number : TextInputType.text,
         inputFormatters: [
-          if (labelText == 'Início' || labelText == 'Término')
-            FilteringTextInputFormatter.digitsOnly,
+          if (isNumeric) FilteringTextInputFormatter.digitsOnly,
         ],
-        maxLength: (labelText == 'Início' || labelText == 'Término') ? 4 : null,
+        maxLength: (length == 0) ? null : length,
       ),
     );
   }

@@ -129,6 +129,8 @@ class _PopupCourseState extends State<PopupCourse> {
                 Expanded(
                   child: FormTextField(
                     isDialog: true,
+                    isNumeric: true,
+                    length: 4,
                     labelText: 'Início',
                     textAlign: TextAlign.center,
                     textEditingController:
@@ -145,6 +147,8 @@ class _PopupCourseState extends State<PopupCourse> {
                 Expanded(
                   child: FormTextField(
                     isDialog: true,
+                    isNumeric: true,
+                    length: 4,
                     labelText: 'Término',
                     textAlign: TextAlign.center,
                     textEditingController:

@@ -23,7 +23,7 @@ class FormText extends StatelessWidget {
         textAlign: TextAlign.start,
         style: TextStyle(
           fontWeight: fontWeight ?? FontWeight.bold,
-          color: color ?? const Color(0xFF482FF7),
+          color: color ?? Theme.of(context).primaryColor,
           fontSize: fontSize ?? 16,
         ),
       ),

@@ -27,7 +27,7 @@ class MyCurriculumView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             userBasicInfo,
-            const SizedBox(height: 50),
+            const SizedBox(height: 30),
             userAcademicInfo(context),
             const Divider(
               color: Colors.black,
@@ -218,14 +218,14 @@ class MyCurriculumView extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 10),
         Text(
           'Desenvolvedor de Software',
           style: TextStyle(
             fontSize: 18,
           ),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -237,20 +237,15 @@ class MyCurriculumView extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              'Ponta Grossa - PR',
-              style: TextStyle(fontSize: 16),
-            ),
-            SizedBox(width: 30),
-            Text(
-              '(19) 99619-0935',
-              style: TextStyle(fontSize: 16),
-            )
-          ],
+        SizedBox(height: 10),
+        Text(
+          '(19) 99619-0935',
+          style: TextStyle(fontSize: 16),
+        ),
+        SizedBox(height: 10),
+        Text(
+          'Ponta Grossa - PR',
+          style: TextStyle(fontSize: 16),
         ),
       ],
     );
