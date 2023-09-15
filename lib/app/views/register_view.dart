@@ -82,8 +82,15 @@ class RegisterView extends StatelessWidget {
                     MainButton(
                       text: 'Cadastrar',
                       onPressedCallback: () {
-                        if (registerController.validateForm(context)) {
+                        var isSamePassword =
+                            registerController.confirmPassword();
+                        if (registerController.validateForm(context) &&
+                            isSamePassword) {
                           onSignUp(context);
+                        }
+                        if (!isSamePassword) {
+                          SnackBarHelper.showErrorSnackBar(
+                              "Por favor digite a mesma senha", context);
                         }
                       },
                     ),
