@@ -38,8 +38,7 @@ class SearchViewState extends State<SearchView> {
             Navigator.pop(context);
           },
         ),
-        title: const Text("ProgFile"),
-        centerTitle: true,
+        title: const Text("Procurar Curriculo"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -70,7 +69,6 @@ class SearchViewState extends State<SearchView> {
                       fillColor: Colors.transparent,
                       hintText: "Procurar por currículos",
                     ),
-                    //obscureText: isPassword,
                   ),
                 ),
                 const SizedBox(width: 6),
@@ -104,12 +102,14 @@ class SearchViewState extends State<SearchView> {
                     ),
                     elevation: 6,
                     margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 8.0),
+                      vertical: 8.0,
+                      horizontal: 8.0,
+                    ),
                     child: ListTile(
                       contentPadding: const EdgeInsets.all(16.0),
                       leading: const CircleAvatar(
                         backgroundColor: Colors.black,
-                        backgroundImage: AssetImage(""),
+                        backgroundImage: AssetImage("assets/images/user.png"),
                         radius: 40,
                       ),
                       title: Text(
