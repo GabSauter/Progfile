@@ -28,18 +28,27 @@ class RegisterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 80,
+        leading: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 17, horizontal: 10),
+          child: BackCustomButton(),
+        ),
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        title: const TitleText(text: 'Cadastro'),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const BackCustomButton(),
             Padding(
-              padding: const EdgeInsets.only(
-                  top: 10, right: 50, left: 50, bottom: 5),
+              padding:
+                  const EdgeInsets.only(top: 0, right: 50, left: 50, bottom: 5),
               child: Form(
                 key: registerController.formKey,
                 child: Column(
                   children: [
-                    const TitleText(text: 'ProgFile'),
                     const SizedBox(height: 40),
                     const FormText(text: 'Nome:'),
                     const SizedBox(height: 10),

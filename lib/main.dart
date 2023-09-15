@@ -33,16 +33,16 @@ class MainApp extends StatelessWidget {
         fontFamily: 'Inter',
         primaryColor: const Color.fromARGB(255, 129, 110, 255),
         colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary:  const Color.fromARGB(255, 129, 110, 255),
+          primary: const Color.fromARGB(255, 129, 110, 255),
           secondary: const Color(0xFF46C3DB),
         ),
       ),
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          /*if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else */
+          // if (snapshot.connectionState == ConnectionState.waiting) {
+          //   return const Center(child: CircularProgressIndicator());
+          // } else
           if (snapshot.hasError) {
             return const Center(child: Text("Ops! Deu algo errado."));
           } else if (snapshot.hasData) {

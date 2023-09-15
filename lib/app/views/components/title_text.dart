@@ -9,7 +9,7 @@ class TitleText extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-        color: Color(0xFF482FF7),
+        color: Color.fromARGB(255, 129, 110, 255),
         fontSize: 50,
       ),
     );
