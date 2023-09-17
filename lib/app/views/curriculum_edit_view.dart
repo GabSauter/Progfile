@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:progfile/app/views/components/form_dropdown.dart';
 import 'package:progfile/app/views/components/form_text.dart';
 import 'package:progfile/app/views/components/form_textfield.dart';
@@ -215,7 +214,9 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
               ),
               const SizedBox(height: 25),
               MainButton(
-                onPressedCallback: () {},
+                onPressedCallback: () {
+                  Navigator.pushNamed(context, '/language');
+                },
                 text: 'Adicionar Idioma',
               ),
               const SizedBox(height: 15),
