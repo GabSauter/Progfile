@@ -157,7 +157,12 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 },
               ),
               const SizedBox(height: 10),
-              MainButton(text: 'Repositórios GitHub', onPressedCallback: () {}),
+              MainButton(
+                text: 'Repositórios GitHub',
+                onPressedCallback: () {
+                  Navigator.pushNamed(context, '/repository');
+                },
+              ),
               const SizedBox(height: 15),
               const FormText(
                 text: 'Endereço:',
