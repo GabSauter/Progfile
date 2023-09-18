@@ -53,9 +53,8 @@ class _PopupRepositoryState extends State<PopupRepository> {
       titlePadding: const EdgeInsets.symmetric(vertical: 20),
       contentPadding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * 0.08,
-        vertical: 0,
       ),
-      content: content(context),
+      content: content(),
       actionsPadding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * 0.08,
         vertical: 20,
@@ -64,31 +63,33 @@ class _PopupRepositoryState extends State<PopupRepository> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            MainButton(
-              text: 'Cancelar',
-              onPressedCallback: () {
-                _repositoryController.nameController.text = "";
-                _repositoryController.urlController.text = "";
-                _repositoryController.descriptionController.text = "";
-                _repositoryController.languageController.text = "";
-                Navigator.pop(context);
-              },
-              buttonWidth: MediaQuery.of(context).size.width * 0.3,
+            Expanded(
+              child: MainButton(
+                text: 'Cancelar',
+                onPressedCallback: () {
+                  _repositoryController.nameController.text = "";
+                  _repositoryController.urlController.text = "";
+                  _repositoryController.descriptionController.text = "";
+                  _repositoryController.languageController.text = "";
+                  Navigator.pop(context);
+                },
+              ),
             ),
             const SizedBox(width: 5),
-            MainButton(
-              text: 'Salvar',
-              onPressedCallback: () {
-                if (_repositoryController.formKey.currentState!.validate()) {
-                  if (widget.repository != null) {
-                    _repositoryController.editRepository(widget.repository!);
-                  } else {
-                    _repositoryController.addRepository();
+            Expanded(
+              child: MainButton(
+                text: 'Salvar',
+                onPressedCallback: () {
+                  if (_repositoryController.formKey.currentState!.validate()) {
+                    if (widget.repository != null) {
+                      _repositoryController.editRepository(widget.repository!);
+                    } else {
+                      _repositoryController.addRepository();
+                    }
+                    _onDialogClose();
                   }
-                  _onDialogClose();
-                }
-              },
-              buttonWidth: MediaQuery.of(context).size.width * 0.3,
+                },
+              ),
             ),
           ],
         ),
@@ -96,7 +97,7 @@ class _PopupRepositoryState extends State<PopupRepository> {
     );
   }
 
-  Widget content(BuildContext context) {
+  Widget content() {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.8,
       child: Form(

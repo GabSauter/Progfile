@@ -50,75 +50,36 @@ class _PopupCoursLanguage extends State<PopupLanguage> {
 
     return AlertDialog(
       scrollable: true,
+      titlePadding: const EdgeInsets.symmetric(vertical: 20),
       title: Center(
         child: Text(
             widget.language != null ? 'Editar Idioma' : 'Adicionar Idioma'),
       ),
-      content: Form(
-        key: _languageController.formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FormTextField(
-              isDialog: true,
-              labelText: 'Idioma',
-              textEditingController: _languageController.nameController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Informe o idioma';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(height: 15),
-            FormDropdown(
-              items: ['Básico', 'Intermediário', 'Avançado', 'Fluente']
-                  .map((grade) => DropdownMenuItem<String>(
-                        value: grade,
-                        child: Text(grade),
-                      ))
-                  .toList(),
-              value: selectedValue,
-              onChanged: (value) {
-                selectedValue = value.toString();
-                _languageController.degreeController.text = selectedValue;
-
-                if (widget.language != null) {
-                  widget.language?.name =
-                      _languageController.nameController.text;
-                  widget.language?.degree =
-                      _languageController.degreeController.text;
-                }
-
-                setState(() {});
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Informe o seu grau de idioma';
-                }
-                return null;
-              },
-            ),
-          ],
-        ),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width * 0.08,
+      ),
+      content: content(),
+      actionsPadding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width * 0.08,
+        vertical: 20,
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              MainButton(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(
+              child: MainButton(
                 text: 'Cancelar',
                 onPressedCallback: () {
                   _languageController.nameController.text = "";
                   _languageController.degreeController.text = "";
                   Navigator.pop(context);
                 },
-                buttonWidth: 100,
-                buttonHeight: 45,
               ),
-              MainButton(
+            ),
+            const SizedBox(width: 5),
+            Expanded(
+              child: MainButton(
                 text: 'Salvar',
                 onPressedCallback: () {
                   if (_languageController.formKey.currentState!.validate()) {
@@ -130,13 +91,62 @@ class _PopupCoursLanguage extends State<PopupLanguage> {
                     _onDialogClose();
                   }
                 },
-                buttonWidth: 100,
-                buttonHeight: 45,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
+    );
+  }
+
+  Widget content() {
+    return Form(
+      key: _languageController.formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FormTextField(
+            isDialog: true,
+            labelText: 'Idioma',
+            length: 20,
+            textEditingController: _languageController.nameController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Informe o idioma';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 15),
+          FormDropdown(
+            items: ['Básico', 'Intermediário', 'Avançado', 'Fluente']
+                .map((grade) => DropdownMenuItem<String>(
+                      value: grade,
+                      child: Text(grade),
+                    ))
+                .toList(),
+            value: selectedValue,
+            onChanged: (value) {
+              selectedValue = value.toString();
+              _languageController.degreeController.text = selectedValue;
+
+              if (widget.language != null) {
+                widget.language?.name = _languageController.nameController.text;
+                widget.language?.degree =
+                    _languageController.degreeController.text;
+              }
+
+              setState(() {});
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Informe o seu grau de idioma';
+              }
+              return null;
+            },
+          ),
+        ],
+      ),
     );
   }
 }
