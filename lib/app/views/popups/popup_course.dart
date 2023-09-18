@@ -58,10 +58,61 @@ class _PopupCourseState extends State<PopupCourse> {
 
     return AlertDialog(
       scrollable: true,
+      titlePadding: const EdgeInsets.symmetric(vertical: 20),
       title: Center(
         child: Text(widget.course != null ? 'Editar Curso' : 'Adicionar Curso'),
       ),
-      content: Form(
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width * 0.08,
+      ),
+      content: content(context),
+      actionsPadding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width * 0.08,
+        vertical: 20,
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Expanded(
+              child: MainButton(
+                text: 'Cancelar',
+                onPressedCallback: () {
+                  _courseController.nameController.text = "";
+                  _courseController.universityController.text = "";
+                  _courseController.startDateController.text = "";
+                  _courseController.finishDateController.text = "";
+                  _courseController.degreeController.text = "";
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            const SizedBox(width: 5),
+            Expanded(
+              child: MainButton(
+                text: 'Salvar',
+                onPressedCallback: () {
+                  if (_courseController.formKey.currentState!.validate()) {
+                    if (widget.course != null) {
+                      _courseController.editCourse(widget.course!);
+                    } else {
+                      _courseController.addCourse();
+                    }
+                    _onDialogClose();
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget content(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.8,
+      child: Form(
         key: _courseController.formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -166,44 +217,6 @@ class _PopupCourseState extends State<PopupCourse> {
           ],
         ),
       ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              MainButton(
-                text: 'Cancelar',
-                onPressedCallback: () {
-                  _courseController.nameController.text = "";
-                  _courseController.universityController.text = "";
-                  _courseController.startDateController.text = "";
-                  _courseController.finishDateController.text = "";
-                  _courseController.degreeController.text = "";
-                  Navigator.pop(context);
-                },
-                buttonWidth: 100,
-                buttonHeight: 45,
-              ),
-              MainButton(
-                text: 'Salvar',
-                onPressedCallback: () {
-                  if (_courseController.formKey.currentState!.validate()) {
-                    if (widget.course != null) {
-                      _courseController.editCourse(widget.course!);
-                    } else {
-                      _courseController.addCourse();
-                    }
-                    _onDialogClose();
-                  }
-                },
-                buttonWidth: 100,
-                buttonHeight: 45,
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
