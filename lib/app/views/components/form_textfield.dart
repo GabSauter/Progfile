@@ -25,35 +25,33 @@ class FormTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: TextFormField(
-        validator: validator,
-        controller: textEditingController,
-        cursorColor: Theme.of(context).primaryColor,
-        textAlign: textAlign,
-        maxLines: maxLines ?? 1,
-        decoration: InputDecoration(
-          labelText: labelText,
-          counterText: '',
-          floatingLabelAlignment: isDialog
-              ? FloatingLabelAlignment.center
-              : FloatingLabelAlignment.start,
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(width: 2, color: Color(0xFF482FF7)),
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(width: 1, color: Color(0xFF482FF7)),
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          fillColor: Colors.transparent,
+    return TextFormField(
+      validator: validator,
+      controller: textEditingController,
+      cursorColor: Theme.of(context).primaryColor,
+      textAlign: textAlign,
+      maxLines: maxLines ?? 1,
+      decoration: InputDecoration(
+        labelText: labelText,
+        counterText: '',
+        floatingLabelAlignment: isDialog
+            ? FloatingLabelAlignment.center
+            : FloatingLabelAlignment.start,
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(width: 2, color: Color(0xFF482FF7)),
+          borderRadius: BorderRadius.circular(15.0),
         ),
-        keyboardType: (isNumeric) ? TextInputType.number : TextInputType.text,
-        inputFormatters: [
-          if (isNumeric) FilteringTextInputFormatter.digitsOnly,
-        ],
-        maxLength: (length == 0) ? null : length,
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(width: 1, color: Color(0xFF482FF7)),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        fillColor: Colors.transparent,
       ),
+      keyboardType: (isNumeric) ? TextInputType.number : TextInputType.text,
+      inputFormatters: [
+        if (isNumeric) FilteringTextInputFormatter.digitsOnly,
+      ],
+      maxLength: (length == 0) ? null : length,
     );
   }
 }

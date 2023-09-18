@@ -27,7 +27,7 @@ class FormDropdown extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: FormField<String>(
           // validator: (value) {
           //   if (value == null) {
