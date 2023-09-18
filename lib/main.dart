@@ -11,6 +11,7 @@ import 'app/views/login_view.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'app/views/my_curriculum_view.dart';
+import 'app/views/repository_view.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -65,6 +66,7 @@ class MainApp extends StatelessWidget {
         '/search': (context) => const SearchView(),
         '/course': (context) => const CourseView(),
         '/language': (context) => const LanguageView(),
+        '/repository': (context) => const RepositoryView(),
       },
     );
   }
