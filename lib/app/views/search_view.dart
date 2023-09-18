@@ -95,35 +95,44 @@ class SearchViewState extends State<SearchView> {
               child: ListView.builder(
                 itemCount: filteredResumes.length,
                 itemBuilder: (context, index) {
-                  return Card(
-                    color: const Color.fromARGB(255, 226, 243, 245),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    elevation: 6,
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 8.0,
-                    ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(16.0),
-                      leading: const CircleAvatar(
-                        backgroundColor: Colors.black,
-                        backgroundImage: AssetImage("assets/images/user.png"),
-                        radius: 40,
+                  return InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/curriculum',
+                        arguments: filteredResumes[index],
+                      );
+                    },
+                    child: Card(
+                      color: const Color.fromARGB(255, 226, 243, 245),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
                       ),
-                      title: Text(
-                        filteredResumes[index].name,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      elevation: 6,
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 8.0,
+                        horizontal: 8.0,
                       ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 6.0),
-                          Text(filteredResumes[index].fieldOfExpertise),
-                          const SizedBox(height: 6.0),
-                          Text(filteredResumes[index].degree),
-                        ],
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(16.0),
+                        leading: const CircleAvatar(
+                          backgroundColor: Colors.black,
+                          backgroundImage: AssetImage("assets/images/user.png"),
+                          radius: 40,
+                        ),
+                        title: Text(
+                          filteredResumes[index].name,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 6.0),
+                            Text(filteredResumes[index].fieldOfExpertise),
+                            const SizedBox(height: 6.0),
+                            Text(filteredResumes[index].degree),
+                          ],
+                        ),
                       ),
                     ),
                   );
