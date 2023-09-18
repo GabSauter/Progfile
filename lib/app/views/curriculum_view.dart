@@ -97,7 +97,18 @@ class CurriculumView extends StatelessWidget {
       ),
       const SizedBox(height: 5),
       Text(
-        '${_fakeProfile.courses.name} - ${_fakeProfile.courses.university}',
+        _fakeProfile.courses.name,
+        style: const TextStyle(
+          decoration: TextDecoration.underline,
+          fontSize: 16,
+        ),
+      ),
+      Text(
+        '${_fakeProfile.courses.degree} em ${_fakeProfile.courses.university}',
+        style: const TextStyle(fontSize: 16),
+      ),
+      Text(
+        '${_fakeProfile.courses.startDate} - ${_fakeProfile.courses.finishDate}',
         style: const TextStyle(fontSize: 16),
       ),
     ];

@@ -68,7 +68,7 @@ class MyCurriculumView extends StatelessWidget {
             ),
             SizedBox(width: 10),
             Text(
-              '/Ninjaalpha01',
+              'Ninjaalpha01',
               style: TextStyle(
                 decoration: TextDecoration.underline,
                 fontSize: 16,
