@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:progfile/app/models/language_model.dart';
-import 'package:progfile/app/services/Language_service.dart';
+import 'package:progfile/app/services/language_service.dart';
 
 class LanguageController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
