@@ -226,7 +226,9 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
               ),
               const SizedBox(height: 15),
               MainButton(
-                onPressedCallback: () {},
+                onPressedCallback: () {
+                  Navigator.pushNamed(context, '/competence');
+                },
                 text: 'Adicionar Competência',
               ),
               const SizedBox(height: 15),

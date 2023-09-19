@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/models/language_model.dart';
-import 'package:progfile/app/views/popups/popup_language.dart';
+import 'package:progfile/app/models/competence_model.dart';
+import 'package:progfile/app/views/popups/popup_competence.dart';
 
-import '../controllers/language_controller.dart';
+import '../controllers/competence_controller.dart';
 
-class LanguageView extends StatefulWidget {
-  const LanguageView({super.key});
+class CompetenceView extends StatefulWidget {
+  const CompetenceView({super.key});
 
   @override
-  State<LanguageView> createState() => _LanguageViewState();
+  State<CompetenceView> createState() => _CompetenceViewState();
 }
 
-class _LanguageViewState extends State<LanguageView> {
-  final _languageController = LanguageController();
+class _CompetenceViewState extends State<CompetenceView> {
+  final _competenceController = CompetenceController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Idiomas'),
+        title: const Text('Competências'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -27,7 +27,7 @@ class _LanguageViewState extends State<LanguageView> {
         ),
       ),
       body: FutureBuilder(
-        future: _languageController.getLanguages(),
+        future: _competenceController.getCompetences(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
@@ -46,14 +46,14 @@ class _LanguageViewState extends State<LanguageView> {
                       ),
                     ),
                     onDismissed: (direction) {
-                      _languageController
-                          .removeLanguage(snapshot.data![index].id);
+                      _competenceController
+                          .removeCompetence(snapshot.data![index].id);
                     },
                     child: ListTile(
                       title: Text(snapshot.data![index].name),
                       trailing: Text(snapshot.data![index].degree),
-                      onTap: () => _showAddLanguageDialog(
-                          language: snapshot.data![index]),
+                      onTap: () => _showAddcompetenceDialog(
+                          competence: snapshot.data![index]),
                     ),
                   );
                 },
@@ -73,20 +73,20 @@ class _LanguageViewState extends State<LanguageView> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddLanguageDialog(),
+        onPressed: () => _showAddcompetenceDialog(),
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  void _showAddLanguageDialog({LanguageModel? language}) {
+  void _showAddcompetenceDialog({CompetenceModel? competence}) {
     showDialog(
       context: context,
       builder: (context) {
-        return PopupLanguage(
-          language: language,
+        return PopupCompetence(
+          competence: competence,
           onPopupClose: () => setState(() {
-            _languageController.getLanguages();
+            _competenceController.getCompetences();
           }),
         );
       },
