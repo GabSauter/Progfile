@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progfile/app/views/certificate_view.dart';
+import 'package:progfile/app/views/competence_view.dart';
 import 'package:progfile/app/views/curriculum_edit_view.dart';
 import 'package:progfile/app/views/home_view.dart';
 import 'package:progfile/app/views/language_view.dart';
@@ -69,6 +70,7 @@ class MainApp extends StatelessWidget {
         '/course': (context) => const CourseView(),
         '/language': (context) => const LanguageView(),
         '/repository': (context) => const RepositoryView(),
+        '/competence': (context) => const CompetenceView(),
       },
     );
   }
