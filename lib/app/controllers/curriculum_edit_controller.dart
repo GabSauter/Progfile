@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progfile/app/models/curriculum_model.dart';
 import 'package:progfile/app/services/curriculum_service.dart';
+import 'package:progfile/app/views/popups/popup_Image_selection.dart';
 
 class CurriculumRegisterController {
   final nameController = TextEditingController();
@@ -40,7 +41,7 @@ class CurriculumRegisterController {
     if (await Permission.camera.request().isGranted &&
         await Permission.storage.request().isGranted) {
       if (context.mounted) {
-        _showImageSourceSelectionDialog(context);
+        PopupImageSelection(this).showImageSourceSelectionDialog(context);
       }
     } else {
       if (context.mounted) {
@@ -49,39 +50,7 @@ class CurriculumRegisterController {
     }
   }
 
-  void _showImageSourceSelectionDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Select Image Type'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                GestureDetector(
-                  child: const Text('Camera'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _getImageFromCamera(context);
-                  },
-                ),
-                const SizedBox(height: 16.0),
-                GestureDetector(
-                  child: const Text('Gallery'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _getImageFromGallery(context);
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _getImageFromCamera(BuildContext context) async {
+  Future<void> getImageFromCamera(BuildContext context) async {
     final imagePicker = ImagePicker();
     final pickedImage = await imagePicker.pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
@@ -89,7 +58,7 @@ class CurriculumRegisterController {
     }
   }
 
-  Future<void> _getImageFromGallery(BuildContext context) async {
+  Future<void> getImageFromGallery(BuildContext context) async {
     final imagePicker = ImagePicker();
     final pickedImage =
         await imagePicker.pickImage(source: ImageSource.gallery);
@@ -116,83 +85,5 @@ class CurriculumRegisterController {
 
   void _setImage(File image) {
     _image.value = image;
-  }
-
-  String? validateName(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor";
-    }
-    return null;
-  }
-
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor";
-    } else if (!value.contains("@")) {
-      return "O email precisa ter o @";
-    }
-    return null;
-  }
-
-  String? validatePhone(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor.";
-    }
-
-    String sanitizedNumber = value.replaceAll(RegExp(r'\D'), '');
-
-    if (sanitizedNumber.length != 10) {
-      return 'O número de telefone precisa ter 10 digitos.';
-    }
-
-    return null;
-  }
-
-  String? validateAboutYou(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor";
-    }
-    return null;
-  }
-
-  String? validateFieldOfStudy(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor";
-    }
-    return null;
-  }
-
-  String? validateAddress(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor";
-    }
-    return null;
-  }
-
-  String? validateGithubRepository(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor";
-    }
-
-    return null;
-  }
-
-  String? validateGithubUsername(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor";
-    }
-
-    return null;
-  }
-
-  String? validateDropdownValue(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Por favor insira algum valor";
-    }
-    return null;
-  }
-
-  bool validateForm(BuildContext context) {
-    return formKey.currentState!.validate();
   }
 }

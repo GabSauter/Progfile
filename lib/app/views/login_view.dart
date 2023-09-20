@@ -43,7 +43,7 @@ class LoginView extends StatelessWidget {
                 FormTextField(
                   textEditingController: loginController.emailController,
                   validator: (value) {
-                    return loginController.validateEmail(value);
+                    return validateEmail(value);
                   },
                 ),
                 const SizedBox(height: 10),
@@ -52,14 +52,14 @@ class LoginView extends StatelessWidget {
                 FormPasswordTextField(
                   textEditingController: loginController.passwordController,
                   validator: (value) {
-                    return loginController.validatePassword(value);
+                    return validatePassword(value);
                   },
                 ),
                 const SizedBox(height: 20),
                 MainButton(
                   text: 'Entrar',
                   onPressedCallback: () {
-                    if (loginController.validateForm(context)) {
+                    if (loginController.formKey.currentState!.validate()) {
                       onSignIn(context);
                     }
                   },
@@ -75,5 +75,23 @@ class LoginView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    } else if (!value.contains("@")) {
+      return "O email precisa ter o @";
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor.";
+    } else if (value.length < 8) {
+      return "A senha precisa ter pelo menos 8 characteres";
+    }
+    return null;
   }
 }

@@ -22,7 +22,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
   final _controller = CurriculumRegisterController();
 
   void createCurriculum() async {
-    if (_controller.validateForm(context)) {
+    if (_controller.formKey.currentState!.validate()) {
       try {
         await _controller.createCurriculum();
         if (context.mounted) {
@@ -80,7 +80,10 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
               FormTextField(
                 textEditingController: _controller.nameController,
                 validator: (value) {
-                  return _controller.validateName(value);
+                  if (value == null || value.isEmpty) {
+                    return "Por favor insira algum valor";
+                  }
+                  return null;
                 },
               ),
               const SizedBox(height: 15),
@@ -94,7 +97,12 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
               FormTextField(
                 textEditingController: _controller.emailController,
                 validator: (value) {
-                  return _controller.validateEmail(value);
+                  if (value == null || value.isEmpty) {
+                    return "Por favor insira algum valor";
+                  } else if (!value.contains("@")) {
+                    return "O email precisa ter o @";
+                  }
+                  return null;
                 },
               ),
               const SizedBox(height: 15),
@@ -108,7 +116,17 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
               MaskedTextField(
                 controller: _controller.phoneNumberController,
                 validator: (value) {
-                  return _controller.validatePhone(value);
+                  if (value == null || value.isEmpty) {
+                    return "Por favor insira algum valor.";
+                  }
+
+                  String sanitizedNumber = value.replaceAll(RegExp(r'\D'), '');
+
+                  if (sanitizedNumber.length != 11) {
+                    return 'O número de telefone precisa ter 11 digitos.';
+                  }
+
+                  return null;
                 },
               ),
               const SizedBox(height: 15),
@@ -124,7 +142,10 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 length: 200,
                 textEditingController: _controller.aboutYouController,
                 validator: (value) {
-                  return _controller.validateAboutYou(value);
+                  if (value == null || value.isEmpty) {
+                    return "Por favor insira algum valor";
+                  }
+                  return null;
                 },
               ),
               const SizedBox(height: 25),
@@ -153,7 +174,11 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 textEditingController:
                     _controller.githubRepositoryUrlController,
                 validator: (value) {
-                  return _controller.validateGithubRepository(value);
+                  if (value == null || value.isEmpty) {
+                    return "Por favor insira algum valor";
+                  }
+
+                  return null;
                 },
               ),
               const SizedBox(height: 10),
@@ -174,7 +199,10 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
               FormTextField(
                 textEditingController: _controller.addressController,
                 validator: (value) {
-                  return _controller.validateAddress(value);
+                  if (value == null || value.isEmpty) {
+                    return "Por favor insira algum valor";
+                  }
+                  return null;
                 },
               ),
               const SizedBox(height: 15),
@@ -188,7 +216,10 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
               FormTextField(
                 textEditingController: _controller.fieldOfStudyController,
                 validator: (value) {
-                  return _controller.validateFieldOfStudy(value);
+                  if (value == null || value.isEmpty) {
+                    return "Por favor insira algum valor";
+                  }
+                  return null;
                 },
               ),
               const SizedBox(height: 15),
@@ -213,7 +244,10 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                   });
                 },
                 validator: (value) {
-                  return _controller.validateDropdownValue(value);
+                  if (value == null || value.isEmpty) {
+                    return "Por favor insira algum valor";
+                  }
+                  return null;
                 },
                 errorText: 'Selecione o nível de desenvolvedor',
               ),
