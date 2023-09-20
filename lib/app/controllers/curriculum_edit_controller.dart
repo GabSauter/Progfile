@@ -27,7 +27,7 @@ class CurriculumRegisterController {
       name: nameController.text,
       email: emailController.text,
       phoneNumber: phoneNumberController.text,
-      gitHubRepositoryUrl: githubRepositoryUrlController.text,
+      githubUsername: githubRepositoryUrlController.text,
       address: addressController.text,
       fieldOfExpertise: fieldOfStudyController.text,
       degree: selectedDegree == null ? '' : selectedDegree.toString(),
