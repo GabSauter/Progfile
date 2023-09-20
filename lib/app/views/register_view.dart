@@ -55,7 +55,7 @@ class RegisterView extends StatelessWidget {
                     FormTextField(
                       textEditingController: registerController.nameController,
                       validator: (value) {
-                        return registerController.validateName(value);
+                        return validateName(value);
                       },
                     ),
                     const SizedBox(height: 10),
@@ -64,7 +64,7 @@ class RegisterView extends StatelessWidget {
                     FormTextField(
                       textEditingController: registerController.emailController,
                       validator: (value) {
-                        return registerController.validateEmail(value);
+                        return validateEmail(value);
                       },
                     ),
                     const SizedBox(height: 10),
@@ -74,7 +74,7 @@ class RegisterView extends StatelessWidget {
                       textEditingController:
                           registerController.passwordController,
                       validator: (value) {
-                        return registerController.validatePassword(value);
+                        return validatePassword(value);
                       },
                     ),
                     const SizedBox(height: 10),
@@ -84,16 +84,16 @@ class RegisterView extends StatelessWidget {
                       textEditingController:
                           registerController.confirmPasswordController,
                       validator: (value) {
-                        return registerController.validatePassword(value);
+                        return validatePassword(value);
                       },
                     ),
                     const SizedBox(height: 20),
                     MainButton(
                       text: 'Cadastrar',
                       onPressedCallback: () {
-                        var isSamePassword =
-                            registerController.confirmPassword();
-                        if (registerController.validateForm(context) &&
+                        var isSamePassword = confirmPassword();
+                        if (registerController.formKey.currentState!
+                                .validate() &&
                             isSamePassword) {
                           onSignUp(context);
                         }
@@ -111,5 +111,35 @@ class RegisterView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    }
+    return null;
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor";
+    } else if (!value.contains("@")) {
+      return "O email precisa ter o @";
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Por favor insira algum valor.";
+    } else if (value.length < 8) {
+      return "A senha precisa ter pelo menos 8 characteres";
+    }
+    return null;
+  }
+
+  bool confirmPassword() {
+    return (registerController.passwordController.text ==
+        registerController.confirmPasswordController.text);
   }
 }
