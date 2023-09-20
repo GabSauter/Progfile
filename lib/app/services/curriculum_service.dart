@@ -11,4 +11,45 @@ class CurriculumService {
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .set(curriculum.toMap());
   }
+
+  Future<void> edit(CurriculumModel curriculum) async {
+    await _db
+        .collection("curriculum")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .set(curriculum.toMap());
+  }
+
+  Future<void> delete() async {
+    DocumentReference ref = _db
+        .collection("curriculum")
+        .doc(FirebaseAuth.instance.currentUser?.uid);
+
+    await ref.delete();
+  }
+
+  Future<CurriculumModel?> get() async {
+    CurriculumModel? myCurriculum;
+
+    DocumentReference ref = _db
+        .collection("curriculum")
+        .doc(FirebaseAuth.instance.currentUser?.uid);
+
+    ref.get().then(
+      (DocumentSnapshot doc) {
+        myCurriculum = CurriculumModel(
+            image: doc.get("image"),
+            name: doc.get("name"),
+            email: doc.get("email"),
+            phoneNumber: doc.get("phoneNumber"),
+            githubUsername: doc.get("githubUsername"),
+            address: doc.get("address"),
+            fieldOfExpertise: doc.get("fieldOfExpertise"),
+            aboutYou: doc.get("aboutYou"),
+            degree: doc.get("degree"));
+      },
+      //onError: (e) => print("Error getting document: $e"),
+    );
+
+    return myCurriculum;
+  }
 }

@@ -5,7 +5,7 @@ class CurriculumModel {
   String name;
   String email;
   String phoneNumber;
-  String gitHubRepositoryUrl;
+  String githubUsername;
   String address;
   String fieldOfExpertise;
   String degree;
@@ -16,7 +16,7 @@ class CurriculumModel {
     required this.name,
     required this.email,
     required this.phoneNumber,
-    required this.gitHubRepositoryUrl,
+    required this.githubUsername,
     required this.address,
     required this.fieldOfExpertise,
     required this.degree,
@@ -28,7 +28,7 @@ class CurriculumModel {
       'name': name,
       'email': email,
       'phoneNumber': phoneNumber,
-      'gitHubRepositoryUrl': gitHubRepositoryUrl,
+      'githubUsername': githubUsername,
       'address': address,
       'fieldOfExpertise': fieldOfExpertise,
       'degree': degree,
