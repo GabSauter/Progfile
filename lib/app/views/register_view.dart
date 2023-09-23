@@ -40,74 +40,68 @@ class RegisterView extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: 0, right: 50, left: 50, bottom: 5),
-              child: Form(
-                key: registerController.formKey,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 40),
-                    const FormText(text: 'Nome:'),
-                    const SizedBox(height: 10),
-                    FormTextField(
-                      textEditingController: registerController.nameController,
-                      validator: (value) {
-                        return validateName(value);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    const FormText(text: 'Email:'),
-                    const SizedBox(height: 10),
-                    FormTextField(
-                      textEditingController: registerController.emailController,
-                      validator: (value) {
-                        return validateEmail(value);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    const FormText(text: 'Senha:'),
-                    const SizedBox(height: 10),
-                    FormPasswordTextField(
-                      textEditingController:
-                          registerController.passwordController,
-                      validator: (value) {
-                        return validatePassword(value);
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    const FormText(text: 'Confirmar Senha:'),
-                    const SizedBox(height: 10),
-                    FormPasswordTextField(
-                      textEditingController:
-                          registerController.confirmPasswordController,
-                      validator: (value) {
-                        return validatePassword(value);
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    MainButton(
-                      text: 'Cadastrar',
-                      onPressedCallback: () {
-                        var isSamePassword = confirmPassword();
-                        if (registerController.formKey.currentState!
-                                .validate() &&
-                            isSamePassword) {
-                          onSignUp(context);
-                        }
-                        if (!isSamePassword) {
-                          SnackBarHelper.showErrorSnackBar(
-                              "Por favor digite a mesma senha", context);
-                        }
-                      },
-                    ),
-                  ],
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 0, right: 50, left: 50, bottom: 5),
+          child: Form(
+            key: registerController.formKey,
+            child: Column(
+              children: [
+                const SizedBox(height: 40),
+                const FormText(text: 'Nome:'),
+                const SizedBox(height: 10),
+                FormTextField(
+                  textEditingController: registerController.nameController,
+                  validator: (value) {
+                    return validateName(value);
+                  },
                 ),
-              ),
+                const SizedBox(height: 10),
+                const FormText(text: 'Email:'),
+                const SizedBox(height: 10),
+                FormTextField(
+                  textEditingController: registerController.emailController,
+                  validator: (value) {
+                    return validateEmail(value);
+                  },
+                ),
+                const SizedBox(height: 10),
+                const FormText(text: 'Senha:'),
+                const SizedBox(height: 10),
+                FormPasswordTextField(
+                  textEditingController: registerController.passwordController,
+                  validator: (value) {
+                    return validatePassword(value);
+                  },
+                ),
+                const SizedBox(height: 10),
+                const FormText(text: 'Confirmar Senha:'),
+                const SizedBox(height: 10),
+                FormPasswordTextField(
+                  textEditingController:
+                      registerController.confirmPasswordController,
+                  validator: (value) {
+                    return validatePassword(value);
+                  },
+                ),
+                const SizedBox(height: 20),
+                MainButton(
+                  text: 'Cadastrar',
+                  onPressedCallback: () {
+                    var isSamePassword = confirmPassword();
+                    if (registerController.formKey.currentState!.validate() &&
+                        isSamePassword) {
+                      onSignUp(context);
+                    }
+                    if (!isSamePassword) {
+                      SnackBarHelper.showErrorSnackBar(
+                          "Por favor digite a mesma senha", context);
+                    }
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
