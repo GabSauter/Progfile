@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/register_controller.dart';
 import 'package:progfile/app/views/components/back_button.dart';
@@ -20,8 +21,27 @@ class RegisterView extends StatelessWidget {
       if (context.mounted) {
         Navigator.pushReplacementNamed(context, '/home');
       }
-    } catch (e) {
-      SnackBarHelper.showErrorSnackBar(e.toString(), context);
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = "Ocorreu um erro ao cadastrar o usuário";
+
+      switch (e.code) {
+        case 'email-already-in-use':
+          errorMessage =
+              "Este e-mail já está em uso. Por favor, use outro endereço de e-mail.";
+          break;
+        case 'weak-password':
+          errorMessage = "A senha é muito fraca. Use uma senha mais forte.";
+          break;
+        case 'network-request-failed':
+          errorMessage =
+              "Houve um problema de conexão com a Internet. Verifique sua conexão e tente novamente.";
+          break;
+        default:
+          errorMessage =
+              "Ocorreu um erro desconhecido ao cadastrar o usuário. Por favor, tente novamente mais tarde.";
+      }
+
+      SnackBarHelper.showErrorSnackBar(errorMessage, context);
     }
   }
 
