@@ -72,7 +72,7 @@ class MainApp extends StatelessWidget {
         '/language': (context) => const LanguageView(),
         '/repository': (context) => const RepositoryView(),
         '/competence': (context) => const CompetenceView(),
-        '/editAccount': (context) => const EditAccountView(),
+        '/editAccount': (context) => EditAccountView(),
       },
     );
   }
