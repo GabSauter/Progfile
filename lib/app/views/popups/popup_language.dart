@@ -21,16 +21,17 @@ class PopupLanguage extends StatefulWidget {
 
 class _PopupCoursLanguage extends State<PopupLanguage> {
   final _languageController = LanguageController();
-  String selectedValue = 'Básico';
+  late String selectedValue;
 
   @override
   void initState() {
     super.initState();
-    _languageController.degreeController.text =
-        widget.language?.degree ?? 'Básico';
-    selectedValue = _languageController.degreeController.text == ''
-        ? 'Básico'
-        : _languageController.degreeController.text;
+    selectedValue = widget.language?.degree ?? 'Básico';
+
+    _languageController.degreeController.text = selectedValue;
+
+    _languageController.nameController.text =
+        widget.language?.name ?? _languageController.nameController.text;
   }
 
   void _onDialogClose() {
@@ -42,12 +43,6 @@ class _PopupCoursLanguage extends State<PopupLanguage> {
 
   @override
   Widget build(BuildContext context) {
-    _languageController.nameController = TextEditingController(
-        text: widget.language?.name ?? _languageController.nameController.text);
-    _languageController.degreeController = TextEditingController(
-        text: widget.language?.degree ??
-            _languageController.degreeController.text);
-
     return AlertDialog(
       scrollable: true,
       titlePadding: const EdgeInsets.symmetric(vertical: 20),
@@ -126,18 +121,10 @@ class _PopupCoursLanguage extends State<PopupLanguage> {
                     ))
                 .toList(),
             value: selectedValue,
-            onChanged: (value) {
-              selectedValue = value.toString();
-              _languageController.degreeController.text = selectedValue;
-
-              if (widget.language != null) {
-                widget.language?.name = _languageController.nameController.text;
-                widget.language?.degree =
-                    _languageController.degreeController.text;
-              }
-
-              setState(() {});
-            },
+            onChanged: (value) => setState(() => {
+                  selectedValue = value,
+                  _languageController.degreeController.text = selectedValue
+                }),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Informe o seu grau de idioma';

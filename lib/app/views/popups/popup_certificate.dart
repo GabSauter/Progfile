@@ -23,6 +23,16 @@ class PopupCertificate extends StatefulWidget {
 class _PopupCertificateState extends State<PopupCertificate> {
   final _certificateController = CertificateController();
 
+  @override
+  void initState() {
+    super.initState();
+
+    _certificateController.nameController.text = widget.certificate?.name ?? '';
+    _certificateController.organizationController.text =
+        widget.certificate?.organization ?? '';
+    _certificateController.omissionDate = widget.certificate?.omissionDate;
+  }
+
   void _onDialogClose() {
     Navigator.of(context).pop();
     if (widget.onPopupClose != null) {
@@ -32,12 +42,6 @@ class _PopupCertificateState extends State<PopupCertificate> {
 
   @override
   Widget build(BuildContext context) {
-    _certificateController.nameController =
-        TextEditingController(text: widget.certificate?.name ?? '');
-    _certificateController.organizationController =
-        TextEditingController(text: widget.certificate?.organization ?? '');
-    _certificateController.omissionDate = widget.certificate?.omissionDate;
-
     return AlertDialog(
       scrollable: true,
       titlePadding: const EdgeInsets.symmetric(vertical: 20),
