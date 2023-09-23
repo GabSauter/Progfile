@@ -21,6 +21,22 @@ class PopupRepository extends StatefulWidget {
 class _PopupRepositoryState extends State<PopupRepository> {
   final _repositoryController = RepositoryController();
 
+  @override
+  void initState() {
+    super.initState();
+
+    _repositoryController.nameController.text =
+        widget.repository?.name ?? _repositoryController.nameController.text;
+    _repositoryController.urlController.text =
+        widget.repository?.url ?? _repositoryController.urlController.text;
+    _repositoryController.languageController.text =
+        widget.repository?.language ??
+            _repositoryController.languageController.text;
+    _repositoryController.descriptionController.text =
+        widget.repository?.description ??
+            _repositoryController.descriptionController.text;
+  }
+
   void _onDialogClose() {
     Navigator.of(context).pop();
     if (widget.onPopupClose != null) {
@@ -30,19 +46,6 @@ class _PopupRepositoryState extends State<PopupRepository> {
 
   @override
   Widget build(BuildContext context) {
-    _repositoryController.nameController = TextEditingController(
-        text: widget.repository?.name ??
-            _repositoryController.nameController.text);
-    _repositoryController.urlController = TextEditingController(
-        text:
-            widget.repository?.url ?? _repositoryController.urlController.text);
-    _repositoryController.languageController = TextEditingController(
-        text: widget.repository?.language ??
-            _repositoryController.languageController.text);
-    _repositoryController.descriptionController = TextEditingController(
-        text: widget.repository?.description ??
-            _repositoryController.descriptionController.text);
-
     return AlertDialog(
       scrollable: true,
       title: Center(

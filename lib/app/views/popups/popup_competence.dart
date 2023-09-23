@@ -21,16 +21,19 @@ class PopupCompetence extends StatefulWidget {
 
 class _PopupCompetence extends State<PopupCompetence> {
   final _competenceController = CompetenceController();
-  String selectedValue = 'Básico';
+  late String selectedValue;
 
   @override
   void initState() {
     super.initState();
-    _competenceController.degreeController.text =
-        widget.competence?.degree ?? 'Básico';
-    selectedValue = _competenceController.degreeController.text == ''
-        ? 'Básico'
-        : _competenceController.degreeController.text;
+    selectedValue = widget.competence?.degree ?? 'Básico';
+
+    _competenceController.degreeController.text = selectedValue;
+
+    _competenceController.nameController.text =
+        widget.competence?.name ?? _competenceController.nameController.text;
+    _competenceController.degreeController.text = widget.competence?.degree ??
+        _competenceController.degreeController.text;
   }
 
   void _onDialogClose() {
@@ -42,13 +45,6 @@ class _PopupCompetence extends State<PopupCompetence> {
 
   @override
   Widget build(BuildContext context) {
-    _competenceController.nameController = TextEditingController(
-        text: widget.competence?.name ??
-            _competenceController.nameController.text);
-    _competenceController.degreeController = TextEditingController(
-        text: widget.competence?.degree ??
-            _competenceController.degreeController.text);
-
     return AlertDialog(
       scrollable: true,
       titlePadding: const EdgeInsets.symmetric(vertical: 20),
@@ -128,19 +124,10 @@ class _PopupCompetence extends State<PopupCompetence> {
                     ))
                 .toList(),
             value: selectedValue,
-            onChanged: (value) {
-              selectedValue = value.toString();
+            onChanged: (value) => setState(() {
+              selectedValue = value;
               _competenceController.degreeController.text = selectedValue;
-
-              if (widget.competence != null) {
-                widget.competence?.name =
-                    _competenceController.nameController.text;
-                widget.competence?.degree =
-                    _competenceController.degreeController.text;
-              }
-
-              setState(() {});
-            },
+            }),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Informe o seu grau de competência';
