@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/login_controller.dart';
 import 'package:progfile/app/views/components/form_password_textfield.dart';
@@ -20,8 +21,29 @@ class LoginView extends StatelessWidget {
       if (context.mounted) {
         Navigator.pushReplacementNamed(context, '/home');
       }
-    } catch (e) {
-      SnackBarHelper.showErrorSnackBar(e.toString(), context);
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = "Ocorreu um erro ao fazer login";
+
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = "Email ou senha incorreta.";
+          break;
+        case 'invalid-email':
+          errorMessage = "Email inválido.";
+          break;
+        case 'wrong-password':
+          errorMessage = "Email ou senha incorreta.";
+          break;
+        case 'network-request-failed':
+          errorMessage =
+              "Houve um problema de conexão com a Internet. Verifique sua conexão e tente novamente.";
+          break;
+        default:
+          errorMessage =
+              "Ocorreu um erro desconhecido. Por favor, tente novamente mais tarde.";
+      }
+
+      SnackBarHelper.showErrorSnackBar(errorMessage, context);
     }
   }
 
