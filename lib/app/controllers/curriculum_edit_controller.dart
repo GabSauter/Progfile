@@ -12,7 +12,7 @@ class CurriculumRegisterController {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneNumberController = MaskedTextController(mask: '(00) 00000-0000');
-  final githubRepositoryUrlController = TextEditingController();
+  final githubUsername = TextEditingController();
   final addressController = TextEditingController();
   final fieldOfStudyController = TextEditingController();
   final aboutYouController = TextEditingController();
@@ -27,7 +27,7 @@ class CurriculumRegisterController {
       name: nameController.text,
       email: emailController.text,
       phoneNumber: phoneNumberController.text,
-      githubUsername: githubRepositoryUrlController.text,
+      githubUsername: githubUsername.text,
       address: addressController.text,
       fieldOfExpertise: fieldOfStudyController.text,
       degree: selectedDegree == null ? '' : selectedDegree.toString(),
