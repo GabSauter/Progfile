@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class FormTextField extends StatelessWidget {
+class FormTextField extends StatefulWidget {
   final TextEditingController textEditingController;
   final String? Function(String?)? validator;
   final String labelText;
@@ -24,17 +24,30 @@ class FormTextField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<FormTextField> createState() => _FormTextFieldState();
+}
+
+class _FormTextFieldState extends State<FormTextField> {
+  String? errorText;
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: validator,
-      controller: textEditingController,
+      validator: (value) {
+        final errorMessage = widget.validator?.call(value);
+        setState(() {
+          errorText = errorMessage;
+        });
+        return errorMessage;
+      },
+      controller: widget.textEditingController,
       cursorColor: Theme.of(context).primaryColor,
-      textAlign: textAlign,
-      maxLines: maxLines ?? 1,
+      textAlign: widget.textAlign,
+      maxLines: widget.maxLines ?? 1,
       decoration: InputDecoration(
-        labelText: labelText,
+        labelText: widget.labelText,
         counterText: '',
-        floatingLabelAlignment: isDialog
+        floatingLabelAlignment: widget.isDialog
             ? FloatingLabelAlignment.center
             : FloatingLabelAlignment.start,
         focusedBorder: OutlineInputBorder(
@@ -46,12 +59,27 @@ class FormTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         fillColor: Colors.transparent,
+        errorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(width: 1, color: Colors.red),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        errorStyle: const TextStyle(
+          color: Colors.red, // Cor do erro
+          fontSize: 14.0, // Tamanho da fonte do erro
+          // Outros estilos de texto do erro, como fontWeight, fontStyle, etc.
+        ),
+        errorText: errorText,
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(width: 2, color: Colors.red),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
       ),
-      keyboardType: (isNumeric) ? TextInputType.number : TextInputType.text,
+      keyboardType:
+          (widget.isNumeric) ? TextInputType.number : TextInputType.text,
       inputFormatters: [
-        if (isNumeric) FilteringTextInputFormatter.digitsOnly,
+        if (widget.isNumeric) FilteringTextInputFormatter.digitsOnly,
       ],
-      maxLength: (length == 0) ? null : length,
+      maxLength: (widget.length == 0) ? null : widget.length,
     );
   }
 }

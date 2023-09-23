@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
-class MaskedTextField extends StatelessWidget {
+class MaskedTextField extends StatefulWidget {
   final MaskedTextController controller;
   final String? Function(dynamic value) validator;
 
@@ -12,10 +12,23 @@ class MaskedTextField extends StatelessWidget {
   });
 
   @override
+  State<MaskedTextField> createState() => _MaskedTextFieldState();
+}
+
+class _MaskedTextFieldState extends State<MaskedTextField> {
+  String? errorText;
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      validator: validator,
+      controller: widget.controller,
+      validator: (value) {
+        final errorMessage = widget.validator.call(value);
+        setState(() {
+          errorText = errorMessage;
+        });
+        return errorMessage;
+      },
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
         focusedBorder: OutlineInputBorder(
@@ -27,6 +40,20 @@ class MaskedTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         fillColor: Colors.transparent,
+        errorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(width: 1, color: Colors.red),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        errorStyle: const TextStyle(
+          color: Colors.red, // Cor do erro
+          fontSize: 14.0, // Tamanho da fonte do erro
+          // Outros estilos de texto do erro, como fontWeight, fontStyle, etc.
+        ),
+        errorText: errorText,
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(width: 2, color: Colors.red),
+          borderRadius: BorderRadius.circular(15.0),
+        ),
       ),
     );
   }
