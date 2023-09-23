@@ -171,7 +171,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
               ),
               const SizedBox(height: 10),
               FormTextField(
-                textEditingController: _controller.githubUsername,
+                textEditingController: _controller.githubUsernameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Por favor insira algum valor";
