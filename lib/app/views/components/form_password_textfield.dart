@@ -14,6 +14,7 @@ class FormPasswordTextField extends StatefulWidget {
 
 class _PasswordTextFieldState extends State<FormPasswordTextField> {
   bool _obscureText = true;
+  String? errorText;
 
   void _toggle() {
     setState(() {
@@ -25,7 +26,13 @@ class _PasswordTextFieldState extends State<FormPasswordTextField> {
   Widget build(BuildContext context) {
     return SizedBox(
       child: TextFormField(
-        validator: widget.validator,
+        validator: (value) {
+          final errorMessage = widget.validator?.call(value);
+          setState(() {
+            errorText = errorMessage;
+          });
+          return errorMessage;
+        },
         controller: widget.textEditingController,
         cursorColor: const Color(0xFF482FF7),
         decoration: InputDecoration(
@@ -50,6 +57,20 @@ class _PasswordTextFieldState extends State<FormPasswordTextField> {
                 color: const Color(0xFF482FF7),
               ),
             ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(width: 1, color: Colors.red),
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          errorStyle: const TextStyle(
+            color: Colors.red, // Cor do erro
+            fontSize: 14.0, // Tamanho da fonte do erro
+            // Outros estilos de texto do erro, como fontWeight, fontStyle, etc.
+          ),
+          errorText: errorText,
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(width: 2, color: Colors.red),
+            borderRadius: BorderRadius.circular(15.0),
           ),
         ),
         obscureText: _obscureText,
