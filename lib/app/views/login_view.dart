@@ -10,12 +10,23 @@ import 'package:progfile/app/views/components/title_text.dart';
 
 import 'components/snackbar_helper.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
   final LoginController loginController = LoginController();
 
-  LoginView({super.key});
+  bool isLoading = false;
 
   void onSignIn(BuildContext context) async {
+    setState(() {
+      isLoading = true;
+    });
+
     try {
       await loginController.signIn();
       if (context.mounted) {
@@ -42,8 +53,11 @@ class LoginView extends StatelessWidget {
           errorMessage =
               "Ocorreu um erro desconhecido. Por favor, tente novamente mais tarde.";
       }
-
       SnackBarHelper.showErrorSnackBar(errorMessage, context);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -78,14 +92,19 @@ class LoginView extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                MainButton(
-                  text: 'Entrar',
-                  onPressedCallback: () {
-                    if (loginController.formKey.currentState!.validate()) {
-                      onSignIn(context);
-                    }
-                  },
-                ),
+                isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : MainButton(
+                        text: 'Entrar',
+                        onPressedCallback: () {
+                          if (loginController.formKey.currentState!
+                              .validate()) {
+                            onSignIn(context);
+                          }
+                        },
+                      ),
                 const SizedBox(height: 10),
                 const SecondaryButton(
                   text: 'Cadastrar',
