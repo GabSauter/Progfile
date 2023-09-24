@@ -10,12 +10,23 @@ import 'components/main_button.dart';
 import 'components/snackbar_helper.dart';
 import 'components/title_text.dart';
 
-class RegisterView extends StatelessWidget {
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
+
+  @override
+  State<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
   final RegisterController registerController = RegisterController();
 
-  RegisterView({super.key});
+  bool isLoading = false;
 
   void onSignUp(BuildContext context) async {
+    if (isLoading) return;
+    setState(() {
+      isLoading = true;
+    });
     try {
       await registerController.signUp();
       if (context.mounted) {
@@ -42,6 +53,10 @@ class RegisterView extends StatelessWidget {
       }
 
       SnackBarHelper.showErrorSnackBar(errorMessage, context);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -105,20 +120,25 @@ class RegisterView extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                MainButton(
-                  text: 'Cadastrar',
-                  onPressedCallback: () {
-                    var isSamePassword = confirmPassword();
-                    if (registerController.formKey.currentState!.validate() &&
-                        isSamePassword) {
-                      onSignUp(context);
-                    }
-                    if (!isSamePassword) {
-                      SnackBarHelper.showErrorSnackBar(
-                          "Por favor digite a mesma senha", context);
-                    }
-                  },
-                ),
+                isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : MainButton(
+                        text: 'Cadastrar',
+                        onPressedCallback: () {
+                          var isSamePassword = confirmPassword();
+                          if (registerController.formKey.currentState!
+                                  .validate() &&
+                              isSamePassword) {
+                            onSignUp(context);
+                          }
+                          if (!isSamePassword) {
+                            SnackBarHelper.showErrorSnackBar(
+                                "Por favor digite a mesma senha", context);
+                          }
+                        },
+                      ),
               ],
             ),
           ),
