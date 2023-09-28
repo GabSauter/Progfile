@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progfile/app/models/curriculum_model.dart';
 import 'package:progfile/app/services/curriculum_service.dart';
-import 'package:progfile/app/views/popups/popup_Image_selection.dart';
+import 'package:progfile/app/views/popups/popup_image_selection.dart';
 
 class CurriculumRegisterController {
   final nameController = TextEditingController();

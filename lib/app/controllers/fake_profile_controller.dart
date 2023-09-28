@@ -18,7 +18,7 @@ class FakeProfileController {
         image: null,
         about: '''
 Once upons a time there was a lovely princess. But she had an anchantment upon 
-her of a fearful sort which could obly be broken by love\'s first kiss. She was
+her of a fearful sort which could obly be broken by love's first kiss. She was
 locked away in a castle guarded by a terrible fire-breathing dragon.''',
       ),
       courses: CourseModel(
