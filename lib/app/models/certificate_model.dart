@@ -4,10 +4,11 @@ class CertificateModel {
   String organization;
   DateTime? omissionDate;
 
-  CertificateModel(
-      {required this.name,
-      required this.organization,
-      required this.omissionDate});
+  CertificateModel({
+    required this.name,
+    required this.organization,
+    required this.omissionDate,
+  });
 
   Map<String, dynamic> toMap() {
     return {
