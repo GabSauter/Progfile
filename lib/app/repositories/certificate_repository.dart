@@ -22,13 +22,13 @@ class CertificateRepository extends ChangeNotifier {
   }
 
   Future<void> create(CertificateModel certificate) async {
-    await _db
+    final doc = await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection("certificate")
-        .doc()
-        .set(certificate.toMap());
+        .add(certificate.toMap());
 
+    certificate.id = doc.id;
     _certificates.add(certificate);
 
     notifyListeners();
@@ -78,8 +78,8 @@ class CertificateRepository extends ChangeNotifier {
         name: doc.get("name"),
         organization: doc.get("organization"),
         omissionDate: (doc.get("date") as Timestamp?)?.toDate(),
+        id: doc.id,
       );
-      certificate.id = doc.id;
       _certificates.add(certificate);
     }
     notifyListeners();

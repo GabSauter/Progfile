@@ -31,7 +31,7 @@ class CertificateView extends StatelessWidget {
               ),
             ),
             onDismissed: (direction) {
-              certificates.delete(certificates.list[index].id);
+              certificates.delete(certificates.list[index].id!);
             },
             child: ListTile(
               title: Text(certificates.list[index].name),
@@ -42,8 +42,10 @@ class CertificateView extends StatelessWidget {
                         .format(certificates.list[index].omissionDate!)
                     : 'No date',
               ),
-              onTap: () => _showAddCertificateDialog(context,
-                  certificate: certificates.list[index]),
+              onTap: () => {
+                _showAddCertificateDialog(context,
+                    certificate: certificates.list[index])
+              },
             ),
           );
         },
