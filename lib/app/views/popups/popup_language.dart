@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/language_controller.dart';
 import 'package:progfile/app/models/language_model.dart';
+import 'package:progfile/app/repositories/language_repository.dart';
+import 'package:provider/provider.dart';
 import '../components/form_dropdown.dart';
 import '../components/form_textfield.dart';
 import '../components/main_button.dart';
@@ -20,8 +22,9 @@ class PopupLanguage extends StatefulWidget {
 }
 
 class _PopupCoursLanguage extends State<PopupLanguage> {
-  final _languageController = LanguageController();
   late String selectedValue;
+  late LanguageRepository listLanguages;
+  final _languageController = LanguageController();
 
   @override
   void initState() {
@@ -43,6 +46,8 @@ class _PopupCoursLanguage extends State<PopupLanguage> {
 
   @override
   Widget build(BuildContext context) {
+    listLanguages = context.watch<LanguageRepository>();
+
     return AlertDialog(
       scrollable: true,
       titlePadding: const EdgeInsets.symmetric(vertical: 20),
@@ -79,9 +84,12 @@ class _PopupCoursLanguage extends State<PopupLanguage> {
                 onPressedCallback: () {
                   if (_languageController.formKey.currentState!.validate()) {
                     if (widget.language != null) {
-                      _languageController.editLanguage(widget.language!);
+                      listLanguages.edit(
+                        widget.language!.id!,
+                        _languageController.editLanguage(widget.language!),
+                      );
                     } else {
-                      _languageController.addLanguage();
+                      listLanguages.create(_languageController.generateLanguage());
                     }
                     _onDialogClose();
                   }

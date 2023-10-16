@@ -1,9 +1,10 @@
 class LanguageModel {
-  late String id;
+  String? id;
   String name;
   String degree;
 
   LanguageModel({
+    this.id,
     required this.name,
     required this.degree,
   });

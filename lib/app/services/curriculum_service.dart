@@ -47,7 +47,6 @@ class CurriculumService {
             aboutYou: doc.get("aboutYou"),
             degree: doc.get("degree"));
       },
-      //onError: (e) => print("Error getting document: $e"),
     );
 
     return myCurriculum;
