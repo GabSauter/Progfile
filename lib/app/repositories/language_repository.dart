@@ -33,10 +33,10 @@ class LanguageRepository extends ChangeNotifier {
 
     for (QueryDocumentSnapshot doc in snapshot.docs) {
       LanguageModel language = LanguageModel(
+        id: doc.id,
         name: doc.get("name"),
         degree: doc.get("degree"),
       );
-      language.id = doc.id;
       _languages.add(language);
     }
     notifyListeners();
