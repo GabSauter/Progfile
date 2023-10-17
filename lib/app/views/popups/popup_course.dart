@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/course_model.dart';
+import 'package:progfile/app/repositories/course_repository.dart';
+import 'package:provider/provider.dart';
 import '../../controllers/course_controller.dart';
 import '../components/form_dropdown.dart';
 import '../components/form_textfield.dart';
@@ -22,6 +24,7 @@ class PopupCourse extends StatefulWidget {
 class _PopupCourseState extends State<PopupCourse> {
   final _courseController = CourseController();
   late String selectedValue;
+  late CourseRepository listCourses;
 
   @override
   void initState() {
@@ -50,6 +53,8 @@ class _PopupCourseState extends State<PopupCourse> {
 
   @override
   Widget build(BuildContext context) {
+    listCourses = context.watch<CourseRepository>();
+    
     return AlertDialog(
       scrollable: true,
       titlePadding: const EdgeInsets.symmetric(vertical: 20),
@@ -88,9 +93,11 @@ class _PopupCourseState extends State<PopupCourse> {
                 onPressedCallback: () {
                   if (_courseController.formKey.currentState!.validate()) {
                     if (widget.course != null) {
-                      _courseController.editCourse(widget.course!);
+                      listCourses.edit(
+                          _courseController
+                              .editCourse(widget.course!));
                     } else {
-                      _courseController.addCourse();
+                      listCourses.create(_courseController.generateCourse());
                     }
                     _onDialogClose();
                   }

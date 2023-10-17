@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:progfile/app/models/course_model.dart';
-import 'package:progfile/app/services/course_service.dart';
 
 class CourseController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -11,11 +10,7 @@ class CourseController {
   TextEditingController startDateController = TextEditingController();
   TextEditingController finishDateController = TextEditingController();
 
-  Future<List<CourseModel>> getCourses() async {
-    return await CourseService().getAll();
-  }
-
-  void addCourse() async {
+  CourseModel generateCourse() {
     CourseModel course = CourseModel(
       name: nameController.text,
       university: universityController.text,
@@ -23,20 +18,17 @@ class CourseController {
       startDate: startDateController.text,
       finishDate: finishDateController.text,
     );
-    await CourseService().create(course);
+
+    return course;
   }
 
-  void editCourse(CourseModel course) async {
+  CourseModel editCourse(CourseModel course) {
     course.name = nameController.text;
     course.university = universityController.text;
     course.degree = degreeController.text;
     course.startDate = startDateController.text;
     course.finishDate = finishDateController.text;
 
-    await CourseService().edit(course.id, course);
-  }
-
-  void removeCourse(String id) async {
-    await CourseService().delete(id);
+    return course;
   }
 }

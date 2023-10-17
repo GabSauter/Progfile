@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:progfile/app/repositories/certificate_repository.dart';
+import 'package:progfile/app/repositories/course_repository.dart';
 import 'package:progfile/app/repositories/language_repository.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -16,12 +17,9 @@ void main() async {
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(
-        create: (context) => CertificateRepository(),
-      ),
-      ChangeNotifierProvider(
-        create: (context) => LanguageRepository(),
-      ),
+      ChangeNotifierProvider(create: (context) => CertificateRepository()),
+      ChangeNotifierProvider(create: (context) => LanguageRepository()),
+      ChangeNotifierProvider(create: (context) => CourseRepository()),
     ],
     child: const MainApp(),
   ));

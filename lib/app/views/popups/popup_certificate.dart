@@ -83,7 +83,6 @@ class _PopupCertificateState extends State<PopupCertificate> {
                   if (_certificateController.formKey.currentState!.validate()) {
                     if (widget.certificate != null) {
                       listCertificates.edit(
-                          widget.certificate!.id!,
                           _certificateController
                               .editCertificate(widget.certificate!));
                     } else {
