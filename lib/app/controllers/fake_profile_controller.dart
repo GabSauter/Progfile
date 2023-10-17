@@ -3,7 +3,7 @@ import 'package:progfile/app/models/course_model.dart';
 import 'package:progfile/app/models/fake_profile_model.dart';
 import 'package:progfile/app/models/language_model.dart';
 
-import '../models/repository_model.dart';
+import '../models/git_project_model.dart';
 import '../models/user_repository_model.dart';
 
 class FakeProfileController {
@@ -18,7 +18,7 @@ class FakeProfileController {
         image: null,
         about: '''
 Once upons a time there was a lovely princess. But she had an anchantment upon 
-her of a fearful sort which could obly be broken by love\'s first kiss. She was
+her of a fearful sort which could obly be broken by love's first kiss. She was
 locked away in a castle guarded by a terrible fire-breathing dragon.''',
       ),
       courses: CourseModel(
@@ -30,7 +30,7 @@ locked away in a castle guarded by a terrible fire-breathing dragon.''',
       ),
       languages: LanguageModel(name: 'Ingles', degree: 'Avançado'),
       competences: CompetenceModel(name: 'Flutter', degree: 'Pleno'),
-      repositories: RepositoryModel(
+      repositories: GitProjectModel(
         name: 'Ninjaalpha01',
         description: 'Projeto de conclusão de curso',
         url: 'github.com/Ninjaalpha01',

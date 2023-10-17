@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/models/course_model.dart';
-import 'package:progfile/app/views/popups/popup_course.dart';
+import 'package:provider/provider.dart';
 
-import '../controllers/course_controller.dart';
+import '../models/course_model.dart';
+import '../repositories/course_repository.dart';
+import 'popups/popup_course.dart';
 
 class CourseView extends StatefulWidget {
   const CourseView({super.key});
@@ -12,10 +13,10 @@ class CourseView extends StatefulWidget {
 }
 
 class _CourseViewState extends State<CourseView> {
-  final _courseController = CourseController();
-
   @override
   Widget build(BuildContext context) {
+    final courses = context.watch<CourseRepository>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cursos'),
@@ -26,16 +27,11 @@ class _CourseViewState extends State<CourseView> {
           },
         ),
       ),
-      body: FutureBuilder(
-        future: _courseController.getCourses(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
+      body: ListView.builder(
+                itemCount: courses.list.length,
                 itemBuilder: (context, index) {
                   return Dismissible(
-                    key: Key(snapshot.data![index].name),
+                    key: Key(courses.list[index].name),
                     direction: DismissDirection.endToStart,
                     background: Container(
                       alignment: AlignmentDirectional.centerEnd,
@@ -46,34 +42,20 @@ class _CourseViewState extends State<CourseView> {
                       ),
                     ),
                     onDismissed: (direction) {
-                      _courseController.removeCourse(snapshot.data![index].id);
+                      courses.delete(courses.list[index].id!);
                     },
                     child: ListTile(
-                      title: Text(snapshot.data![index].name),
-                      subtitle: Text(snapshot.data![index].university),
+                      title: Text(courses.list[index].name),
+                      subtitle: Text(courses.list[index].university),
                       trailing: Text(
-                        '${snapshot.data![index].startDate} - ${snapshot.data![index].finishDate}',
+                        '${courses.list[index].startDate} - ${courses.list[index].finishDate}',
                       ),
                       onTap: () =>
-                          _showAddCourseDialog(course: snapshot.data![index]),
+                          _showAddCourseDialog(course: courses.list[index]),
                     ),
                   );
                 },
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
-            } else {
-              return const Center(child: Text("Algo deu errado."));
-            }
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
+              ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddCourseDialog(),
         child: const Icon(Icons.add),
@@ -85,12 +67,7 @@ class _CourseViewState extends State<CourseView> {
     showDialog(
       context: context,
       builder: (context) {
-        return PopupCourse(
-          course: course,
-          onPopupClose: () => setState(() {
-            _courseController.getCourses();
-          }),
-        );
+        return PopupCourse(course: course);
       },
     );
   }

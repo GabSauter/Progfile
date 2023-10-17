@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/competence_controller.dart';
 import 'package:progfile/app/models/competence_model.dart';
+import 'package:progfile/app/repositories/competence_repository.dart';
+import 'package:provider/provider.dart';
 import '../components/form_dropdown.dart';
 import '../components/form_textfield.dart';
 import '../components/main_button.dart';
@@ -22,6 +24,7 @@ class PopupCompetence extends StatefulWidget {
 class _PopupCompetence extends State<PopupCompetence> {
   final _competenceController = CompetenceController();
   late String selectedValue;
+  late CompetenceRepository competenceRepository;
 
   @override
   void initState() {
@@ -45,6 +48,8 @@ class _PopupCompetence extends State<PopupCompetence> {
 
   @override
   Widget build(BuildContext context) {
+    competenceRepository = context.watch<CompetenceRepository>();
+
     return AlertDialog(
       scrollable: true,
       titlePadding: const EdgeInsets.symmetric(vertical: 20),
@@ -82,9 +87,11 @@ class _PopupCompetence extends State<PopupCompetence> {
                 onPressedCallback: () {
                   if (_competenceController.formKey.currentState!.validate()) {
                     if (widget.competence != null) {
-                      _competenceController.editCompetence(widget.competence!);
+                      competenceRepository.edit(_competenceController
+                          .editCompetence(widget.competence!));
                     } else {
-                      _competenceController.addCompetence();
+                      competenceRepository
+                          .create(_competenceController.generateCompetence());
                     }
                     _onDialogClose();
                   }

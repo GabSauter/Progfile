@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/controllers/repository_controller.dart';
-import 'package:progfile/app/models/repository_model.dart';
+import 'package:progfile/app/controllers/git_project_controller.dart';
+import 'package:progfile/app/models/git_project_model.dart';
+import 'package:progfile/app/repositories/git_project_repository.dart';
+import 'package:provider/provider.dart';
 import '../components/form_textfield.dart';
 import '../components/main_button.dart';
 
-class PopupRepository extends StatefulWidget {
-  final RepositoryModel? repository;
+class PopupGitProject extends StatefulWidget {
+  final GitProjectModel? repository;
   final Function? onPopupClose;
 
-  const PopupRepository({
+  const PopupGitProject({
     super.key,
     required this.repository,
     this.onPopupClose,
   });
 
   @override
-  State<PopupRepository> createState() => _PopupRepositoryState();
+  State<PopupGitProject> createState() => _PopupGitProjectState();
 }
 
-class _PopupRepositoryState extends State<PopupRepository> {
-  final _repositoryController = RepositoryController();
+class _PopupGitProjectState extends State<PopupGitProject> {
+  final _repositoryController = GitProjectController();
+  late GitProjectRepository listProjects;
 
   @override
   void initState() {
@@ -46,6 +49,8 @@ class _PopupRepositoryState extends State<PopupRepository> {
 
   @override
   Widget build(BuildContext context) {
+    listProjects = context.watch<GitProjectRepository>();
+
     return AlertDialog(
       scrollable: true,
       title: Center(
@@ -85,9 +90,9 @@ class _PopupRepositoryState extends State<PopupRepository> {
                 onPressedCallback: () {
                   if (_repositoryController.formKey.currentState!.validate()) {
                     if (widget.repository != null) {
-                      _repositoryController.editRepository(widget.repository!);
+                      listProjects.edit(_repositoryController.editGitRepository(widget.repository!));
                     } else {
-                      _repositoryController.addRepository();
+                      listProjects.create(_repositoryController.generateGitRepository());
                     }
                     _onDialogClose();
                   }

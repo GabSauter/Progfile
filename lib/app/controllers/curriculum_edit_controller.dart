@@ -5,8 +5,7 @@ import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progfile/app/models/curriculum_model.dart';
-import 'package:progfile/app/services/curriculum_service.dart';
-import 'package:progfile/app/views/popups/popup_Image_selection.dart';
+import 'package:progfile/app/views/popups/popup_image_selection.dart';
 
 class CurriculumRegisterController {
   final nameController = TextEditingController();
@@ -21,8 +20,8 @@ class CurriculumRegisterController {
 
   final _image = ValueNotifier<File?>(null);
 
-  Future<void> createCurriculum() async {
-    var curriculum = CurriculumModel(
+  CurriculumModel generateCurriculum() {
+    return CurriculumModel(
       image: _image.value,
       name: nameController.text,
       email: emailController.text,
@@ -30,11 +29,23 @@ class CurriculumRegisterController {
       githubUsername: githubUsernameController.text,
       address: addressController.text,
       fieldOfExpertise: fieldOfStudyController.text,
-      degree: selectedDegree == null ? '' : selectedDegree.toString(),
+      degree: selectedDegree == null ? 'Estagiário' : selectedDegree.toString(),
       aboutYou: aboutYouController.text,
     );
+  }
 
-    await CurriculumService().createCurriculum(curriculum);
+  CurriculumModel editCurriculum(CurriculumModel curriculum) {
+    curriculum.image = _image.value;
+    curriculum.name = nameController.text;
+    curriculum.email = emailController.text;
+    curriculum.phoneNumber = phoneNumberController.text;
+    curriculum.githubUsername = githubUsernameController.text;
+    curriculum.address = addressController.text;
+    curriculum.fieldOfExpertise = fieldOfStudyController.text;
+    curriculum.degree = selectedDegree!;
+    curriculum.aboutYou = aboutYouController.text;
+
+    return curriculum;
   }
 
   Future<void> handleImageSelection(BuildContext context) async {

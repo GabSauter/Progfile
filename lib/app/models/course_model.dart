@@ -1,5 +1,5 @@
 class CourseModel {
-  late String id;
+  String? id;
   String name;
   String university;
   String degree;
@@ -7,6 +7,7 @@ class CourseModel {
   String finishDate;
 
   CourseModel({
+    this.id,
     required this.name,
     required this.university,
     required this.degree,
@@ -22,5 +23,16 @@ class CourseModel {
       'startDate': startDate,
       'finishDate': finishDate,
     };
+  }
+
+  factory CourseModel.fromMap(Map<String, dynamic> map) {
+    return CourseModel(
+      id: map['id'],
+      name: map['name'],
+      university: map['university'],
+      degree: map['degree'],
+      startDate: map['startDate'],
+      finishDate: map['finishDate'],
+    );
   }
 }

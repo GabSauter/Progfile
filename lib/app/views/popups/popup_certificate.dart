@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:progfile/app/views/components/form_textfield.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 import 'package:progfile/app/views/components/secondary_button.dart';
+import 'package:provider/provider.dart';
 
 import '../../controllers/certificate_controller.dart';
 import '../../models/certificate_model.dart';
+import '../../repositories/certificate_repository.dart';
 
 class PopupCertificate extends StatefulWidget {
   final CertificateModel? certificate;
@@ -22,6 +24,7 @@ class PopupCertificate extends StatefulWidget {
 
 class _PopupCertificateState extends State<PopupCertificate> {
   final _certificateController = CertificateController();
+  late CertificateRepository certificateRepository;
 
   @override
   void initState() {
@@ -42,6 +45,8 @@ class _PopupCertificateState extends State<PopupCertificate> {
 
   @override
   Widget build(BuildContext context) {
+    certificateRepository = context.watch<CertificateRepository>();
+
     return AlertDialog(
       scrollable: true,
       titlePadding: const EdgeInsets.symmetric(vertical: 20),
@@ -77,11 +82,14 @@ class _PopupCertificateState extends State<PopupCertificate> {
                 onPressedCallback: () {
                   if (_certificateController.formKey.currentState!.validate()) {
                     if (widget.certificate != null) {
-                      _certificateController
-                          .editCertificate(widget.certificate!);
+                      certificateRepository.edit(
+                          _certificateController
+                              .editCertificate(widget.certificate!));
                     } else {
-                      _certificateController.addCertificate();
+                      certificateRepository
+                          .create(_certificateController.generateCertificate());
                     }
+
                     _onDialogClose();
                   }
                 },

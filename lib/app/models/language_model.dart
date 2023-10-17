@@ -1,9 +1,10 @@
 class LanguageModel {
-  late String id;
+  String? id;
   String name;
   String degree;
 
   LanguageModel({
+    this.id,
     required this.name,
     required this.degree,
   });
@@ -13,5 +14,13 @@ class LanguageModel {
       'name': name,
       'degree': degree,
     };
+  }
+
+  factory LanguageModel.fromMap(Map<String, dynamic> map) {
+    return LanguageModel(
+      id: map['id'],
+      name: map['name'],
+      degree: map['degree'],
+    );
   }
 }
