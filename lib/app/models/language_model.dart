@@ -15,4 +15,12 @@ class LanguageModel {
       'degree': degree,
     };
   }
+
+  factory LanguageModel.fromMap(Map<String, dynamic> map) {
+    return LanguageModel(
+      id: map['id'],
+      name: map['name'],
+      degree: map['degree'],
+    );
+  }
 }

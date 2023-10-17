@@ -27,6 +27,7 @@ class CourseModel {
 
   factory CourseModel.fromMap(Map<String, dynamic> map) {
     return CourseModel(
+      id: map['id'],
       name: map['name'],
       university: map['university'],
       degree: map['degree'],

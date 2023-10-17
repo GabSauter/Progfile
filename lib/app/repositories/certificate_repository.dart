@@ -21,6 +21,24 @@ class CertificateRepository extends ChangeNotifier {
     await _getCertificates();
   }
 
+  _getCertificates() async {
+    _certificates.clear();
+
+    final snapshot = await _db
+        .collection("curriculum")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection("certificate")
+        .get();
+
+    for (var doc in snapshot.docs) {
+      CertificateModel certificate = CertificateModel.fromMap(doc.data());
+      certificate.id = doc.id;
+      _certificates.add(certificate);
+    }
+
+    notifyListeners();
+  }
+
   Future<void> create(CertificateModel certificate) async {
     final doc = await _db
         .collection("curriculum")
@@ -60,23 +78,6 @@ class CertificateRepository extends ChangeNotifier {
     await ref.delete();
 
     _certificates.removeWhere((cert) => cert.id == certificateId);
-    notifyListeners();
-  }
-
-  _getCertificates() async {
-    _certificates.clear();
-
-    final snapshot = await _db
-        .collection("curriculum")
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection("certificate").get();
-
-    for (var doc in snapshot.docs) {
-      CertificateModel certificate = CertificateModel.fromMap(doc.data());
-      certificate.id = doc.id;
-      _certificates.add(certificate);
-    }
-    
     notifyListeners();
   }
 }

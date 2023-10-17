@@ -1,11 +1,12 @@
 class RepositoryModel {
-  late String id;
+  String? id;
   String name;
   String url;
   String description;
   String language;
 
   RepositoryModel({
+    this.id,
     required this.name,
     required this.url,
     required this.description,
@@ -19,5 +20,15 @@ class RepositoryModel {
       'description': description,
       'language': language,
     };
+  }
+
+  factory RepositoryModel.fromMap(Map<String, dynamic> map) {
+    return RepositoryModel(
+      id: map['id'],
+      name: map['name'],
+      url: map['url'],
+      description: map['description'],
+      language: map['language'],
+    );
   }
 }

@@ -9,6 +9,9 @@ class LanguageRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
   final List<LanguageModel> _languages = [];
 
+  UnmodifiableListView<LanguageModel> get list =>
+      UnmodifiableListView(_languages);
+
   LanguageRepository() {
     _initRepository();
   }
@@ -18,25 +21,17 @@ class LanguageRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  UnmodifiableListView<LanguageModel> get list =>
-      UnmodifiableListView(_languages);
-
   _getLanguages() async {
     _languages.clear();
 
-    CollectionReference collection = _db
+    final snapshot = await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection("language");
+        .collection("language")
+        .get();
 
-    QuerySnapshot snapshot = await collection.get();
-
-    for (QueryDocumentSnapshot doc in snapshot.docs) {
-      LanguageModel language = LanguageModel(
-        id: doc.id,
-        name: doc.get("name"),
-        degree: doc.get("degree"),
-      );
+    for (var doc in snapshot.docs) {
+      LanguageModel language = LanguageModel.fromMap(doc.data());
       _languages.add(language);
     }
     notifyListeners();

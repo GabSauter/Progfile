@@ -10,6 +10,8 @@ class CourseRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
   final List<CourseModel> _courses = [];
 
+  UnmodifiableListView<CourseModel> get list => UnmodifiableListView(_courses);
+
   CourseRepository() {
     _initRepository();
   }
@@ -17,9 +19,6 @@ class CourseRepository extends ChangeNotifier {
   _initRepository() async {
     await _getCourses();
   }
-
-  UnmodifiableListView<CourseModel> get list =>
-      UnmodifiableListView(_courses);
 
   _getCourses() async {
     _courses.clear();
@@ -32,10 +31,9 @@ class CourseRepository extends ChangeNotifier {
 
     for (var doc in snapshot.docs) {
       CourseModel course = CourseModel.fromMap(doc.data());
-      course.id = doc.id;
       _courses.add(course);
     }
-    
+
     notifyListeners();
   }
 
