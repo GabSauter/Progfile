@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/competence_model.dart';
+import 'package:progfile/app/repositories/competence_repository.dart';
 import 'package:progfile/app/views/popups/popup_competence.dart';
-
-import '../controllers/competence_controller.dart';
+import 'package:provider/provider.dart';
 
 class CompetenceView extends StatefulWidget {
   const CompetenceView({super.key});
@@ -12,10 +12,10 @@ class CompetenceView extends StatefulWidget {
 }
 
 class _CompetenceViewState extends State<CompetenceView> {
-  final _competenceController = CompetenceController();
 
   @override
   Widget build(BuildContext context) {
+    final competences = context.watch<CompetenceRepository>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Competências'),
@@ -26,16 +26,11 @@ class _CompetenceViewState extends State<CompetenceView> {
           },
         ),
       ),
-      body: FutureBuilder(
-        future: _competenceController.getCompetences(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
+      body: ListView.builder(
+                itemCount: competences.list.length,
                 itemBuilder: (context, index) {
                   return Dismissible(
-                    key: Key(snapshot.data![index].name),
+                    key: Key(competences.list[index].name),
                     direction: DismissDirection.endToStart,
                     background: Container(
                       alignment: AlignmentDirectional.centerEnd,
@@ -47,7 +42,7 @@ class _CompetenceViewState extends State<CompetenceView> {
                     ),
                     onDismissed: (direction) {
                       _competenceController
-                          .removeCompetence(snapshot.data![index].id);
+                          .removeCompetence(snapshot.data![index].id!);
                     },
                     child: ListTile(
                       title: Text(snapshot.data![index].name),

@@ -1,9 +1,10 @@
 class CompetenceModel {
-  late String id;
+  String? id;
   String name;
   String degree;
 
   CompetenceModel({
+    this.id,
     required this.name,
     required this.degree,
   });
