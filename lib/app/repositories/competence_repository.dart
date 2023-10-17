@@ -53,15 +53,15 @@ class CompetenceRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> edit(String competenceId, CompetenceModel competence) async {
+  Future<void> edit(CompetenceModel competence) async {
     await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection("competence")
-        .doc(competenceId)
+        .doc(competence.id)
         .update(competence.toMap());
     _competences[_competences
-        .indexWhere((element) => element.id == competenceId)] = competence;
+        .indexWhere((element) => element.id == competence.id)] = competence;
     notifyListeners();
   }
 

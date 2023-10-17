@@ -12,10 +12,10 @@ class CompetenceView extends StatefulWidget {
 }
 
 class _CompetenceViewState extends State<CompetenceView> {
-
   @override
   Widget build(BuildContext context) {
-    final competences = context.watch<CompetenceRepository>();
+    final competenceRepository = context.watch<CompetenceRepository>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Competências'),
@@ -27,44 +27,29 @@ class _CompetenceViewState extends State<CompetenceView> {
         ),
       ),
       body: ListView.builder(
-                itemCount: competences.list.length,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                    key: Key(competences.list[index].name),
-                    direction: DismissDirection.endToStart,
-                    background: Container(
-                      alignment: AlignmentDirectional.centerEnd,
-                      color: Colors.red,
-                      child: const Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                        child: Icon(Icons.delete, color: Colors.white),
-                      ),
-                    ),
-                    onDismissed: (direction) {
-                      _competenceController
-                          .removeCompetence(snapshot.data![index].id!);
-                    },
-                    child: ListTile(
-                      title: Text(snapshot.data![index].name),
-                      trailing: Text(snapshot.data![index].degree),
-                      onTap: () => _showAddcompetenceDialog(
-                          competence: snapshot.data![index]),
-                    ),
-                  );
-                },
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
-            } else {
-              return const Center(child: Text("Algo deu errado."));
-            }
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+        itemCount: competenceRepository.list.length,
+        itemBuilder: (context, index) {
+          return Dismissible(
+            key: Key(competenceRepository.list[index].name),
+            direction: DismissDirection.endToStart,
+            background: Container(
+              alignment: AlignmentDirectional.centerEnd,
+              color: Colors.red,
+              child: const Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                child: Icon(Icons.delete, color: Colors.white),
+              ),
+            ),
+            onDismissed: (direction) {
+              competenceRepository.delete(competenceRepository.list[index].id!);
+            },
+            child: ListTile(
+              title: Text(competenceRepository.list[index].name),
+              trailing: Text(competenceRepository.list[index].degree),
+              onTap: () => _showAddcompetenceDialog(
+                  competence: competenceRepository.list[index]),
+            ),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -78,12 +63,7 @@ class _CompetenceViewState extends State<CompetenceView> {
     showDialog(
       context: context,
       builder: (context) {
-        return PopupCompetence(
-          competence: competence,
-          onPopupClose: () => setState(() {
-            _competenceController.getCompetences();
-          }),
-        );
+        return PopupCompetence(competence: competence);
       },
     );
   }
