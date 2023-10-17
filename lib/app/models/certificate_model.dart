@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CertificateModel {
   String? id;
   String name;
@@ -18,5 +20,14 @@ class CertificateModel {
       'organization': organization,
       'date': omissionDate?.toUtc(),
     };
+  }
+
+  factory CertificateModel.fromMap(Map<String, dynamic> map) {
+    return CertificateModel(
+      id: map['id'],
+      name: map['name'],
+      organization: map['organization'],
+      omissionDate: (map['date'] as Timestamp?)?.toDate(),
+    );
   }
 }

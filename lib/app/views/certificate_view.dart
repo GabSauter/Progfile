@@ -62,7 +62,7 @@ class CertificateView extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return PopupCertificate(certificate: certificate, onPopupClose: () {});
+        return PopupCertificate(certificate: certificate);
       },
     );
   }

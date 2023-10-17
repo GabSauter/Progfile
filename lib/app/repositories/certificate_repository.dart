@@ -34,16 +34,16 @@ class CertificateRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> edit(String certificateId, CertificateModel certificate) async {
+  Future<void> edit(CertificateModel certificate) async {
     await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection("certificate")
-        .doc(certificateId)
-        .set(certificate.toMap());
+        .doc(certificate.id)
+        .update(certificate.toMap());
 
     int indexToEdit =
-        _certificates.indexWhere((cert) => cert.id == certificateId);
+        _certificates.indexWhere((cert) => cert.id == certificate.id);
     if (indexToEdit != -1) {
       _certificates[indexToEdit] = certificate;
       notifyListeners();
@@ -66,22 +66,17 @@ class CertificateRepository extends ChangeNotifier {
   _getCertificates() async {
     _certificates.clear();
 
-    CollectionReference collection = _db
+    final snapshot = await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection("certificate");
+        .collection("certificate").get();
 
-    QuerySnapshot snapshot = await collection.get();
-
-    for (QueryDocumentSnapshot doc in snapshot.docs) {
-      CertificateModel certificate = CertificateModel(
-        name: doc.get("name"),
-        organization: doc.get("organization"),
-        omissionDate: (doc.get("date") as Timestamp?)?.toDate(),
-        id: doc.id,
-      );
+    for (var doc in snapshot.docs) {
+      CertificateModel certificate = CertificateModel.fromMap(doc.data());
+      certificate.id = doc.id;
       _certificates.add(certificate);
     }
+    
     notifyListeners();
   }
 }
