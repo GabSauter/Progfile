@@ -15,7 +15,6 @@ class CertificateModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'name': name,
       'organization': organization,
       'date': omissionDate?.toUtc(),

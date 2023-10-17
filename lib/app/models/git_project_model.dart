@@ -1,11 +1,11 @@
-class RepositoryModel {
+class GitProjectModel {
   String? id;
   String name;
   String url;
   String description;
   String language;
 
-  RepositoryModel({
+  GitProjectModel({
     this.id,
     required this.name,
     required this.url,
@@ -22,8 +22,8 @@ class RepositoryModel {
     };
   }
 
-  factory RepositoryModel.fromMap(Map<String, dynamic> map) {
-    return RepositoryModel(
+  factory GitProjectModel.fromMap(Map<String, dynamic> map) {
+    return GitProjectModel(
       id: map['id'],
       name: map['name'],
       url: map['url'],

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:progfile/app/views/certificate_view.dart';
 import 'package:progfile/app/views/competence_view.dart';
@@ -14,7 +13,7 @@ import 'app/views/course_view.dart';
 import 'app/views/curriculum_view.dart';
 import 'app/views/login_view.dart';
 import 'app/views/my_curriculum_view.dart';
-import 'app/views/repository_view.dart';
+import 'app/views/git_project_view.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -53,7 +52,7 @@ class MainApp extends StatelessWidget {
         '/curriculum': (context) => CurriculumView(),
         '/course': (context) => const CourseView(),
         '/language': (context) => const LanguageView(),
-        '/repository': (context) => const RepositoryView(),
+        '/repository': (context) => const GitProjectView(),
         '/competence': (context) => const CompetenceView(),
         '/editAccount': (context) => EditAccountView(),
       },
