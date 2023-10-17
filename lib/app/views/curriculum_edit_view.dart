@@ -11,6 +11,8 @@ import 'package:progfile/app/views/components/masked_textfield.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/curriculum_edit_controller.dart';
+import '../models/curriculum_model.dart';
+import '../repositories/curriculum_repository.dart';
 import 'components/image_take.dart';
 import 'components/snackbar_helper.dart';
 
@@ -23,11 +25,17 @@ class CurriculumEditView extends StatefulWidget {
 
 class _CurriculumEditViewState extends State<CurriculumEditView> {
   final _controller = CurriculumRegisterController();
+  late CurriculumRepository curriculumRepository;
 
   void createCurriculum() async {
+    CurriculumModel? curriculum = await curriculumRepository.myCurriculum();
+    if (curriculum == null) {
+      print("NULO");
+      return;
+    }
     if (_controller.formKey.currentState!.validate()) {
       try {
-        await _controller.createCurriculum();
+        curriculumRepository.edit(curriculum);
         if (context.mounted) {
           Navigator.pushReplacementNamed(context, '/home');
         }
@@ -44,6 +52,8 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
 
   @override
   Widget build(BuildContext context) {
+    curriculumRepository = context.watch<CurriculumRepository>();
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CertificateRepository()),

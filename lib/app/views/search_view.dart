@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../models/curriculum_model.dart';
 import '../controllers/search_controller.dart';
+import '../models/curriculum_model.dart';
+import '../repositories/curriculum_repository.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -12,23 +14,29 @@ class SearchView extends StatefulWidget {
 
 class SearchViewState extends State<SearchView> {
   final _searchController = SearchCurriculumController();
+  late CurriculumRepository curriculums;
 
   List<CurriculumModel> filteredResumes = [];
 
   @override
   void initState() {
     super.initState();
-    filteredResumes = _searchController.resumes;
   }
 
   void _searchResumes(String searchText) {
     setState(() {
-      filteredResumes = _searchController.searchResumes(searchText);
+      filteredResumes =
+          _searchController.searchResumes(searchText, curriculums.list);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    curriculums = context.watch<CurriculumRepository>();
+    if (filteredResumes.isEmpty) {
+      filteredResumes = curriculums.list;
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,

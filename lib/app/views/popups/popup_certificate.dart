@@ -24,7 +24,7 @@ class PopupCertificate extends StatefulWidget {
 
 class _PopupCertificateState extends State<PopupCertificate> {
   final _certificateController = CertificateController();
-  late CertificateRepository listCertificates;
+  late CertificateRepository certificateRepository;
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _PopupCertificateState extends State<PopupCertificate> {
 
   @override
   Widget build(BuildContext context) {
-    listCertificates = context.watch<CertificateRepository>();
+    certificateRepository = context.watch<CertificateRepository>();
 
     return AlertDialog(
       scrollable: true,
@@ -82,11 +82,11 @@ class _PopupCertificateState extends State<PopupCertificate> {
                 onPressedCallback: () {
                   if (_certificateController.formKey.currentState!.validate()) {
                     if (widget.certificate != null) {
-                      listCertificates.edit(
+                      certificateRepository.edit(
                           _certificateController
                               .editCertificate(widget.certificate!));
                     } else {
-                      listCertificates
+                      certificateRepository
                           .create(_certificateController.generateCertificate());
                     }
 
