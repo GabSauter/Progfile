@@ -42,7 +42,8 @@ class CurriculumRegisterController {
     curriculum.githubUsername = githubUsernameController.text;
     curriculum.address = addressController.text;
     curriculum.fieldOfExpertise = fieldOfStudyController.text;
-    curriculum.degree = selectedDegree!;
+    curriculum.degree =
+        selectedDegree == null ? 'Estagiário' : selectedDegree.toString();
     curriculum.aboutYou = aboutYouController.text;
 
     return curriculum;

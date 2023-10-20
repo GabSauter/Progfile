@@ -26,23 +26,35 @@ class CurriculumEditView extends StatefulWidget {
 class _CurriculumEditViewState extends State<CurriculumEditView> {
   final _controller = CurriculumRegisterController();
   late CurriculumRepository curriculumRepository;
+  late CurriculumModel? myCurriculum;
 
-  void createCurriculum() async {
-    CurriculumModel? curriculum = await curriculumRepository.myCurriculum();
-    if (curriculum == null) {
-      print("NULO");
-      return;
+  void myCurriculumChange() async {
+    myCurriculum = curriculumRepository.myCurriculum();
+
+    if (myCurriculum != null) {
+      editCurriculum();
+    } else {
+      addCurriculum();
     }
+  }
+
+  void editCurriculum() {
     if (_controller.formKey.currentState!.validate()) {
       try {
-        curriculumRepository.edit(curriculum);
+        curriculumRepository.edit(_controller.editCurriculum(myCurriculum!));
         if (context.mounted) {
-          Navigator.pushReplacementNamed(context, '/home');
+          // Navigator.pushReplacementNamed(context, '/home');
+          SnackBarHelper.showSuccessSnackBar(
+              'Currículo editado com sucesso!', context);
         }
       } catch (e) {
         SnackBarHelper.showErrorSnackBar(e.toString(), context);
       }
     }
+  }
+
+  void addCurriculum() {
+    print('add');
   }
 
   @override
@@ -286,7 +298,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 const SizedBox(height: 15),
                 MainButton(
                   onPressedCallback: () {
-                    createCurriculum();
+                    myCurriculumChange();
                   },
                   text: 'Concluir',
                   buttonColor: Colors.green[500],

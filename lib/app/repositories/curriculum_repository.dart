@@ -28,6 +28,7 @@ class CurriculumRepository extends ChangeNotifier {
 
     for (var doc in snapshot.docs) {
       CurriculumModel curriculum = CurriculumModel.fromMap(doc.data());
+      curriculum.id = doc.id;
       _curriculums.add(curriculum);
     }
 
@@ -44,10 +45,11 @@ class CurriculumRepository extends ChangeNotifier {
   }
 
   Future<void> edit(CurriculumModel curriculum) async {
+    print('banana');
     await _db
         .collection("curriculum")
-        .doc(curriculum.id)
-        .update(curriculum.toMap());
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set(curriculum.toMap(), SetOptions(merge: true));
 
     final index =
         _curriculums.indexWhere((element) => element.id == curriculum.id);
@@ -64,19 +66,17 @@ class CurriculumRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<CurriculumModel?> myCurriculum() async {
+  CurriculumModel? myCurriculum() {
     final user = FirebaseAuth.instance.currentUser;
 
-    final snapshot = await FirebaseFirestore.instance
-        .collection("curriculum")
-        .where("userId", isEqualTo: user?.uid)
-        .get();
-
-    print(user!.uid);
-    if (snapshot.docs.isEmpty) {
-      return null;
+    if (user != null) {
+      for (var resume in _curriculums) {
+        if (resume.id == user.uid) {
+          return resume;
+        }
+      }
     }
 
-    return CurriculumModel.fromMap(snapshot.docs.first.data());
+    return null;
   }
 }
