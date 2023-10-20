@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:progfile/app/models/curriculum_model.dart';
 import 'package:progfile/app/views/components/repository_card.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 import 'package:progfile/app/views/components/secondary_button.dart';
-import '../models/user_repository_model.dart';
 
 class MyCurriculumView extends StatelessWidget {
-  final UserRepositoryModel? userRepository;
+  final CurriculumModel
+      userRepository; // depois mudar para = UserRepositoryModel();
 
-  const MyCurriculumView({Key? key, this.userRepository}) : super(key: key);
+  const MyCurriculumView({Key? key, required this.userRepository})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,11 +96,7 @@ class MyCurriculumView extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 5),
-      const Text("Once upon a time there was a lovely princess. "
-          "But she had an enchantment upon her of a fearful sort which "
-          "could only be broken by love's first kiss. "
-          "She was locked away in a castle guarded by a terrible "
-          "fire-breathing dragon."),
+      Text(userRepository.aboutYou),
     ];
     List<Widget> academic = [
       const Text(
@@ -207,45 +205,46 @@ class MyCurriculumView extends StatelessWidget {
   }
 
   Widget get userBasicInfo {
-    return const Column(
+    return Column(
       children: [
-        Image(image: AssetImage('assets/images/user.png'), height: 150),
-        SizedBox(height: 10),
+        const Image(image: AssetImage('assets/images/user.png'), height: 150),
+        const SizedBox(height: 10),
         Text(
-          'Roger Rodrigues',
-          style: TextStyle(
+          userRepository.name,
+          style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
-          'Desenvolvedor de Software',
-          style: TextStyle(
+          userRepository.fieldOfExpertise,
+          style: const TextStyle(
             fontSize: 18,
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.email),
-            SizedBox(width: 10),
+            const Icon(Icons.email),
+            const SizedBox(width: 10),
             Text(
-              'teste@gmail.com',
-              style: TextStyle(fontSize: 16),
+              userRepository.email,
+              style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
-          '(19) 99619-0935',
-          style: TextStyle(fontSize: 16),
+          userRepository.phoneNumber,
+          style: const TextStyle(fontSize: 16),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
-          'Ponta Grossa - PR',
-          style: TextStyle(fontSize: 16),
+          userRepository
+              .address, // depois mudar o endereco para cidade e estado
+          style: const TextStyle(fontSize: 16),
         ),
       ],
     );

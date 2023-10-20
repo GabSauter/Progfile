@@ -66,7 +66,7 @@ class CurriculumRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  CurriculumModel? myCurriculum() {
+  CurriculumModel myCurriculum() {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -77,6 +77,14 @@ class CurriculumRepository extends ChangeNotifier {
       }
     }
 
-    return null;
+    return CurriculumModel(
+        id: null,
+        name: '',
+        email: '',
+        phoneNumber: '',
+        address: '',
+        fieldOfExpertise: '',
+        degree: '',
+        aboutYou: '');
   }
 }

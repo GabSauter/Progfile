@@ -43,7 +43,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
       try {
         curriculumRepository.edit(_controller.editCurriculum(myCurriculum!));
         if (context.mounted) {
-          // Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, '/myCurriculum');
           SnackBarHelper.showSuccessSnackBar(
               'Currículo editado com sucesso!', context);
         }
