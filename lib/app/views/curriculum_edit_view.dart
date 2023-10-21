@@ -10,9 +10,9 @@ import 'package:progfile/app/views/components/main_button.dart';
 import 'package:progfile/app/views/components/masked_textfield.dart';
 import 'package:provider/provider.dart';
 
-import '../controllers/curriculum_edit_controller.dart';
-import '../models/curriculum_model.dart';
-import '../repositories/curriculum_repository.dart';
+import '../controllers/profile_edit_controller.dart';
+import '../models/profile_model.dart';
+import '../repositories/profile_repository.dart';
 import 'components/image_take.dart';
 import 'components/snackbar_helper.dart';
 
@@ -24,9 +24,9 @@ class CurriculumEditView extends StatefulWidget {
 }
 
 class _CurriculumEditViewState extends State<CurriculumEditView> {
-  final _controller = CurriculumRegisterController();
-  late CurriculumRepository curriculumRepository;
-  late CurriculumModel? myCurriculum;
+  final _controller = ProfileRegisterController();
+  late ProfileRepository curriculumRepository;
+  late ProfileModel? myCurriculum;
 
   void myCurriculumChange() async {
     myCurriculum = curriculumRepository.myCurriculum();
@@ -41,7 +41,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
   void editCurriculum() {
     if (_controller.formKey.currentState!.validate()) {
       try {
-        curriculumRepository.edit(_controller.editCurriculum(myCurriculum!));
+        curriculumRepository.edit(_controller.editProfile(myCurriculum!));
         if (context.mounted) {
           Navigator.pushReplacementNamed(context, '/myCurriculum');
           SnackBarHelper.showSuccessSnackBar(
@@ -64,7 +64,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
 
   @override
   Widget build(BuildContext context) {
-    curriculumRepository = context.watch<CurriculumRepository>();
+    curriculumRepository = context.watch<ProfileRepository>();
 
     return MultiProvider(
       providers: [

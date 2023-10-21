@@ -1,6 +1,6 @@
 import 'dart:io';
 
-class CurriculumModel {
+class ProfileModel {
   String? id;
   File? image;
   String name;
@@ -12,7 +12,7 @@ class CurriculumModel {
   String degree;
   String aboutYou;
 
-  CurriculumModel({
+  ProfileModel({
     this.id,
     this.image,
     required this.name,
@@ -38,8 +38,8 @@ class CurriculumModel {
     };
   }
 
-  factory CurriculumModel.fromMap(Map<String, dynamic> map) {
-    return CurriculumModel(
+  factory ProfileModel.fromMap(Map<String, dynamic> map) {
+    return ProfileModel(
       id: map['id'],
       // image: map['image'],
       name: map['name'],

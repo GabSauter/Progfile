@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/models/curriculum_model.dart';
+import 'package:progfile/app/models/profile_model.dart';
 import 'package:progfile/app/views/components/repository_card.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 import 'package:progfile/app/views/components/secondary_button.dart';
 
 class MyCurriculumView extends StatelessWidget {
-  final CurriculumModel userRepository;
+  final ProfileModel userRepository;
   // depois mudar para = UserRepositoryModel();
 
   const MyCurriculumView({Key? key, required this.userRepository})

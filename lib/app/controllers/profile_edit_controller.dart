@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:progfile/app/models/curriculum_model.dart';
+import 'package:progfile/app/models/profile_model.dart';
 import 'package:progfile/app/views/popups/popup_image_selection.dart';
 
-class CurriculumRegisterController {
+class ProfileRegisterController {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneNumberController = MaskedTextController(mask: '(00) 00000-0000');
@@ -20,8 +20,8 @@ class CurriculumRegisterController {
 
   final _image = ValueNotifier<File?>(null);
 
-  CurriculumModel generateCurriculum() {
-    return CurriculumModel(
+  ProfileModel generateProfile() {
+    return ProfileModel(
       image: _image.value,
       name: nameController.text,
       email: emailController.text,
@@ -34,7 +34,7 @@ class CurriculumRegisterController {
     );
   }
 
-  CurriculumModel editCurriculum(CurriculumModel curriculum) {
+  ProfileModel editProfile(ProfileModel curriculum) {
     curriculum.image = _image.value;
     curriculum.name = nameController.text;
     curriculum.email = emailController.text;

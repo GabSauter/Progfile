@@ -4,16 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../models/curriculum_model.dart';
+import '../models/profile_model.dart';
 
-class CurriculumRepository extends ChangeNotifier {
+class ProfileRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
-  final List<CurriculumModel> _curriculums = [];
+  final List<ProfileModel> _curriculums = [];
 
-  UnmodifiableListView<CurriculumModel> get list =>
+  UnmodifiableListView<ProfileModel> get list =>
       UnmodifiableListView(_curriculums);
 
-  CurriculumRepository() {
+  ProfileRepository() {
     _initRepository();
   }
 
@@ -27,7 +27,7 @@ class CurriculumRepository extends ChangeNotifier {
     final snapshot = await _db.collection("curriculum").get();
 
     for (var doc in snapshot.docs) {
-      CurriculumModel curriculum = CurriculumModel.fromMap(doc.data());
+      ProfileModel curriculum = ProfileModel.fromMap(doc.data());
       curriculum.id = doc.id;
       _curriculums.add(curriculum);
     }
@@ -35,7 +35,7 @@ class CurriculumRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> create(CurriculumModel curriculum) async {
+  Future<void> create(ProfileModel curriculum) async {
     final doc = await _db.collection("curriculum").add(curriculum.toMap());
 
     curriculum.id = doc.id;
@@ -44,7 +44,7 @@ class CurriculumRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> edit(CurriculumModel curriculum) async {
+  Future<void> edit(ProfileModel curriculum) async {
     print('banana');
     await _db
         .collection("curriculum")
@@ -66,7 +66,7 @@ class CurriculumRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  CurriculumModel myCurriculum() {
+  ProfileModel myCurriculum() {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -77,7 +77,7 @@ class CurriculumRepository extends ChangeNotifier {
       }
     }
 
-    return CurriculumModel(
+    return ProfileModel(
         id: null,
         name: '',
         email: '',

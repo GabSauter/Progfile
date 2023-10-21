@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:progfile/app/models/fake_profile_model.dart';
 import 'package:progfile/app/views/components/repository_card.dart';
 import '../controllers/fake_profile_controller.dart';
-import '../models/curriculum_model.dart';
+import '../models/profile_model.dart';
 
 class CurriculumView extends StatelessWidget {
   final FakeProfileModel _fakeProfile = FakeProfileController.getFakeProfile();
@@ -12,9 +12,9 @@ class CurriculumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileInfo =
-        ModalRoute.of(context)!.settings.arguments as CurriculumModel;
+        ModalRoute.of(context)!.settings.arguments as ProfileModel;
 
-    if (profileInfo.runtimeType != CurriculumModel) {
+    if (profileInfo.runtimeType != ProfileModel) {
       Navigator.pop(context);
     }
 
@@ -32,7 +32,7 @@ class CurriculumView extends StatelessWidget {
     );
   }
 
-  Widget buildBody(CurriculumModel profile) {
+  Widget buildBody(ProfileModel profile) {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
       child: Column(
@@ -52,7 +52,7 @@ class CurriculumView extends StatelessWidget {
     );
   }
 
-  Widget buildGithubInfo(CurriculumModel profile) {
+  Widget buildGithubInfo(ProfileModel profile) {
     return Column(
       children: [
         Row(
@@ -82,7 +82,7 @@ class CurriculumView extends StatelessWidget {
     );
   }
 
-  Widget buildUserAcademicInfo(CurriculumModel profile) {
+  Widget buildUserAcademicInfo(ProfileModel profile) {
     List<Widget> about = [
       const Text(
         'Sobre:',
@@ -199,7 +199,7 @@ class CurriculumView extends StatelessWidget {
     // Retorne os widgets apropriados.
   }
 
-  Widget buildUserBasicInfo(CurriculumModel profile) {
+  Widget buildUserBasicInfo(ProfileModel profile) {
     return Column(
       children: [
         _fakeProfile.userRepository.image ??

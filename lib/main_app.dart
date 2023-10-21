@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/models/curriculum_model.dart';
-import 'package:progfile/app/repositories/curriculum_repository.dart';
+import 'package:progfile/app/models/profile_model.dart';
+import 'package:progfile/app/repositories/profile_repository.dart';
 import 'package:progfile/app/views/certificate_view.dart';
 import 'package:progfile/app/views/competence_view.dart';
 import 'package:progfile/app/views/curriculum_edit_view.dart';
@@ -23,8 +23,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CurriculumModel myCurriculum =
-        context.watch<CurriculumRepository>().myCurriculum();
+    final ProfileModel myCurriculum =
+        context.watch<ProfileRepository>().myCurriculum();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
