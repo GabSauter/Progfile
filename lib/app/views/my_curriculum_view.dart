@@ -5,8 +5,8 @@ import 'package:progfile/app/views/components/main_button.dart';
 import 'package:progfile/app/views/components/secondary_button.dart';
 
 class MyCurriculumView extends StatelessWidget {
-  final CurriculumModel
-      userRepository; // depois mudar para = UserRepositoryModel();
+  final CurriculumModel userRepository;
+  // depois mudar para = UserRepositoryModel();
 
   const MyCurriculumView({Key? key, required this.userRepository})
       : super(key: key);
