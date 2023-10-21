@@ -13,6 +13,8 @@ class CurriculumView extends StatelessWidget {
   Widget build(BuildContext context) {
     final profileInfo =
         ModalRoute.of(context)!.settings.arguments as ProfileModel;
+    
+    
 
     if (profileInfo.runtimeType != ProfileModel) {
       Navigator.pop(context);

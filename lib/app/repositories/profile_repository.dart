@@ -8,10 +8,10 @@ import '../models/profile_model.dart';
 
 class ProfileRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
-  final List<ProfileModel> _curriculums = [];
+  final List<ProfileModel> _profiles = [];
 
   UnmodifiableListView<ProfileModel> get list =>
-      UnmodifiableListView(_curriculums);
+      UnmodifiableListView(_profiles);
 
   ProfileRepository() {
     _initRepository();
@@ -22,14 +22,14 @@ class ProfileRepository extends ChangeNotifier {
   }
 
   _getCurriculums() async {
-    _curriculums.clear();
+    _profiles.clear();
 
     final snapshot = await _db.collection("curriculum").get();
 
     for (var doc in snapshot.docs) {
       ProfileModel curriculum = ProfileModel.fromMap(doc.data());
       curriculum.id = doc.id;
-      _curriculums.add(curriculum);
+      _profiles.add(curriculum);
     }
 
     notifyListeners();
@@ -39,21 +39,20 @@ class ProfileRepository extends ChangeNotifier {
     final doc = await _db.collection("curriculum").add(curriculum.toMap());
 
     curriculum.id = doc.id;
-    _curriculums.add(curriculum);
+    _profiles.add(curriculum);
 
     notifyListeners();
   }
 
   Future<void> edit(ProfileModel curriculum) async {
-    print('banana');
     await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .set(curriculum.toMap(), SetOptions(merge: true));
 
     final index =
-        _curriculums.indexWhere((element) => element.id == curriculum.id);
-    _curriculums[index] = curriculum;
+        _profiles.indexWhere((element) => element.id == curriculum.id);
+    _profiles[index] = curriculum;
 
     notifyListeners();
   }
@@ -61,7 +60,7 @@ class ProfileRepository extends ChangeNotifier {
   Future<void> delete(String curriculumId) async {
     await _db.collection("curriculum").doc(curriculumId).delete();
 
-    _curriculums.removeWhere((element) => element.id == curriculumId);
+    _profiles.removeWhere((element) => element.id == curriculumId);
 
     notifyListeners();
   }
@@ -70,7 +69,7 @@ class ProfileRepository extends ChangeNotifier {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      for (var resume in _curriculums) {
+      for (var resume in _profiles) {
         if (resume.id == user.uid) {
           return resume;
         }
