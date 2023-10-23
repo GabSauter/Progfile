@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/home_controller.dart';
+import 'package:progfile/app/repositories/profile_repository.dart';
 import 'package:progfile/app/views/components/main_button.dart';
+import 'package:provider/provider.dart';
 
 import 'components/snackbar_helper.dart';
 import 'components/title_text.dart';
@@ -23,13 +25,18 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProfileRepository profileRepository = context.watch<ProfileRepository>();
+
     return Scaffold(
       body: Padding(
         padding:
-            const EdgeInsets.only(top: 40, right: 50, left: 50, bottom: 10),
+            const EdgeInsets.only(top: 80, right: 50, left: 50, bottom: 10),
         child: Column(
           children: [
-            const TitleText(text: 'Olá'),
+            TitleText(
+              text:
+                  'Olá, ${profileRepository.myCurriculum().name.split(' ')[0]}!',
+            ),
             const SizedBox(height: 80),
             MainButton(
               text: 'Meu Curriculo',

@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:progfile/app/models/curriculum_model.dart';
+import 'package:progfile/app/models/profile_model.dart';
 
-class CurriculumService {
+class ProfileService {
   final _db = FirebaseFirestore.instance;
 
-  Future<void> createCurriculum(CurriculumModel curriculum) async {
+  Future<void> createCurriculum(ProfileModel curriculum) async {
     await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .set(curriculum.toMap());
   }
 
-  Future<void> edit(CurriculumModel curriculum) async {
+  Future<void> edit(ProfileModel curriculum) async {
     await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -27,8 +27,8 @@ class CurriculumService {
     await ref.delete();
   }
 
-  Future<CurriculumModel?> get() async {
-    CurriculumModel? myCurriculum;
+  Future<ProfileModel?> get() async {
+    ProfileModel? myCurriculum;
 
     DocumentReference ref = _db
         .collection("curriculum")
@@ -36,7 +36,7 @@ class CurriculumService {
 
     ref.get().then(
       (DocumentSnapshot doc) {
-        myCurriculum = CurriculumModel(
+        myCurriculum = ProfileModel(
             image: doc.get("image"),
             name: doc.get("name"),
             email: doc.get("email"),

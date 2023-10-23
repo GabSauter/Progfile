@@ -32,6 +32,7 @@ class LanguageRepository extends ChangeNotifier {
 
     for (var doc in snapshot.docs) {
       LanguageModel language = LanguageModel.fromMap(doc.data());
+      language.id = doc.id;
       _languages.add(language);
     }
     notifyListeners();

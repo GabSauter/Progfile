@@ -10,9 +10,9 @@ import 'package:progfile/app/views/components/main_button.dart';
 import 'package:progfile/app/views/components/masked_textfield.dart';
 import 'package:provider/provider.dart';
 
-import '../controllers/curriculum_edit_controller.dart';
-import '../models/curriculum_model.dart';
-import '../repositories/curriculum_repository.dart';
+import '../controllers/profile_edit_controller.dart';
+import '../models/profile_model.dart';
+import '../repositories/profile_repository.dart';
 import 'components/image_take.dart';
 import 'components/snackbar_helper.dart';
 
@@ -24,25 +24,37 @@ class CurriculumEditView extends StatefulWidget {
 }
 
 class _CurriculumEditViewState extends State<CurriculumEditView> {
-  final _controller = CurriculumRegisterController();
-  late CurriculumRepository curriculumRepository;
+  final _controller = ProfileRegisterController();
+  late ProfileRepository profileRepository;
+  late ProfileModel? myCurriculum;
 
-  void createCurriculum() async {
-    CurriculumModel? curriculum = await curriculumRepository.myCurriculum();
-    if (curriculum == null) {
-      print("NULO");
-      return;
+  void myCurriculumChange() async {
+    myCurriculum = profileRepository.myCurriculum();
+
+    if (myCurriculum != null) {
+      editCurriculum();
+    } else {
+      addCurriculum();
     }
+  }
+
+  void editCurriculum() {
     if (_controller.formKey.currentState!.validate()) {
       try {
-        curriculumRepository.edit(curriculum);
+        profileRepository.edit(_controller.editProfile(myCurriculum!));
         if (context.mounted) {
-          Navigator.pushReplacementNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, '/myCurriculum');
+          SnackBarHelper.showSuccessSnackBar(
+              'Currículo editado com sucesso!', context);
         }
       } catch (e) {
         SnackBarHelper.showErrorSnackBar(e.toString(), context);
       }
     }
+  }
+
+  void addCurriculum() {
+    // print('add');
   }
 
   @override
@@ -52,7 +64,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
 
   @override
   Widget build(BuildContext context) {
-    curriculumRepository = context.watch<CurriculumRepository>();
+    profileRepository = context.watch<ProfileRepository>();
 
     return MultiProvider(
       providers: [
@@ -203,7 +215,11 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 MainButton(
                   text: 'Repositórios GitHub',
                   onPressedCallback: () {
-                    Navigator.pushNamed(context, '/repository');
+                    Navigator.pushNamed(
+                      context,
+                      '/repository',
+                      arguments: ModalRoute.of(context)!.settings.arguments,
+                    );
                   },
                 ),
                 const SizedBox(height: 15),
@@ -286,7 +302,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 const SizedBox(height: 15),
                 MainButton(
                   onPressedCallback: () {
-                    createCurriculum();
+                    myCurriculumChange();
                   },
                   text: 'Concluir',
                   buttonColor: Colors.green[500],

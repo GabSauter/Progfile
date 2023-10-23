@@ -27,11 +27,12 @@ class GitProjectRepository extends ChangeNotifier {
     final snapshot = await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser?.uid)
-        .collection("repository")
+        .collection("gitProject")
         .get();
 
     for (var doc in snapshot.docs) {
       GitProjectModel project = GitProjectModel.fromMap(doc.data());
+      project.id = doc.id;
       _projects.add(project);
     }
 
@@ -41,7 +42,7 @@ class GitProjectRepository extends ChangeNotifier {
   Future<void> create(GitProjectModel project) async {
     final doc = await _db
         .collection("curriculum")
-        .doc("gitProject")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection("gitProject")
         .add(project.toMap());
 
@@ -54,7 +55,7 @@ class GitProjectRepository extends ChangeNotifier {
   Future<void> edit(GitProjectModel project) async {
     await _db
         .collection("curriculum")
-        .doc("gitProject")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection("gitProject")
         .doc(project.id)
         .update(project.toMap());
@@ -68,7 +69,7 @@ class GitProjectRepository extends ChangeNotifier {
   Future<void> delete(String projectId) async {
     await _db
         .collection("curriculum")
-        .doc("gitProject")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
         .collection("gitProject")
         .doc(projectId)
         .delete();

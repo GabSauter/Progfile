@@ -69,7 +69,10 @@ class EditAccountView extends StatelessWidget {
                   var isSamePassword = confirmPassword();
                   if (editAccountController.formKey.currentState!.validate() &&
                       isSamePassword) {
+                    editAccountController.editAccount();
                     Navigator.pop(context);
+                    SnackBarHelper.showSuccessSnackBar(
+                        "Conta editada com sucesso", context);
                   }
                   if (!isSamePassword) {
                     SnackBarHelper.showErrorSnackBar(

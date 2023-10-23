@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:progfile/app/models/profile_model.dart';
+import 'package:progfile/app/repositories/profile_repository.dart';
 import 'package:progfile/app/views/certificate_view.dart';
 import 'package:progfile/app/views/competence_view.dart';
 import 'package:progfile/app/views/curriculum_edit_view.dart';
@@ -8,6 +10,7 @@ import 'package:progfile/app/views/language_view.dart';
 import 'package:progfile/app/views/register_view.dart';
 import 'package:progfile/app/views/search_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import 'app/views/course_view.dart';
 import 'app/views/curriculum_view.dart';
@@ -20,6 +23,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ProfileModel myCurriculum =
+        context.watch<ProfileRepository>().myCurriculum();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -45,11 +51,12 @@ class MainApp extends StatelessWidget {
       routes: {
         '/register': (context) => const RegisterView(),
         '/home': (context) => HomeView(),
-        '/myCurriculum': (context) => const MyCurriculumView(),
+        '/myCurriculum': (context) =>
+            MyCurriculumView(userRepository: myCurriculum),
         '/curriculumEdit': (context) => const CurriculumEditView(),
         '/certificate': (context) => const CertificateView(),
         '/search': (context) => const SearchView(),
-        '/curriculum': (context) => CurriculumView(),
+        '/curriculum': (context) => const CurriculumView(),
         '/course': (context) => const CourseView(),
         '/language': (context) => const LanguageView(),
         '/repository': (context) => const GitProjectView(),

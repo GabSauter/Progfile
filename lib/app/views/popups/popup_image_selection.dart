@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/controllers/curriculum_edit_controller.dart';
+import 'package:progfile/app/controllers/profile_edit_controller.dart';
 
 class PopupImageSelection {
-  CurriculumRegisterController controller;
+  ProfileRegisterController controller;
 
   PopupImageSelection(this.controller);
 
