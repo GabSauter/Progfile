@@ -45,6 +45,8 @@ class CurriculumRepository extends ChangeNotifier {
     curriculum.gitProjects = gitProjects;
     curriculum.languages = languages;
 
+    notifyListeners();
+
     return curriculum;
   }
 
