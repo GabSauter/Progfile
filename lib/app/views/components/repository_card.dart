@@ -7,50 +7,59 @@ class RepositoryCard extends StatelessWidget {
 
   const RepositoryCard({
     super.key,
-    this.title = 'Repositorio',
-    this.description = 'Aplicativo para consulta de currículos.',
-    this.languages = 'Flutter, Dart',
+    required this.title,
+    required this.description,
+    required this.languages,
   });
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Card(
-        clipBehavior: Clip.hardEdge,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-          side:
-              BorderSide(color: Color.fromARGB(255, 134, 134, 134), width: .5),
-        ),
-        elevation: 3,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+      heightFactor: 1.1,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * .8,
+        height: 130,
+        child: Card(
+          clipBehavior: Clip.hardEdge,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+            side: BorderSide(
+                color: Color.fromARGB(255, 134, 134, 134), width: .5),
+          ),
+          elevation: 3,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 20,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                description,
-                style: const TextStyle(
-                  fontSize: 14,
+                const SizedBox(height: 10),
+                Text(
+                  description,
+                  style: const TextStyle(
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                languages,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Color.fromARGB(255, 102, 102, 102),
-                ),
-              )
-            ],
+                const SizedBox(height: 10),
+                Text(
+                  languages,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Color.fromARGB(255, 102, 102, 102),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

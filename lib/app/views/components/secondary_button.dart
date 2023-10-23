@@ -5,6 +5,7 @@ class SecondaryButton extends StatelessWidget {
   final String? route;
   final Color? buttonColor;
   final VoidCallback? onPressedCallback;
+  final Object? arguments;
 
   const SecondaryButton({
     super.key,
@@ -12,6 +13,7 @@ class SecondaryButton extends StatelessWidget {
     this.route,
     this.buttonColor,
     this.onPressedCallback,
+    this.arguments,
   });
 
   @override
@@ -36,7 +38,7 @@ class SecondaryButton extends StatelessWidget {
               if (onPressedCallback != null) {
                 onPressedCallback!();
               } else if (route != null) {
-                Navigator.of(context).pushNamed(route!);
+                Navigator.of(context).pushNamed(route!, arguments: arguments);
               }
             },
             child: Text(

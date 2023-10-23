@@ -4,16 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../models/curriculum_model.dart';
+import '../models/profile_model.dart';
 
-class CurriculumRepository extends ChangeNotifier {
+class ProfileRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
-  final List<CurriculumModel> _curriculums = [];
+  final List<ProfileModel> _profiles = [];
 
-  UnmodifiableListView<CurriculumModel> get list =>
-      UnmodifiableListView(_curriculums);
+  UnmodifiableListView<ProfileModel> get list =>
+      UnmodifiableListView(_profiles);
 
-  CurriculumRepository() {
+  ProfileRepository() {
     _initRepository();
   }
 
@@ -22,38 +22,37 @@ class CurriculumRepository extends ChangeNotifier {
   }
 
   _getCurriculums() async {
-    _curriculums.clear();
+    _profiles.clear();
 
     final snapshot = await _db.collection("curriculum").get();
 
     for (var doc in snapshot.docs) {
-      CurriculumModel curriculum = CurriculumModel.fromMap(doc.data());
+      ProfileModel curriculum = ProfileModel.fromMap(doc.data());
       curriculum.id = doc.id;
-      _curriculums.add(curriculum);
+      _profiles.add(curriculum);
     }
 
     notifyListeners();
   }
 
-  Future<void> create(CurriculumModel curriculum) async {
+  Future<void> create(ProfileModel curriculum) async {
     final doc = await _db.collection("curriculum").add(curriculum.toMap());
 
     curriculum.id = doc.id;
-    _curriculums.add(curriculum);
+    _profiles.add(curriculum);
 
     notifyListeners();
   }
 
-  Future<void> edit(CurriculumModel curriculum) async {
-    print('banana');
+  Future<void> edit(ProfileModel curriculum) async {
     await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .set(curriculum.toMap(), SetOptions(merge: true));
 
     final index =
-        _curriculums.indexWhere((element) => element.id == curriculum.id);
-    _curriculums[index] = curriculum;
+        _profiles.indexWhere((element) => element.id == curriculum.id);
+    _profiles[index] = curriculum;
 
     notifyListeners();
   }
@@ -61,23 +60,23 @@ class CurriculumRepository extends ChangeNotifier {
   Future<void> delete(String curriculumId) async {
     await _db.collection("curriculum").doc(curriculumId).delete();
 
-    _curriculums.removeWhere((element) => element.id == curriculumId);
+    _profiles.removeWhere((element) => element.id == curriculumId);
 
     notifyListeners();
   }
 
-  CurriculumModel myCurriculum() {
+  ProfileModel myCurriculum() {
     final user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      for (var resume in _curriculums) {
+      for (var resume in _profiles) {
         if (resume.id == user.uid) {
           return resume;
         }
       }
     }
 
-    return CurriculumModel(
+    return ProfileModel(
         id: null,
         name: '',
         email: '',

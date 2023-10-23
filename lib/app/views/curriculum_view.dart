@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/fake_profile_model.dart';
+import 'package:progfile/app/models/git_project_model.dart';
 import 'package:progfile/app/views/components/repository_card.dart';
-
+import 'package:provider/provider.dart';
 import '../controllers/fake_profile_controller.dart';
+import '../models/profile_model.dart';
+import '../repositories/curriculum_reposiotory.dart';
+import 'components/course_item.dart';
 
-class CurriculumView extends StatelessWidget {
+class CurriculumView extends StatefulWidget {
+  const CurriculumView({Key? key}) : super(key: key);
+
+  @override
+  State<CurriculumView> createState() => _CurriculumViewState();
+}
+
+class _CurriculumViewState extends State<CurriculumView> {
   final FakeProfileModel _fakeProfile = FakeProfileController.getFakeProfile();
-
-  CurriculumView({Key? key}) : super(key: key);
+  late CurriculumRepository curriculumInfo;
 
   @override
   Widget build(BuildContext context) {
+    final profileInfo =
+        ModalRoute.of(context)!.settings.arguments as ProfileModel;
+
+    curriculumInfo = context.watch<CurriculumRepository>();
+
+    if (profileInfo.runtimeType != ProfileModel) {
+      Navigator.pop(context);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Currículo'),
@@ -21,27 +40,31 @@ class CurriculumView extends StatelessWidget {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            userBasicInfo,
-            const SizedBox(height: 30),
-            userAcademicInfo(context),
-            const Divider(
-              color: Colors.black,
-              thickness: 1,
-              height: 50,
-            ),
-            githubInfo,
-          ],
-        ),
+      body: buildBody(profileInfo),
+    );
+  }
+
+  Widget buildBody(ProfileModel profile) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildUserBasicInfo(profile),
+          const SizedBox(height: 30),
+          buildUserAcademicInfo(profile),
+          const Divider(
+            color: Colors.black,
+            thickness: 1,
+            height: 50,
+          ),
+          buildGithubInfo(profile),
+        ],
       ),
     );
   }
 
-  Widget get githubInfo {
+  Widget buildGithubInfo(ProfileModel profile) {
     return Column(
       children: [
         Row(
@@ -55,7 +78,7 @@ class CurriculumView extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             Text(
-              _fakeProfile.repositories.url,
+              profile.githubUsername ?? 'Não informado',
               style: const TextStyle(
                 decoration: TextDecoration.underline,
                 fontSize: 16,
@@ -63,15 +86,22 @@ class CurriculumView extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 40),
-        const RepositoryCard(),
-        const SizedBox(height: 20),
-        const RepositoryCard(),
+        const SizedBox(height: 30),
+        Column(
+          children: [
+            for (GitProjectModel item in curriculumInfo.gitProjects)
+              RepositoryCard(
+                title: item.name,
+                description: item.description,
+                languages: item.language,
+              ),
+          ],
+        ),
       ],
     );
   }
 
-  Container userAcademicInfo(BuildContext context) {
+  Widget buildUserAcademicInfo(ProfileModel profile) {
     List<Widget> about = [
       const Text(
         'Sobre:',
@@ -82,7 +112,7 @@ class CurriculumView extends StatelessWidget {
       ),
       const SizedBox(height: 5),
       Text(
-        _fakeProfile.userRepository.about,
+        profile.aboutYou,
         style: const TextStyle(fontSize: 16),
         textAlign: TextAlign.justify,
       )
@@ -96,21 +126,12 @@ class CurriculumView extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 5),
-      Text(
-        _fakeProfile.courses.name,
-        style: const TextStyle(
-          decoration: TextDecoration.underline,
-          fontSize: 16,
-        ),
-      ),
-      Text(
-        '${_fakeProfile.courses.degree} em ${_fakeProfile.courses.university}',
-        style: const TextStyle(fontSize: 16),
-      ),
-      Text(
-        '${_fakeProfile.courses.startDate} - ${_fakeProfile.courses.finishDate}',
-        style: const TextStyle(fontSize: 16),
-      ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: curriculumInfo.courses.map((item) {
+          return CourseItem(course: item);
+        }).toList(),
+      )
     ];
     List<Widget> languages = [
       const Text(
@@ -121,49 +142,76 @@ class CurriculumView extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 5),
-      Text(
-        '${_fakeProfile.languages.name} - ${_fakeProfile.languages.degree}',
-        style: const TextStyle(fontSize: 16),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: curriculumInfo.languages.map((item) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${item.name} - ${item.degree}',
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 10),
+            ],
+          );
+        }).toList(),
       ),
     ];
     List<Widget> skills = [
-      const Column(
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Competências:',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  Text('Flutter', style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 10),
-                  Text('Dart', style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 10),
-                  Text('Java', style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 10),
-                ],
-              ),
-              SizedBox(width: 150),
-              Column(
-                children: [
-                  Text('C'),
-                  SizedBox(height: 10),
-                  Text('HTML'),
-                  SizedBox(height: 10),
-                  Text('CSS'),
-                  SizedBox(height: 10),
-                ],
-              ),
-            ],
-          ),
+          const SizedBox(height: 10),
+          curriculumInfo.competences.length >= 4
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: curriculumInfo.competences
+                          .sublist(0, curriculumInfo.competences.length ~/ 2)
+                          .map((item) {
+                        return Column(
+                          children: [
+                            Text(item.name),
+                            const SizedBox(height: 10),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(width: 150),
+                    Column(
+                      children: curriculumInfo.competences
+                          .sublist(curriculumInfo.competences.length ~/ 2)
+                          .map((item) {
+                        return Column(
+                          children: [
+                            Text(item.name),
+                            const SizedBox(height: 10),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: curriculumInfo.competences.map((item) {
+                    return Column(
+                      children: [
+                        Text('${item.name} - ${item.degree}',
+                            style: const TextStyle(fontSize: 16)),
+                        const SizedBox(height: 10),
+                      ],
+                    );
+                  }).toList()),
         ],
       ),
     ];
@@ -183,28 +231,35 @@ class CurriculumView extends StatelessWidget {
         ],
       ),
     );
+    // Implemente a lógica para construir informações acadêmicas
+    // com base nos dados do perfil.
+    // Retorne os widgets apropriados.
   }
 
-  Widget get userBasicInfo {
+  Widget buildUserBasicInfo(ProfileModel profile) {
     return Column(
       children: [
-        _fakeProfile.userRepository.image ??
-            const Image(
-              image: AssetImage('assets/images/user.png'),
-              height: 150,
-            ),
+        profile.image != null
+            ? Image.file(
+                profile.image!,
+                height: 150,
+              )
+            : const Image(
+                image: AssetImage('assets/images/user.png'),
+                height: 150,
+              ),
         const SizedBox(height: 10),
         Text(
-          _fakeProfile.userRepository.name,
+          profile.name,
           style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 10),
-        const Text(
-          'Desenvolvedor de Software',
-          style: TextStyle(
+        Text(
+          profile.fieldOfExpertise,
+          style: const TextStyle(
             fontSize: 18,
           ),
         ),
@@ -215,14 +270,14 @@ class CurriculumView extends StatelessWidget {
             const Icon(Icons.email),
             const SizedBox(width: 10),
             Text(
-              _fakeProfile.userRepository.email,
+              profile.email,
               style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
         const SizedBox(height: 10),
         Text(
-          _fakeProfile.userRepository.phone,
+          profile.phoneNumber,
           style: const TextStyle(fontSize: 16),
         ),
         const SizedBox(height: 10),

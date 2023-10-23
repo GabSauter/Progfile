@@ -15,4 +15,12 @@ class CompetenceModel {
       'degree': degree,
     };
   }
+
+  factory CompetenceModel.fromMap(Map<String, dynamic> map) {
+    return CompetenceModel(
+      id: map['id'],
+      name: map['name'],
+      degree: map['degree'],
+    );
+  }
 }

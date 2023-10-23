@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/models/curriculum_model.dart';
+import 'package:progfile/app/models/profile_model.dart';
+import 'package:progfile/app/repositories/curriculum_reposiotory.dart';
 import 'package:progfile/app/views/components/repository_card.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 import 'package:progfile/app/views/components/secondary_button.dart';
+import 'package:provider/provider.dart';
 
-class MyCurriculumView extends StatelessWidget {
-  final CurriculumModel
-      userRepository; // depois mudar para = UserRepositoryModel();
+import 'components/course_item.dart';
+
+class MyCurriculumView extends StatefulWidget {
+  final ProfileModel userRepository;
+  // depois mudar para = UserRepositoryModel();
 
   const MyCurriculumView({Key? key, required this.userRepository})
       : super(key: key);
 
   @override
+  State<MyCurriculumView> createState() => _MyCurriculumViewState();
+}
+
+class _MyCurriculumViewState extends State<MyCurriculumView> {
+  late CurriculumRepository curriculumInfo;
+
+  @override
   Widget build(BuildContext context) {
+    curriculumInfo = context.watch<CurriculumRepository>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meu Currículo'),
@@ -57,32 +70,42 @@ class MyCurriculumView extends StatelessWidget {
   }
 
   Widget get githubInfo {
-    return const Column(
-      children: [
-        Row(
+    return Consumer<CurriculumRepository>(
+      builder: (context, curriculumInfo, child) {
+        return Column(
           children: [
-            Text(
-              'GitHub:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              children: [
+                const Text(
+                  'GitHub:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  widget.userRepository.githubUsername ?? 'Não informado',
+                  style: const TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
             ),
-            SizedBox(width: 10),
-            Text(
-              'Ninjaalpha01',
-              style: TextStyle(
-                decoration: TextDecoration.underline,
-                fontSize: 16,
-              ),
+            const SizedBox(height: 30),
+            Column(
+              children: curriculumInfo.gitProjects.map((item) {
+                return RepositoryCard(
+                  title: item.name,
+                  description: item.description,
+                  languages: item.language,
+                );
+              }).toList(),
             ),
           ],
-        ),
-        SizedBox(height: 40),
-        RepositoryCard(),
-        SizedBox(height: 20),
-        RepositoryCard(),
-      ],
+        );
+      },
     );
   }
 
@@ -96,7 +119,11 @@ class MyCurriculumView extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 5),
-      Text(userRepository.aboutYou),
+      Text(
+        widget.userRepository.aboutYou,
+        style: const TextStyle(fontSize: 16),
+        textAlign: TextAlign.justify,
+      ),
     ];
     List<Widget> academic = [
       const Text(
@@ -107,21 +134,12 @@ class MyCurriculumView extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 5),
-      const Text('Design Gráfico',
-          style: TextStyle(
-            decoration: TextDecoration.underline,
-            fontSize: 16,
-          )),
-      const Text('Tecnico - UEPG', style: TextStyle(fontSize: 16)),
-      const Text('2018-2020', style: TextStyle(fontSize: 16)),
-      const SizedBox(height: 10),
-      const Text('Bacharelado em Ciencia da Computacao',
-          style: TextStyle(
-            decoration: TextDecoration.underline,
-            fontSize: 16,
-          )),
-      const Text('Graduacao - UTFPR', style: TextStyle(fontSize: 16)),
-      const Text('2020-2024', style: TextStyle(fontSize: 16)),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: curriculumInfo.courses.map((item) {
+          return CourseItem(course: item);
+        }).toList(),
+      )
     ];
     List<Widget> languages = [
       const Text(
@@ -132,48 +150,76 @@ class MyCurriculumView extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 5),
-      const Text('Ingles - Avancado', style: TextStyle(fontSize: 16)),
-      const SizedBox(height: 10),
-      const Text('Espanhol - Basico', style: TextStyle(fontSize: 16)),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: curriculumInfo.languages.map((item) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${item.name} - ${item.degree}',
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 10),
+            ],
+          );
+        }).toList(),
+      ),
     ];
     List<Widget> skills = [
-      const Column(
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Competências:',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  Text('Flutter', style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 10),
-                  Text('Dart', style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 10),
-                  Text('Java', style: TextStyle(fontSize: 16)),
-                  SizedBox(height: 10),
-                ],
-              ),
-              SizedBox(width: 150),
-              Column(
-                children: [
-                  Text('C'),
-                  SizedBox(height: 10),
-                  Text('HTML'),
-                  SizedBox(height: 10),
-                  Text('CSS'),
-                  SizedBox(height: 10),
-                ],
-              ),
-            ],
-          ),
+          const SizedBox(height: 10),
+          curriculumInfo.competences.length >= 4
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: curriculumInfo.competences
+                          .sublist(0, curriculumInfo.competences.length ~/ 2)
+                          .map((item) {
+                        return Column(
+                          children: [
+                            Text(item.name),
+                            const SizedBox(height: 10),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(width: 150),
+                    Column(
+                      children: curriculumInfo.competences
+                          .sublist(curriculumInfo.competences.length ~/ 2)
+                          .map((item) {
+                        return Column(
+                          children: [
+                            Text(item.name),
+                            const SizedBox(height: 10),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: curriculumInfo.competences.map((item) {
+                    return Column(
+                      children: [
+                        Text('${item.name} - ${item.degree}',
+                            style: const TextStyle(fontSize: 16)),
+                        const SizedBox(height: 10),
+                      ],
+                    );
+                  }).toList()),
         ],
       ),
       const SizedBox(height: 30),
@@ -207,10 +253,18 @@ class MyCurriculumView extends StatelessWidget {
   Widget get userBasicInfo {
     return Column(
       children: [
-        const Image(image: AssetImage('assets/images/user.png'), height: 150),
+        widget.userRepository.image != null
+            ? Image.file(
+                widget.userRepository.image!,
+                height: 150,
+              )
+            : const Image(
+                image: AssetImage('assets/images/user.png'),
+                height: 150,
+              ),
         const SizedBox(height: 10),
         Text(
-          userRepository.name,
+          widget.userRepository.name,
           style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -218,7 +272,7 @@ class MyCurriculumView extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          userRepository.fieldOfExpertise,
+          widget.userRepository.fieldOfExpertise,
           style: const TextStyle(
             fontSize: 18,
           ),
@@ -230,19 +284,19 @@ class MyCurriculumView extends StatelessWidget {
             const Icon(Icons.email),
             const SizedBox(width: 10),
             Text(
-              userRepository.email,
+              widget.userRepository.email,
               style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
         const SizedBox(height: 10),
         Text(
-          userRepository.phoneNumber,
+          widget.userRepository.phoneNumber,
           style: const TextStyle(fontSize: 16),
         ),
         const SizedBox(height: 10),
         Text(
-          userRepository
+          widget.userRepository
               .address, // depois mudar o endereco para cidade e estado
           style: const TextStyle(fontSize: 16),
         ),

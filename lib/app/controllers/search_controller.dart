@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/models/curriculum_model.dart';
+import 'package:progfile/app/models/profile_model.dart';
 
 class SearchCurriculumController {
   final TextEditingController searchTextController = TextEditingController();
@@ -47,7 +47,7 @@ class SearchCurriculumController {
   //       aboutYou: "Sobre Você")
   // ];
 
-  searchResumes(String searchText, List<CurriculumModel> resumes) {
+  searchResumes(String searchText, List<ProfileModel> resumes) {
     return resumes
         .where((resume) =>
             resume.name.toLowerCase().contains(searchText.toLowerCase()))
