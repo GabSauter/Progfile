@@ -28,6 +28,7 @@ class ProfileModel {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
+      'image': image,
       'email': email,
       'phoneNumber': phoneNumber,
       'githubUsername': githubUsername,
@@ -41,7 +42,7 @@ class ProfileModel {
   factory ProfileModel.fromMap(Map<String, dynamic> map) {
     return ProfileModel(
       id: map['id'],
-      // image: map['image'],
+      image: map['image'],
       name: map['name'],
       email: map['email'],
       phoneNumber: map['phoneNumber'],

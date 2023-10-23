@@ -21,6 +21,7 @@ class MyCurriculumView extends StatefulWidget {
 
 class _MyCurriculumViewState extends State<MyCurriculumView> {
   late CurriculumRepository curriculumInfo;
+
   @override
   Widget build(BuildContext context) {
     curriculumInfo = context.watch<CurriculumRepository>();
@@ -69,32 +70,42 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
   }
 
   Widget get githubInfo {
-    return const Column(
-      children: [
-        Row(
+    return Consumer<CurriculumRepository>(
+      builder: (context, curriculumInfo, child) {
+        return Column(
           children: [
-            Text(
-              'GitHub:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              children: [
+                const Text(
+                  'GitHub:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  widget.userRepository.githubUsername ?? 'Não informado',
+                  style: const TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
             ),
-            SizedBox(width: 10),
-            Text(
-              'Ninjaalpha01',
-              style: TextStyle(
-                decoration: TextDecoration.underline,
-                fontSize: 16,
-              ),
+            const SizedBox(height: 30),
+            Column(
+              children: curriculumInfo.gitProjects.map((item) {
+                return RepositoryCard(
+                  title: item.name,
+                  description: item.description,
+                  languages: item.language,
+                );
+              }).toList(),
             ),
           ],
-        ),
-        SizedBox(height: 40),
-        RepositoryCard(),
-        SizedBox(height: 20),
-        RepositoryCard(),
-      ],
+        );
+      },
     );
   }
 
@@ -108,7 +119,11 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
         ),
       ),
       const SizedBox(height: 5),
-      Text(widget.userRepository.aboutYou),
+      Text(
+        widget.userRepository.aboutYou,
+        style: const TextStyle(fontSize: 16),
+        textAlign: TextAlign.justify,
+      ),
     ];
     List<Widget> academic = [
       const Text(
@@ -238,7 +253,15 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
   Widget get userBasicInfo {
     return Column(
       children: [
-        const Image(image: AssetImage('assets/images/user.png'), height: 150),
+        widget.userRepository.image != null
+            ? Image.file(
+                widget.userRepository.image!,
+                height: 150,
+              )
+            : const Image(
+                image: AssetImage('assets/images/user.png'),
+                height: 150,
+              ),
         const SizedBox(height: 10),
         Text(
           widget.userRepository.name,

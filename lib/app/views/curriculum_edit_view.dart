@@ -25,11 +25,11 @@ class CurriculumEditView extends StatefulWidget {
 
 class _CurriculumEditViewState extends State<CurriculumEditView> {
   final _controller = ProfileRegisterController();
-  late ProfileRepository curriculumRepository;
+  late ProfileRepository profileRepository;
   late ProfileModel? myCurriculum;
 
   void myCurriculumChange() async {
-    myCurriculum = curriculumRepository.myCurriculum();
+    myCurriculum = profileRepository.myCurriculum();
 
     if (myCurriculum != null) {
       editCurriculum();
@@ -41,7 +41,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
   void editCurriculum() {
     if (_controller.formKey.currentState!.validate()) {
       try {
-        curriculumRepository.edit(_controller.editProfile(myCurriculum!));
+        profileRepository.edit(_controller.editProfile(myCurriculum!));
         if (context.mounted) {
           Navigator.pushReplacementNamed(context, '/myCurriculum');
           SnackBarHelper.showSuccessSnackBar(
@@ -54,7 +54,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
   }
 
   void addCurriculum() {
-    print('add');
+    // print('add');
   }
 
   @override
@@ -64,7 +64,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
 
   @override
   Widget build(BuildContext context) {
-    curriculumRepository = context.watch<ProfileRepository>();
+    profileRepository = context.watch<ProfileRepository>();
 
     return MultiProvider(
       providers: [
@@ -215,7 +215,11 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 MainButton(
                   text: 'Repositórios GitHub',
                   onPressedCallback: () {
-                    Navigator.pushNamed(context, '/repository');
+                    Navigator.pushNamed(
+                      context,
+                      '/repository',
+                      arguments: ModalRoute.of(context)!.settings.arguments,
+                    );
                   },
                 ),
                 const SizedBox(height: 15),
