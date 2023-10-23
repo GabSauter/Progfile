@@ -56,7 +56,7 @@ class MainApp extends StatelessWidget {
         '/curriculumEdit': (context) => const CurriculumEditView(),
         '/certificate': (context) => const CertificateView(),
         '/search': (context) => const SearchView(),
-        '/curriculum': (context) => CurriculumView(),
+        '/curriculum': (context) => const CurriculumView(),
         '/course': (context) => const CourseView(),
         '/language': (context) => const LanguageView(),
         '/repository': (context) => const GitProjectView(),

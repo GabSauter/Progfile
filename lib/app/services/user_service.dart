@@ -18,6 +18,13 @@ class UserService {
     );
   }
 
+  Future<void> editAccount(UserModel user) async {
+    if (_db.currentUser != null) {
+      await _db.currentUser?.updateEmail(user.email);
+      await _db.currentUser?.updatePassword(user.password);
+    }
+  }
+
   Future<void> signOut() async {
     await _db.signOut();
   }

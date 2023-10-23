@@ -15,4 +15,10 @@ class RegisterController {
         nameController.text, emailController.text, passwordController.text);
     await UserService().signUp(user);
   }
+
+  Future<void> editAccount() async {
+    UserModel user = UserModel(
+        nameController.text, emailController.text, passwordController.text);
+    await UserService().editAccount(user);
+  }
 }
