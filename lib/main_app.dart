@@ -11,7 +11,6 @@ import 'package:progfile/app/views/register_view.dart';
 import 'package:progfile/app/views/search_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-
 import 'app/views/course_view.dart';
 import 'app/views/curriculum_view.dart';
 import 'app/views/login_view.dart';
@@ -42,7 +41,7 @@ class MainApp extends StatelessWidget {
           if (snapshot.hasError) {
             return const Center(child: Text("Ops! Deu algo errado."));
           } else if (snapshot.hasData) {
-            return HomeView();
+            return const HomeView();
           } else {
             return const LoginView();
           }
@@ -50,7 +49,7 @@ class MainApp extends StatelessWidget {
       ),
       routes: {
         '/register': (context) => const RegisterView(),
-        '/home': (context) => HomeView(),
+        '/home': (context) => const HomeView(),
         '/myCurriculum': (context) =>
             MyCurriculumView(userRepository: myCurriculum),
         '/curriculumEdit': (context) => const CurriculumEditView(),
