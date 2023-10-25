@@ -139,4 +139,13 @@ class CurriculumRepository extends ChangeNotifier {
 
     return languages;
   }
+
+  void reset() {
+    certificates = [];
+    competences = [];
+    courses = [];
+    gitProjects = [];
+    languages = [];
+    notifyListeners();
+  }
 }

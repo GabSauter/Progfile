@@ -8,7 +8,7 @@ import '../models/profile_model.dart';
 
 class ProfileRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
-  final List<ProfileModel> _profiles = [];
+  List<ProfileModel> _profiles = [];
 
   UnmodifiableListView<ProfileModel> get list =>
       UnmodifiableListView(_profiles);
@@ -18,10 +18,10 @@ class ProfileRepository extends ChangeNotifier {
   }
 
   _initRepository() async {
-    await _getCurriculums();
+    await getCurriculums();
   }
 
-  _getCurriculums() async {
+  getCurriculums() async {
     _profiles.clear();
 
     final snapshot = await _db.collection("curriculum").get();
@@ -85,5 +85,10 @@ class ProfileRepository extends ChangeNotifier {
         fieldOfExpertise: '',
         degree: '',
         aboutYou: '');
+  }
+
+  void reset() {
+    _profiles = [];
+    notifyListeners();
   }
 }
