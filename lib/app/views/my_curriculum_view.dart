@@ -228,7 +228,6 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
           text: 'Meus Certificados',
           onPressedCallback: () =>
               {Navigator.pushNamed(context, '/certificate')},
-          buttonWidth: 250,
         ),
       ),
     ];
