@@ -17,10 +17,10 @@ class CourseRepository extends ChangeNotifier {
   }
 
   _initRepository() async {
-    await _getCourses();
+    await getCourses();
   }
 
-  _getCourses() async {
+  getCourses() async {
     _courses.clear();
 
     final snapshot = await _db

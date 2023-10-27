@@ -18,10 +18,10 @@ class GitProjectRepository extends ChangeNotifier {
   }
 
   _initRepository() async {
-    await _getProjects();
+    await getProjects();
   }
 
-  _getProjects() async {
+  getProjects() async {
     _projects.clear();
 
     final snapshot = await _db

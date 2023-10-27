@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/home_controller.dart';
+import 'package:progfile/app/repositories/certificate_repository.dart';
+import 'package:progfile/app/repositories/competence_repository.dart';
+import 'package:progfile/app/repositories/course_repository.dart';
 import 'package:progfile/app/repositories/curriculum_repository.dart';
+import 'package:progfile/app/repositories/git_project_repository.dart';
+import 'package:progfile/app/repositories/language_repository.dart';
 import 'package:progfile/app/repositories/profile_repository.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +47,11 @@ class _HomeViewState extends State<HomeView> {
     context.read<CurriculumRepository>().getMyCurriculum();
     context.read<ProfileRepository>().getProfiles();
     context.read<ProfileRepository>().getMyProfile();
+    context.read<CertificateRepository>().getCertificates();
+    context.read<CompetenceRepository>().getCompetences();
+    context.read<CourseRepository>().getCourses();
+    context.read<GitProjectRepository>().getProjects();
+    context.read<LanguageRepository>().getLanguages();
   }
 
   @override

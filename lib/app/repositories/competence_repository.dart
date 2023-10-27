@@ -17,10 +17,10 @@ class CompetenceRepository extends ChangeNotifier {
   }
 
   _initRepository() async {
-    await _getCompetences();
+    await getCompetences();
   }
 
-  _getCompetences() async {
+  getCompetences() async {
     _competences.clear();
 
     CollectionReference collection = _db

@@ -17,11 +17,11 @@ class LanguageRepository extends ChangeNotifier {
   }
 
   _initRepository() async {
-    await _getLanguages();
+    await getLanguages();
     notifyListeners();
   }
 
-  _getLanguages() async {
+  getLanguages() async {
     _languages.clear();
 
     final snapshot = await _db

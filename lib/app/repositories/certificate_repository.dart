@@ -18,10 +18,10 @@ class CertificateRepository extends ChangeNotifier {
   }
 
   _initRepository() async {
-    await _getCertificates();
+    await getCertificates();
   }
 
-  _getCertificates() async {
+  getCertificates() async {
     _certificates.clear();
 
     final snapshot = await _db
