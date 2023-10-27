@@ -29,7 +29,7 @@ class ProfileRegisterController {
       githubUsername: githubUsernameController.text,
       address: addressController.text,
       fieldOfExpertise: fieldOfExpertiseController.text,
-      degree: selectedDegree.text,
+      degree: selectedDegree.text == '' ? 'Estagiário' : selectedDegree.text,
       aboutYou: aboutYouController.text,
     );
   }
