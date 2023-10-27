@@ -1,15 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/login_controller.dart';
-import 'package:progfile/app/repositories/curriculum_reposiotory.dart';
 import 'package:progfile/app/views/components/form_password_textfield.dart';
 import 'package:progfile/app/views/components/form_text.dart';
 import 'package:progfile/app/views/components/form_textfield.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 import 'package:progfile/app/views/components/secondary_button.dart';
 import 'package:progfile/app/views/components/title_text.dart';
-import 'package:provider/provider.dart';
-import 'package:progfile/app/repositories/profile_repository.dart';
 
 import 'components/snackbar_helper.dart';
 
@@ -33,9 +30,6 @@ class _LoginViewState extends State<LoginView> {
     try {
       await loginController.signIn();
       if (context.mounted) {
-        context.read<CurriculumRepository>().getMyCurriculum();
-        context.read<ProfileRepository>().getProfiles();
-        context.read<ProfileRepository>().getMyProfile();
         Navigator.pushReplacementNamed(context, '/home');
       }
     } on FirebaseAuthException catch (e) {
