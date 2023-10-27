@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:progfile/app/repositories/curriculum_reposiotory.dart';
 import 'package:provider/provider.dart';
-
 import '../controllers/search_controller.dart';
 import '../models/profile_model.dart';
 import '../repositories/profile_repository.dart';
@@ -106,10 +106,14 @@ class SearchViewState extends State<SearchView> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
+                      final profile = filteredResumes[index];
+                      context
+                          .read<CurriculumRepository>()
+                          .getItems(profile.id!);
                       Navigator.pushNamed(
                         context,
                         '/curriculum',
-                        arguments: filteredResumes[index],
+                        arguments: profile,
                       );
                     },
                     child: Card(
