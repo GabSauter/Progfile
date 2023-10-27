@@ -31,6 +31,10 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
+  void loadProfiles(BuildContext context) async {
+    await context.read<ProfileRepository>().getProfiles();
+  } 
+
   @override
   Widget build(BuildContext context) {
     ProfileRepository profileRepository = context.watch<ProfileRepository>();
@@ -42,8 +46,7 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           children: [
             TitleText(
-              text:
-                  'Olá, ${profileRepository.myCurriculum().name.split(' ')[0]}!',
+              text: 'Olá, ${profileRepository.myProfile.name.split(' ')[0]}!',
             ),
             const SizedBox(height: 80),
             MainButton(
@@ -54,7 +57,11 @@ class _HomeViewState extends State<HomeView> {
             const SizedBox(height: 20),
             MainButton(
               text: 'Procurar Currículo',
-              onPressedCallback: () => Navigator.pushNamed(context, '/search'),
+              onPressedCallback: () =>
+                  {
+                    loadProfiles(context),
+                    Navigator.pushNamed(context, '/search')
+                  },
             ),
             const SizedBox(height: 20),
             MainButton(

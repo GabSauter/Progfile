@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/models/fake_profile_model.dart';
 import 'package:progfile/app/models/git_project_model.dart';
 import 'package:progfile/app/views/components/repository_card.dart';
 import 'package:provider/provider.dart';
-import '../controllers/fake_profile_controller.dart';
 import '../models/profile_model.dart';
 import '../repositories/curriculum_reposiotory.dart';
 import 'components/course_item.dart';
@@ -16,7 +14,6 @@ class CurriculumView extends StatefulWidget {
 }
 
 class _CurriculumViewState extends State<CurriculumView> {
-  final FakeProfileModel _fakeProfile = FakeProfileController.getFakeProfile();
   late CurriculumRepository curriculumInfo;
 
   @override
@@ -25,6 +22,7 @@ class _CurriculumViewState extends State<CurriculumView> {
         ModalRoute.of(context)!.settings.arguments as ProfileModel;
 
     curriculumInfo = context.watch<CurriculumRepository>();
+    curriculumInfo.getItems(profileInfo.id!);
 
     if (profileInfo.runtimeType != ProfileModel) {
       Navigator.pop(context);
@@ -282,7 +280,7 @@ class _CurriculumViewState extends State<CurriculumView> {
         ),
         const SizedBox(height: 10),
         Text(
-          '${_fakeProfile.userRepository.city} - ${_fakeProfile.userRepository.uf}',
+          profile.address,
           style: const TextStyle(fontSize: 16),
         ),
       ],

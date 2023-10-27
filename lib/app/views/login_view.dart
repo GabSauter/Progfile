@@ -33,10 +33,9 @@ class _LoginViewState extends State<LoginView> {
     try {
       await loginController.signIn();
       if (context.mounted) {
-        context
-            .read<CurriculumRepository>()
-            .getItems(FirebaseAuth.instance.currentUser!.uid);
-        context.read<ProfileRepository>().getCurriculums();
+        context.read<CurriculumRepository>().getMyCurriculum();
+        context.read<ProfileRepository>().getProfiles();
+        context.read<ProfileRepository>().getMyProfile();
         Navigator.pushReplacementNamed(context, '/home');
       }
     } on FirebaseAuthException catch (e) {

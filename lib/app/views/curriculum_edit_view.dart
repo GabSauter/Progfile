@@ -29,7 +29,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
   late ProfileModel? myCurriculum;
 
   void myCurriculumChange() async {
-    myCurriculum = profileRepository.myCurriculum();
+    myCurriculum = profileRepository.myProfile;
 
     if (myCurriculum != null) {
       editCurriculum();

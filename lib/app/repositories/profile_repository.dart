@@ -10,32 +10,61 @@ class ProfileRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
   List<ProfileModel> _profiles = [];
 
+  ProfileModel _myProfile = ProfileModel(
+      id: null,
+      name: '',
+      email: '',
+      phoneNumber: '',
+      address: '',
+      fieldOfExpertise: '',
+      degree: '',
+      aboutYou: '');
+
   UnmodifiableListView<ProfileModel> get list =>
       UnmodifiableListView(_profiles);
+
+  get myProfile => _myProfile;
 
   ProfileRepository() {
     _initRepository();
   }
 
   _initRepository() async {
-    await getCurriculums();
+    await getProfiles();
+    await getMyProfile();
   }
 
-  getCurriculums() async {
+  getMyProfile() async {
+    final snapshot = await _db
+        .collection("curriculum")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    if (!snapshot.exists) {
+      return;
+    }
+
+    _myProfile = ProfileModel.fromMap(snapshot.data()!);
+    _myProfile.id = snapshot.id;
+
+    notifyListeners();
+  }
+
+  getProfiles() async {
     _profiles.clear();
 
     final snapshot = await _db.collection("curriculum").get();
 
     for (var doc in snapshot.docs) {
-      ProfileModel curriculum = ProfileModel.fromMap(doc.data());
-      curriculum.id = doc.id;
-      _profiles.add(curriculum);
+      ProfileModel profile = ProfileModel.fromMap(doc.data());
+      profile.id = doc.id;
+      _profiles.add(profile);
     }
 
     notifyListeners();
   }
 
-  Future<void> create(ProfileModel curriculum) async {
+  create(ProfileModel curriculum) async {
     final doc = await _db.collection("curriculum").add(curriculum.toMap());
 
     curriculum.id = doc.id;
@@ -44,7 +73,7 @@ class ProfileRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> edit(ProfileModel curriculum) async {
+  edit(ProfileModel curriculum) async {
     await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -57,34 +86,12 @@ class ProfileRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> delete(String curriculumId) async {
+  delete(String curriculumId) async {
     await _db.collection("curriculum").doc(curriculumId).delete();
 
     _profiles.removeWhere((element) => element.id == curriculumId);
 
     notifyListeners();
-  }
-
-  ProfileModel myCurriculum() {
-    final user = FirebaseAuth.instance.currentUser;
-
-    if (user != null) {
-      for (var resume in _profiles) {
-        if (resume.id == user.uid) {
-          return resume;
-        }
-      }
-    }
-
-    return ProfileModel(
-        id: null,
-        name: '',
-        email: '',
-        phoneNumber: '',
-        address: '',
-        fieldOfExpertise: '',
-        degree: '',
-        aboutYou: '');
   }
 
   void reset() {
