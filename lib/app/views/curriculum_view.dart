@@ -22,7 +22,6 @@ class _CurriculumViewState extends State<CurriculumView> {
         ModalRoute.of(context)!.settings.arguments as ProfileModel;
 
     curriculumInfo = context.watch<CurriculumRepository>();
-    curriculumInfo.getItems(profileInfo.id!);
 
     if (profileInfo.runtimeType != ProfileModel) {
       Navigator.pop(context);
