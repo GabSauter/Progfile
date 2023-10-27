@@ -23,7 +23,7 @@ class ProfileRepository extends ChangeNotifier {
   UnmodifiableListView<ProfileModel> get list =>
       UnmodifiableListView(_profiles);
 
-  get myProfile => _myProfile;
+  ProfileModel get myProfile => _myProfile;
 
   ProfileRepository() {
     _initRepository();

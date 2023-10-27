@@ -51,11 +51,10 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
             ),
             githubInfo,
             const SizedBox(height: 40),
-            const SecondaryButton(
+            SecondaryButton(
               text: 'Editar Currículo',
               route: '/curriculumEdit',
-              //Aqui fazer a chamada pra pegar os dados que foram carregados do
-              //usuario e mostrar um preview nos campos do criar curriculo
+              arguments: myProfile.degree,
             ),
             const SizedBox(height: 20),
             MainButton(

@@ -24,23 +24,29 @@ class CurriculumEditView extends StatefulWidget {
 
 class _CurriculumEditViewState extends State<CurriculumEditView> {
   final _controller = ProfileRegisterController();
+
   late ProfileRepository profile;
+  String? selectedValue;
 
   void myCurriculumChange() async {
-    if (profile.myProfile != null) {
-      editCurriculum();
-    } else {
+    if (profile.myProfile.name == '' &&
+        profile.myProfile.email == '' &&
+        profile.myProfile.phoneNumber == '' &&
+        profile.myProfile.address == '') {
       addCurriculum();
+    } else {
+      editCurriculum();
     }
+
+    Navigator.pop(context);
   }
 
   void editCurriculum() {
     if (_controller.formKey.currentState!.validate()) {
       try {
-        profile.edit(_controller.editProfile(profile.myProfile!));
+        profile.edit(_controller.editProfile(profile.myProfile));
         profile.getMyProfile();
         if (context.mounted) {
-          Navigator.pushReplacementNamed(context, '/myCurriculum');
           SnackBarHelper.showSuccessSnackBar(
               'Currículo editado com sucesso!', context);
         }
@@ -55,13 +61,24 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     profile = context.watch<ProfileRepository>();
+
+    if (selectedValue == profile.myProfile.degree || selectedValue == null) {
+      selectedValue =
+          ModalRoute.of(context)!.settings.arguments as String? ?? 'Estagiário';
+    }
+
+    _controller.image.value = profile.myProfile.image;
+    _controller.nameController.text = profile.myProfile.name;
+    _controller.emailController.text = profile.myProfile.email;
+    _controller.phoneNumberController.text = profile.myProfile.phoneNumber;
+    _controller.aboutYouController.text = profile.myProfile.aboutYou;
+    _controller.githubUsernameController.text =
+        profile.myProfile.githubUsername ?? '';
+    _controller.addressController.text = profile.myProfile.address;
+    _controller.fieldOfExpertiseController.text =
+        profile.myProfile.fieldOfExpertise;
 
     return MultiProvider(
       providers: [
@@ -245,7 +262,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 ),
                 const SizedBox(height: 10),
                 FormTextField(
-                  textEditingController: _controller.fieldOfStudyController,
+                  textEditingController: _controller.fieldOfExpertiseController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Por favor insira algum valor";
@@ -262,18 +279,17 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 ),
                 const SizedBox(height: 10),
                 FormDropdown(
-                  value: _controller.selectedDegree ?? 'Estagiário',
+                  value: selectedValue,
                   items: ['Estagiário', 'Júnior', 'Sênior', 'Pleno']
                       .map((grade) => DropdownMenuItem<String>(
                             value: grade,
                             child: Text(grade),
                           ))
                       .toList(),
-                  onChanged: (selectedGrade) {
-                    setState(() {
-                      _controller.selectedDegree = selectedGrade;
-                    });
-                  },
+                  onChanged: (value) => setState(() => {
+                        selectedValue = value,
+                        _controller.selectedDegree.text = selectedValue!,
+                      }),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Por favor insira algum valor";
