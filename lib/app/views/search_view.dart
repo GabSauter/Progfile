@@ -14,7 +14,7 @@ class SearchView extends StatefulWidget {
 
 class SearchViewState extends State<SearchView> {
   final _searchController = SearchCurriculumController();
-  late ProfileRepository curriculums;
+  late ProfileRepository profiles;
 
   List<ProfileModel> filteredResumes = [];
 
@@ -26,15 +26,16 @@ class SearchViewState extends State<SearchView> {
   void _searchResumes(String searchText) {
     setState(() {
       filteredResumes =
-          _searchController.searchResumes(searchText, curriculums.list);
+          _searchController.searchResumes(searchText, profiles.list);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    curriculums = context.watch<ProfileRepository>();
+    profiles = context.watch<ProfileRepository>();
+
     if (filteredResumes.isEmpty) {
-      filteredResumes = curriculums.list;
+      filteredResumes = profiles.list;
     }
 
     return Scaffold(

@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/models/profile_model.dart';
+import 'package:progfile/app/models/curriculum_model.dart';
 import 'package:progfile/app/repositories/curriculum_reposiotory.dart';
+import 'package:progfile/app/repositories/profile_repository.dart';
 import 'package:progfile/app/views/components/repository_card.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 import 'package:progfile/app/views/components/secondary_button.dart';
 import 'package:provider/provider.dart';
 
+import '../models/profile_model.dart';
 import 'components/course_item.dart';
 
 class MyCurriculumView extends StatefulWidget {
-  final ProfileModel userRepository;
-  // depois mudar para = UserRepositoryModel();
-
-  const MyCurriculumView({Key? key, required this.userRepository})
-      : super(key: key);
+  const MyCurriculumView({Key? key}) : super(key: key);
 
   @override
   State<MyCurriculumView> createState() => _MyCurriculumViewState();
 }
 
 class _MyCurriculumViewState extends State<MyCurriculumView> {
-  late CurriculumRepository curriculumInfo;
+  late ProfileModel myProfile;
+  late CurriculumModel myCurriculum;
 
   @override
   Widget build(BuildContext context) {
-    curriculumInfo = context.watch<CurriculumRepository>();
+    myProfile = context.watch<ProfileRepository>().myProfile;
+    myCurriculum = context.watch<CurriculumRepository>().myCurriculum;
 
     return Scaffold(
       appBar: AppBar(
@@ -85,7 +85,7 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  widget.userRepository.githubUsername ?? 'Não informado',
+                  myProfile.githubUsername ?? 'Não informado',
                   style: const TextStyle(
                     decoration: TextDecoration.underline,
                     fontSize: 16,
@@ -120,7 +120,7 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
       ),
       const SizedBox(height: 5),
       Text(
-        widget.userRepository.aboutYou,
+        myProfile.aboutYou,
         style: const TextStyle(fontSize: 16),
         textAlign: TextAlign.justify,
       ),
@@ -136,7 +136,7 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
       const SizedBox(height: 5),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: curriculumInfo.courses.map((item) {
+        children: myCurriculum.courses.map((item) {
           return CourseItem(course: item);
         }).toList(),
       )
@@ -152,7 +152,7 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
       const SizedBox(height: 5),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: curriculumInfo.languages.map((item) {
+        children: myCurriculum.languages.map((item) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -178,13 +178,13 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
             ),
           ),
           const SizedBox(height: 10),
-          curriculumInfo.competences.length >= 4
+          myCurriculum.competences.length >= 4
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Column(
-                      children: curriculumInfo.competences
-                          .sublist(0, curriculumInfo.competences.length ~/ 2)
+                      children: myCurriculum.competences
+                          .sublist(0, myCurriculum.competences.length ~/ 2)
                           .map((item) {
                         return Column(
                           children: [
@@ -196,8 +196,8 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
                     ),
                     const SizedBox(width: 150),
                     Column(
-                      children: curriculumInfo.competences
-                          .sublist(curriculumInfo.competences.length ~/ 2)
+                      children: myCurriculum.competences
+                          .sublist(myCurriculum.competences.length ~/ 2)
                           .map((item) {
                         return Column(
                           children: [
@@ -211,7 +211,7 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
                 )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: curriculumInfo.competences.map((item) {
+                  children: myCurriculum.competences.map((item) {
                     return Column(
                       children: [
                         Text('${item.name} - ${item.degree}',
@@ -252,9 +252,9 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
   Widget get userBasicInfo {
     return Column(
       children: [
-        widget.userRepository.image != null
+        myProfile.image != null
             ? Image.file(
-                widget.userRepository.image!,
+                myProfile.image!,
                 height: 150,
               )
             : const Image(
@@ -263,7 +263,7 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
               ),
         const SizedBox(height: 10),
         Text(
-          widget.userRepository.name,
+          myProfile.name,
           style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -271,7 +271,7 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
         ),
         const SizedBox(height: 10),
         Text(
-          widget.userRepository.fieldOfExpertise,
+          myProfile.fieldOfExpertise,
           style: const TextStyle(
             fontSize: 18,
           ),
@@ -283,20 +283,19 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
             const Icon(Icons.email),
             const SizedBox(width: 10),
             Text(
-              widget.userRepository.email,
+              myProfile.email,
               style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
         const SizedBox(height: 10),
         Text(
-          widget.userRepository.phoneNumber,
+          myProfile.phoneNumber,
           style: const TextStyle(fontSize: 16),
         ),
         const SizedBox(height: 10),
         Text(
-          widget.userRepository
-              .address, // depois mudar o endereco para cidade e estado
+          myProfile.address, // depois mudar o endereco para cidade e estado
           style: const TextStyle(fontSize: 16),
         ),
       ],

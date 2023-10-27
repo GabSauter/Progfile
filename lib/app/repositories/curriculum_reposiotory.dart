@@ -16,12 +16,23 @@ class CurriculumRepository extends ChangeNotifier {
   List<GitProjectModel> gitProjects = [];
   List<LanguageModel> languages = [];
 
+  CurriculumModel _myCurriculum = CurriculumModel(
+    certificates: [],
+    competences: [],
+    courses: [],
+    gitProjects: [],
+    languages: [],
+  );
+
+  get myCurriculum => _myCurriculum;
+
   CurriculumRepository() {
     _initRepository();
   }
 
   _initRepository() async {
     await getItems(FirebaseAuth.instance.currentUser!.uid);
+    await getMyCurriculum();
   }
 
   Future<CurriculumModel> getItems(String userId) async {
@@ -48,6 +59,11 @@ class CurriculumRepository extends ChangeNotifier {
     notifyListeners();
 
     return curriculum;
+  }
+
+  Future<void> getMyCurriculum() async {
+    _myCurriculum = await getItems(FirebaseAuth.instance.currentUser!.uid);
+    notifyListeners();
   }
 
   Future<List<CertificateModel>> getCertificates(String userId) async {
