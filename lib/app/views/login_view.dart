@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/login_controller.dart';
-import 'package:progfile/app/repositories/curriculum_reposiotory.dart';
+import 'package:progfile/app/repositories/curriculum_repository.dart';
 import 'package:progfile/app/views/components/form_password_textfield.dart';
 import 'package:progfile/app/views/components/form_text.dart';
 import 'package:progfile/app/views/components/form_textfield.dart';

@@ -11,7 +11,6 @@ import 'package:progfile/app/views/components/masked_textfield.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/profile_edit_controller.dart';
-import '../models/profile_model.dart';
 import '../repositories/profile_repository.dart';
 import 'components/image_take.dart';
 import 'components/snackbar_helper.dart';
@@ -25,13 +24,10 @@ class CurriculumEditView extends StatefulWidget {
 
 class _CurriculumEditViewState extends State<CurriculumEditView> {
   final _controller = ProfileRegisterController();
-  late ProfileRepository profileRepository;
-  late ProfileModel? myCurriculum;
+  late ProfileRepository profile;
 
   void myCurriculumChange() async {
-    myCurriculum = profileRepository.myProfile;
-
-    if (myCurriculum != null) {
+    if (profile.myProfile != null) {
       editCurriculum();
     } else {
       addCurriculum();
@@ -41,7 +37,8 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
   void editCurriculum() {
     if (_controller.formKey.currentState!.validate()) {
       try {
-        profileRepository.edit(_controller.editProfile(myCurriculum!));
+        profile.edit(_controller.editProfile(profile.myProfile!));
+        profile.getMyProfile();
         if (context.mounted) {
           Navigator.pushReplacementNamed(context, '/myCurriculum');
           SnackBarHelper.showSuccessSnackBar(
@@ -64,7 +61,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
 
   @override
   Widget build(BuildContext context) {
-    profileRepository = context.watch<ProfileRepository>();
+    profile = context.watch<ProfileRepository>();
 
     return MultiProvider(
       providers: [

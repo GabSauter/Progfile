@@ -3,7 +3,7 @@ import 'package:progfile/app/models/git_project_model.dart';
 import 'package:progfile/app/views/components/repository_card.dart';
 import 'package:provider/provider.dart';
 import '../models/profile_model.dart';
-import '../repositories/curriculum_reposiotory.dart';
+import '../repositories/curriculum_repository.dart';
 import 'components/course_item.dart';
 
 class CurriculumView extends StatefulWidget {
@@ -86,7 +86,7 @@ class _CurriculumViewState extends State<CurriculumView> {
         const SizedBox(height: 30),
         Column(
           children: [
-            for (GitProjectModel item in curriculumInfo.gitProjects)
+            for (GitProjectModel item in curriculumInfo.curriculum.gitProjects)
               RepositoryCard(
                 title: item.name,
                 description: item.description,
@@ -125,7 +125,7 @@ class _CurriculumViewState extends State<CurriculumView> {
       const SizedBox(height: 5),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: curriculumInfo.courses.map((item) {
+        children: curriculumInfo.curriculum.courses.map((item) {
           return CourseItem(course: item);
         }).toList(),
       )
@@ -141,7 +141,7 @@ class _CurriculumViewState extends State<CurriculumView> {
       const SizedBox(height: 5),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: curriculumInfo.languages.map((item) {
+        children: curriculumInfo.curriculum.languages.map((item) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -167,13 +167,13 @@ class _CurriculumViewState extends State<CurriculumView> {
             ),
           ),
           const SizedBox(height: 10),
-          curriculumInfo.competences.length >= 4
+          curriculumInfo.curriculum.competences.length >= 4
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Column(
-                      children: curriculumInfo.competences
-                          .sublist(0, curriculumInfo.competences.length ~/ 2)
+                      children: curriculumInfo.curriculum.competences
+                          .sublist(0, curriculumInfo.curriculum.competences.length ~/ 2)
                           .map((item) {
                         return Column(
                           children: [
@@ -185,8 +185,8 @@ class _CurriculumViewState extends State<CurriculumView> {
                     ),
                     const SizedBox(width: 150),
                     Column(
-                      children: curriculumInfo.competences
-                          .sublist(curriculumInfo.competences.length ~/ 2)
+                      children: curriculumInfo.curriculum.competences
+                          .sublist(curriculumInfo.curriculum.competences.length ~/ 2)
                           .map((item) {
                         return Column(
                           children: [
@@ -200,7 +200,7 @@ class _CurriculumViewState extends State<CurriculumView> {
                 )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: curriculumInfo.competences.map((item) {
+                  children: curriculumInfo.curriculum.competences.map((item) {
                     return Column(
                       children: [
                         Text('${item.name} - ${item.degree}',

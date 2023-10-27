@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/course_model.dart';
 import 'package:progfile/app/repositories/course_repository.dart';
+import 'package:progfile/app/repositories/curriculum_repository.dart';
 import 'package:provider/provider.dart';
 import '../../controllers/course_controller.dart';
 import '../components/form_dropdown.dart';
@@ -23,7 +24,9 @@ class PopupCourse extends StatefulWidget {
 
 class _PopupCourseState extends State<PopupCourse> {
   final _courseController = CourseController();
+
   late String selectedValue;
+  late CurriculumRepository curriculum;
   late CourseRepository listCourses;
 
   @override
@@ -53,8 +56,9 @@ class _PopupCourseState extends State<PopupCourse> {
 
   @override
   Widget build(BuildContext context) {
+    curriculum = context.watch<CurriculumRepository>();
     listCourses = context.watch<CourseRepository>();
-    
+
     return AlertDialog(
       scrollable: true,
       titlePadding: const EdgeInsets.symmetric(vertical: 20),
@@ -93,12 +97,12 @@ class _PopupCourseState extends State<PopupCourse> {
                 onPressedCallback: () {
                   if (_courseController.formKey.currentState!.validate()) {
                     if (widget.course != null) {
-                      listCourses.edit(
-                          _courseController
-                              .editCourse(widget.course!));
+                      listCourses
+                          .edit(_courseController.editCourse(widget.course!));
                     } else {
                       listCourses.create(_courseController.generateCourse());
                     }
+                    curriculum.getMyCurriculum();
                     _onDialogClose();
                   }
                 },

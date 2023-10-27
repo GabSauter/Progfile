@@ -10,11 +10,14 @@ import 'package:progfile/app/models/language_model.dart';
 
 class CurriculumRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
-  List<CertificateModel> certificates = [];
-  List<CompetenceModel> competences = [];
-  List<CourseModel> courses = [];
-  List<GitProjectModel> gitProjects = [];
-  List<LanguageModel> languages = [];
+
+  final CurriculumModel _curriculum = CurriculumModel(
+    certificates: [],
+    competences: [],
+    courses: [],
+    gitProjects: [],
+    languages: [],
+  );
 
   CurriculumModel _myCurriculum = CurriculumModel(
     certificates: [],
@@ -24,7 +27,8 @@ class CurriculumRepository extends ChangeNotifier {
     languages: [],
   );
 
-  get myCurriculum => _myCurriculum;
+  CurriculumModel get curriculum => _curriculum;
+  CurriculumModel get myCurriculum => _myCurriculum;
 
   CurriculumRepository() {
     _initRepository();
@@ -35,38 +39,24 @@ class CurriculumRepository extends ChangeNotifier {
     await getMyCurriculum();
   }
 
-  Future<CurriculumModel> getItems(String userId) async {
-    CurriculumModel curriculum = CurriculumModel(
-      certificates: [],
-      competences: [],
-      courses: [],
-      gitProjects: [],
-      languages: [],
-    );
-
-    certificates = await getCertificates(userId);
-    competences = await getCompetences(userId);
-    courses = await getCourses(userId);
-    gitProjects = await getGitProjects(userId);
-    languages = await getLanguages(userId);
-
-    curriculum.certificates = certificates;
-    curriculum.competences = competences;
-    curriculum.courses = courses;
-    curriculum.gitProjects = gitProjects;
-    curriculum.languages = languages;
-
-    notifyListeners();
-
-    return curriculum;
-  }
-
   Future<void> getMyCurriculum() async {
     _myCurriculum = await getItems(FirebaseAuth.instance.currentUser!.uid);
     notifyListeners();
   }
 
-  Future<List<CertificateModel>> getCertificates(String userId) async {
+  Future<CurriculumModel> getItems(String userId) async {
+    await getCertificates(userId);
+    await getCompetences(userId);
+    await getCourses(userId);
+    await getGitProjects(userId);
+    await getLanguages(userId);
+
+    notifyListeners();
+
+    return _curriculum;
+  }
+
+  Future<void> getCertificates(String userId) async {
     List<CertificateModel> certificates = [];
 
     final snapshot = await _db
@@ -81,10 +71,12 @@ class CurriculumRepository extends ChangeNotifier {
       certificates.add(certificate);
     }
 
-    return certificates;
+    _curriculum.certificates = certificates;
+
+    notifyListeners();
   }
 
-  Future<List<CompetenceModel>> getCompetences(String userId) async {
+  Future<void> getCompetences(String userId) async {
     List<CompetenceModel> competences = [];
 
     final snapshot = await _db
@@ -99,10 +91,12 @@ class CurriculumRepository extends ChangeNotifier {
       competences.add(competence);
     }
 
-    return competences;
+    _curriculum.competences = competences;
+
+    notifyListeners();
   }
 
-  Future<List<CourseModel>> getCourses(String userId) async {
+  Future<void> getCourses(String userId) async {
     List<CourseModel> courses = [];
 
     final snapshot = await _db
@@ -117,10 +111,12 @@ class CurriculumRepository extends ChangeNotifier {
       courses.add(course);
     }
 
-    return courses;
+    _curriculum.courses = courses;
+
+    notifyListeners();
   }
 
-  Future<List<GitProjectModel>> getGitProjects(String userId) async {
+  Future<void> getGitProjects(String userId) async {
     List<GitProjectModel> gitProjects = [];
 
     final snapshot = await _db
@@ -135,10 +131,12 @@ class CurriculumRepository extends ChangeNotifier {
       gitProjects.add(gitProject);
     }
 
-    return gitProjects;
+    _curriculum.gitProjects = gitProjects;
+
+    notifyListeners();
   }
 
-  Future<List<LanguageModel>> getLanguages(String userId) async {
+  Future<void> getLanguages(String userId) async {
     List<LanguageModel> languages = [];
 
     final snapshot = await _db
@@ -153,15 +151,18 @@ class CurriculumRepository extends ChangeNotifier {
       languages.add(language);
     }
 
-    return languages;
+    _curriculum.languages = languages;
+
+    notifyListeners();
   }
 
   void reset() {
-    certificates = [];
-    competences = [];
-    courses = [];
-    gitProjects = [];
-    languages = [];
+    _curriculum.certificates = [];
+    _curriculum.competences = [];
+    _curriculum.courses = [];
+    _curriculum.gitProjects = [];
+    _curriculum.languages = [];
+
     notifyListeners();
   }
 }

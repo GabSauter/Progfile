@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/models/curriculum_model.dart';
-import 'package:progfile/app/repositories/curriculum_reposiotory.dart';
+import 'package:progfile/app/repositories/curriculum_repository.dart';
 import 'package:progfile/app/repositories/profile_repository.dart';
 import 'package:progfile/app/views/components/repository_card.dart';
 import 'package:progfile/app/views/components/main_button.dart';
@@ -95,7 +95,7 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
             ),
             const SizedBox(height: 30),
             Column(
-              children: curriculumInfo.gitProjects.map((item) {
+              children: curriculumInfo.curriculum.gitProjects.map((item) {
                 return RepositoryCard(
                   title: item.name,
                   description: item.description,

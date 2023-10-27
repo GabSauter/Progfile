@@ -31,6 +31,7 @@ class CourseRepository extends ChangeNotifier {
 
     for (var doc in snapshot.docs) {
       CourseModel course = CourseModel.fromMap(doc.data());
+      course.id = doc.id;
       _courses.add(course);
     }
 

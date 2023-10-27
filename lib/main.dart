@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:progfile/app/repositories/certificate_repository.dart';
 import 'package:progfile/app/repositories/course_repository.dart';
-import 'package:progfile/app/repositories/curriculum_reposiotory.dart';
+import 'package:progfile/app/repositories/curriculum_repository.dart';
 import 'package:progfile/app/repositories/profile_repository.dart';
 import 'package:progfile/app/repositories/git_project_repository.dart';
 import 'package:progfile/app/repositories/competence_repository.dart';
