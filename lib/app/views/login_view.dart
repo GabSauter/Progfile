@@ -55,9 +55,11 @@ class _LoginViewState extends State<LoginView> {
       }
       SnackBarHelper.showErrorSnackBar(errorMessage, context);
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (context.mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 

@@ -163,6 +163,21 @@ class CurriculumRepository extends ChangeNotifier {
     _curriculum.gitProjects = [];
     _curriculum.languages = [];
 
+    _myCurriculum.certificates = [];
+    _myCurriculum.competences = [];
+    _myCurriculum.courses = [];
+    _myCurriculum.gitProjects = [];
+    _myCurriculum.languages = [];
+
     notifyListeners();
+  }
+
+  Future<void> deleteCurriculum() async {
+    await _db
+        .collection("curriculum")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .delete();
+
+    reset();
   }
 }

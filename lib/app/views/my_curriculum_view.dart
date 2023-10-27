@@ -59,7 +59,11 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
             const SizedBox(height: 20),
             MainButton(
               text: 'Deletar Currículo',
-              onPressedCallback: () => {Navigator.pushNamed(context, '/home')},
+              onPressedCallback: () => {
+                context.read<CurriculumRepository>().deleteCurriculum(),
+                context.read<ProfileRepository>().reset(),
+                Navigator.pushNamed(context, '/home'),
+              },
               buttonColor: Colors.red,
             )
           ],
