@@ -37,8 +37,6 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
     } else {
       editCurriculum();
     }
-
-    Navigator.pop(context);
   }
 
   void editCurriculum() {
@@ -54,10 +52,22 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
         SnackBarHelper.showErrorSnackBar(e.toString(), context);
       }
     }
+    Navigator.pop(context);
   }
 
   void addCurriculum() {
-    // print('add');
+    if (_controller.formKey.currentState!.validate()) {
+      try {
+        profile.create(_controller.generateProfile());
+        if (context.mounted) {
+          SnackBarHelper.showSuccessSnackBar(
+              'Currículo adicionado com sucesso!', context);
+        }
+      } catch (e) {
+        SnackBarHelper.showErrorSnackBar(e.toString(), context);
+      }
+    }
+    Navigator.pushNamed(context, '/home');
   }
 
   @override
@@ -67,18 +77,19 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
     if (selectedValue == profile.myProfile.degree || selectedValue == null) {
       selectedValue =
           ModalRoute.of(context)!.settings.arguments as String? ?? 'Estagiário';
-    }
 
-    _controller.image.value = profile.myProfile.image;
-    _controller.nameController.text = profile.myProfile.name;
-    _controller.emailController.text = profile.myProfile.email;
-    _controller.phoneNumberController.text = profile.myProfile.phoneNumber;
-    _controller.aboutYouController.text = profile.myProfile.aboutYou;
-    _controller.githubUsernameController.text =
-        profile.myProfile.githubUsername ?? '';
-    _controller.addressController.text = profile.myProfile.address;
-    _controller.fieldOfExpertiseController.text =
-        profile.myProfile.fieldOfExpertise;
+      _controller.image.value = profile.myProfile.image;
+      _controller.nameController.text = profile.myProfile.name;
+      _controller.emailController.text = profile.myProfile.email;
+      _controller.phoneNumberController.text = profile.myProfile.phoneNumber;
+      _controller.aboutYouController.text = profile.myProfile.aboutYou;
+      _controller.githubUsernameController.text =
+          profile.myProfile.githubUsername ?? '';
+      _controller.addressController.text = profile.myProfile.address;
+      _controller.fieldOfExpertiseController.text =
+          profile.myProfile.fieldOfExpertise;
+      _controller.selectedDegree.text = selectedValue!;
+    }
 
     return MultiProvider(
       providers: [
@@ -279,7 +290,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 ),
                 const SizedBox(height: 10),
                 FormDropdown(
-                  value: selectedValue,
+                  value: selectedValue ?? 'Estagiário',
                   items: ['Estagiário', 'Júnior', 'Sênior', 'Pleno']
                       .map((grade) => DropdownMenuItem<String>(
                             value: grade,

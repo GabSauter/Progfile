@@ -65,7 +65,11 @@ class ProfileRepository extends ChangeNotifier {
   }
 
   create(ProfileModel curriculum) async {
-    final doc = await _db.collection("curriculum").add(curriculum.toMap());
+    DocumentReference doc = _db
+        .collection("curriculum")
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+
+    await doc.set(curriculum.toMap());
 
     curriculum.id = doc.id;
     _profiles.add(curriculum);

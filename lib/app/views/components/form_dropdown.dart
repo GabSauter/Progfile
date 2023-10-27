@@ -29,23 +29,6 @@ class FormDropdown extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: FormField<String>(
-          // validator: (value) {
-          //   if (value == null) {
-          //     ScaffoldMessenger.of(context).showSnackBar(
-          //       SnackBar(
-          //         content: errorText != null
-          //             ? Text('$errorText')
-          //             : const Text('Selecione uma opção'),
-          //         backgroundColor: Colors.yellow[700],
-          //         behavior: SnackBarBehavior.floating,
-          //         shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.circular(15.0),
-          //         ),
-          //       ),
-          //     );
-          //   }
-          //   return null;
-          // },
           builder: (FormFieldState<String> state) {
             return DropdownButtonHideUnderline(
               child: DropdownButton<String>(
