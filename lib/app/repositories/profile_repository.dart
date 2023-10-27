@@ -96,6 +96,15 @@ class ProfileRepository extends ChangeNotifier {
 
   void reset() {
     _profiles = [];
+    _myProfile = ProfileModel(
+        id: null,
+        name: '',
+        email: '',
+        phoneNumber: '',
+        address: '',
+        fieldOfExpertise: '',
+        degree: '',
+        aboutYou: '');
     notifyListeners();
   }
 }
