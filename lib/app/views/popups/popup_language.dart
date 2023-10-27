@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/language_controller.dart';
 import 'package:progfile/app/models/language_model.dart';
+import 'package:progfile/app/repositories/curriculum_repository.dart';
 import 'package:progfile/app/repositories/language_repository.dart';
 import 'package:provider/provider.dart';
 import '../components/form_dropdown.dart';
@@ -22,9 +23,11 @@ class PopupLanguage extends StatefulWidget {
 }
 
 class _PopupCoursLanguage extends State<PopupLanguage> {
-  late String selectedValue;
-  late LanguageRepository listLanguages;
   final _languageController = LanguageController();
+
+  late String selectedValue;
+  late CurriculumRepository curriculum;
+  late LanguageRepository listLanguages;
 
   @override
   void initState() {
@@ -46,6 +49,7 @@ class _PopupCoursLanguage extends State<PopupLanguage> {
 
   @override
   Widget build(BuildContext context) {
+    curriculum = context.watch<CurriculumRepository>();
     listLanguages = context.watch<LanguageRepository>();
 
     return AlertDialog(
@@ -89,8 +93,10 @@ class _PopupCoursLanguage extends State<PopupLanguage> {
                         _languageController.editLanguage(widget.language!),
                       );
                     } else {
-                      listLanguages.create(_languageController.generateLanguage());
+                      listLanguages
+                          .create(_languageController.generateLanguage());
                     }
+                    curriculum.getMyCurriculum();
                     _onDialogClose();
                   }
                 },

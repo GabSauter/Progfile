@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/competence_controller.dart';
 import 'package:progfile/app/models/competence_model.dart';
 import 'package:progfile/app/repositories/competence_repository.dart';
+import 'package:progfile/app/repositories/curriculum_repository.dart';
 import 'package:provider/provider.dart';
 import '../components/form_dropdown.dart';
 import '../components/form_textfield.dart';
@@ -23,8 +24,10 @@ class PopupCompetence extends StatefulWidget {
 
 class _PopupCompetence extends State<PopupCompetence> {
   final _competenceController = CompetenceController();
+
   late String selectedValue;
   late CompetenceRepository competenceRepository;
+  late CurriculumRepository curriculum;
 
   @override
   void initState() {
@@ -48,6 +51,7 @@ class _PopupCompetence extends State<PopupCompetence> {
 
   @override
   Widget build(BuildContext context) {
+    curriculum = context.watch<CurriculumRepository>();
     competenceRepository = context.watch<CompetenceRepository>();
 
     return AlertDialog(
@@ -93,6 +97,7 @@ class _PopupCompetence extends State<PopupCompetence> {
                       competenceRepository
                           .create(_competenceController.generateCompetence());
                     }
+                    curriculum.getMyCurriculum();
                     _onDialogClose();
                   }
                 },

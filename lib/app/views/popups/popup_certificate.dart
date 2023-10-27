@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../controllers/certificate_controller.dart';
 import '../../models/certificate_model.dart';
 import '../../repositories/certificate_repository.dart';
+import '../../repositories/curriculum_repository.dart';
 
 class PopupCertificate extends StatefulWidget {
   final CertificateModel? certificate;
@@ -24,6 +25,7 @@ class PopupCertificate extends StatefulWidget {
 
 class _PopupCertificateState extends State<PopupCertificate> {
   final _certificateController = CertificateController();
+  late CurriculumRepository curriculum;
   late CertificateRepository certificateRepository;
 
   @override
@@ -45,6 +47,7 @@ class _PopupCertificateState extends State<PopupCertificate> {
 
   @override
   Widget build(BuildContext context) {
+    curriculum = context.watch<CurriculumRepository>();
     certificateRepository = context.watch<CertificateRepository>();
 
     return AlertDialog(
@@ -82,14 +85,12 @@ class _PopupCertificateState extends State<PopupCertificate> {
                 onPressedCallback: () {
                   if (_certificateController.formKey.currentState!.validate()) {
                     if (widget.certificate != null) {
-                      certificateRepository.edit(
-                          _certificateController
-                              .editCertificate(widget.certificate!));
+                      certificateRepository.edit(_certificateController
+                          .editCertificate(widget.certificate!));
                     } else {
                       certificateRepository
                           .create(_certificateController.generateCertificate());
                     }
-
                     _onDialogClose();
                   }
                 },

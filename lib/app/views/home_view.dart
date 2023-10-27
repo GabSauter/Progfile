@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/home_controller.dart';
-import 'package:progfile/app/repositories/curriculum_reposiotory.dart';
+import 'package:progfile/app/repositories/curriculum_repository.dart';
 import 'package:progfile/app/repositories/profile_repository.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 import 'package:provider/provider.dart';

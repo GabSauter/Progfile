@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:progfile/app/repositories/curriculum_reposiotory.dart';
+import 'package:progfile/app/repositories/curriculum_repository.dart';
 import 'package:provider/provider.dart';
 import '../controllers/search_controller.dart';
 import '../models/profile_model.dart';
