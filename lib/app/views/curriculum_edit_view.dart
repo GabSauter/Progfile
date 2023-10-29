@@ -91,6 +91,36 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
       _controller.selectedDegree.text = selectedValue!;
     }
 
+    final ufOptions = [
+      "AC",
+      "AL",
+      "AP",
+      "AM",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MT",
+      "MS",
+      "MG",
+      "PA",
+      "PB",
+      "PR",
+      "PE",
+      "PI",
+      "RJ",
+      "RN",
+      "RS",
+      "RO",
+      "RR",
+      "SC",
+      "SP",
+      "SE",
+      "TO"
+    ];
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CertificateRepository()),
@@ -249,20 +279,49 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 ),
                 const SizedBox(height: 15),
                 const FormText(
-                  text: 'Endereço:',
+                  text: 'Cidade:',
                   fontSize: 16,
                   color: Colors.black,
                   fontWeight: FontWeight.normal,
                 ),
                 const SizedBox(height: 10),
                 FormTextField(
-                  textEditingController: _controller.addressController,
+                  textEditingController: _controller.cityController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Por favor insira algum valor";
                     }
                     return null;
                   },
+                ),
+                const SizedBox(height: 15),
+                const FormText(
+                  text: 'UF:',
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal,
+                ),
+                const SizedBox(height: 10),
+                FormDropdown(
+                  value: _controller.ufController ?? 'PR',
+                  items: ufOptions
+                      .map((grade) => DropdownMenuItem<String>(
+                            value: grade,
+                            child: Text(grade),
+                          ))
+                      .toList(),
+                  onChanged: (selectedGrade) {
+                    setState(() {
+                      _controller.ufController = selectedGrade;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Por favor insira algum valor";
+                    }
+                    return null;
+                  },
+                  errorText: 'Selecione o nível de desenvolvedor',
                 ),
                 const SizedBox(height: 15),
                 const FormText(

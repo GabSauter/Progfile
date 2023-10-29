@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:progfile/app/models/profile_model.dart';
 import 'package:progfile/app/models/curriculum_model.dart';
 import 'package:progfile/app/repositories/curriculum_repository.dart';
 import 'package:progfile/app/repositories/profile_repository.dart';
@@ -7,7 +8,6 @@ import 'package:progfile/app/views/components/main_button.dart';
 import 'package:progfile/app/views/components/secondary_button.dart';
 import 'package:provider/provider.dart';
 
-import '../models/profile_model.dart';
 import 'components/course_item.dart';
 
 class MyCurriculumView extends StatefulWidget {
