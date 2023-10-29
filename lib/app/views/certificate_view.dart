@@ -10,50 +10,78 @@ class CertificateView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final certificates = context.watch<CertificateRepository>();
+    CertificateRepository? certificateRepository;
+    List<CertificateModel> certificates = [];
+
+    if (ModalRoute.of(context)!.settings.arguments != null) {
+      certificates =
+          ModalRoute.of(context)!.settings.arguments as List<CertificateModel>;
+    } else {
+      certificateRepository = context.watch<CertificateRepository>();
+    }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Certificados'),
       ),
-      body: ListView.builder(
-        itemCount: certificates.list.length,
-        itemBuilder: (context, index) {
-          return Dismissible(
-            key: Key(certificates.list[index].name),
-            direction: DismissDirection.endToStart,
-            background: Container(
-              alignment: AlignmentDirectional.centerEnd,
-              color: Colors.red,
-              child: const Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                child: Icon(Icons.delete, color: Colors.white),
-              ),
-            ),
-            onDismissed: (direction) {
-              certificates.delete(certificates.list[index].id!);
-            },
-            child: ListTile(
-              title: Text(certificates.list[index].name),
-              subtitle: Text(certificates.list[index].organization),
-              trailing: Text(
-                certificates.list[index].omissionDate != null
-                    ? DateFormat.yMMMd()
-                        .format(certificates.list[index].omissionDate!)
-                    : 'No date',
-              ),
-              onTap: () => {
-                _showAddCertificateDialog(context,
-                    certificate: certificates.list[index])
+      body: certificateRepository != null
+          ? ListView.builder(
+              itemCount: certificateRepository.list.length,
+              itemBuilder: (context, index) {
+                return Dismissible(
+                  key: Key(certificateRepository!.list[index].name),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    alignment: AlignmentDirectional.centerEnd,
+                    color: Colors.red,
+                    child: const Padding(
+                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                      child: Icon(Icons.delete, color: Colors.white),
+                    ),
+                  ),
+                  onDismissed: (direction) {
+                    certificateRepository!
+                        .delete(certificateRepository.list[index].id!);
+                  },
+                  child: ListTile(
+                    title: Text(certificateRepository.list[index].name),
+                    subtitle:
+                        Text(certificateRepository.list[index].organization),
+                    trailing: Text(
+                      certificateRepository.list[index].omissionDate != null
+                          ? DateFormat.yMMMd().format(
+                              certificateRepository.list[index].omissionDate!)
+                          : 'Sem Data',
+                    ),
+                    onTap: () => {
+                      _showAddCertificateDialog(context,
+                          certificate: certificateRepository!.list[index])
+                    },
+                  ),
+                );
+              },
+            )
+          : ListView.builder(
+              itemCount: certificates.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(certificates[index].name),
+                  subtitle: Text(certificates[index].organization),
+                  trailing: Text(
+                    certificates[index].omissionDate != null
+                        ? DateFormat.yMMMd()
+                            .format(certificates[index].omissionDate!)
+                        : 'Sem Data',
+                  ),
+                );
               },
             ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddCertificateDialog(context),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: certificateRepository != null
+          ? FloatingActionButton(
+              onPressed: () => _showAddCertificateDialog(context),
+              child: const Icon(Icons.add),
+            )
+          : null,
     );
   }
 
