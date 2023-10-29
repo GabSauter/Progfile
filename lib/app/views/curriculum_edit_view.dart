@@ -108,9 +108,13 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
     if (selectedValueDegree == null) {
       selectedValueDegree =
           ModalRoute.of(context)!.settings.arguments as String? ?? 'Estagiário';
-      selectedValueUf = profile.myProfile.address != ''
-        ? profile.myProfile.address.split(' - ')[1]
-        : 'PR';
+
+      if (profile.myProfile.address != '' &&
+          profile.myProfile.address.contains(' - ')) {
+        selectedValueUf = profile.myProfile.address.split(' - ')[1];
+      } else {
+        selectedValueUf = 'PR';
+      }
 
       _controller.image.value = profile.myProfile.image;
       _controller.nameController.text = profile.myProfile.name;
@@ -120,7 +124,9 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
       _controller.githubUsernameController.text =
           profile.myProfile.githubUsername ?? '';
       _controller.cityController.text =
-          profile.myProfile.address.split(' - ')[0];
+          profile.myProfile.address.contains(' - ')
+              ? profile.myProfile.address.split(' - ')[0]
+              : 'Cidade';
       _controller.ufController.text = selectedValueUf!;
       _controller.fieldOfExpertiseController.text =
           profile.myProfile.fieldOfExpertise;
