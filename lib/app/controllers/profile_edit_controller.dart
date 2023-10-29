@@ -12,13 +12,12 @@ class ProfileRegisterController {
   final emailController = TextEditingController();
   final phoneNumberController = MaskedTextController(mask: '(00) 00000-0000');
   final githubUsernameController = TextEditingController();
-  final addressController = TextEditingController();
   final fieldOfExpertiseController = TextEditingController();
   final aboutYouController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final selectedDegree = TextEditingController();
   final cityController = TextEditingController();
-  String? ufController;
+  final ufController = TextEditingController();
 
   final _image = ValueNotifier<File?>(null);
 
@@ -29,7 +28,7 @@ class ProfileRegisterController {
       email: emailController.text,
       phoneNumber: phoneNumberController.text,
       githubUsername: githubUsernameController.text,
-      address: '${cityController.text} - ${ufController.toString()}',
+      address: '${cityController.text} - ${ufController.text}',
       fieldOfExpertise: fieldOfExpertiseController.text,
       degree: selectedDegree.text == '' ? 'Estagiário' : selectedDegree.text,
       aboutYou: aboutYouController.text,
@@ -42,7 +41,7 @@ class ProfileRegisterController {
     curriculum.email = emailController.text;
     curriculum.phoneNumber = phoneNumberController.text;
     curriculum.githubUsername = githubUsernameController.text;
-    curriculum.address = '${cityController.text} - ${ufController.toString()}';
+    curriculum.address = '${cityController.text} - ${ufController.text}';
     curriculum.fieldOfExpertise = fieldOfExpertiseController.text;
     curriculum.degree =
         selectedDegree.text;
