@@ -38,6 +38,7 @@ class FormDropdown extends StatelessWidget {
                 isExpanded: true,
                 borderRadius: BorderRadius.circular(15.0),
                 value: value,
+                menuMaxHeight: MediaQuery.of(context).size.height * 0.3,
                 items: [...items],
                 onChanged: (newValue) {
                   state.didChange(newValue);

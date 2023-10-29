@@ -25,8 +25,39 @@ class CurriculumEditView extends StatefulWidget {
 class _CurriculumEditViewState extends State<CurriculumEditView> {
   final _controller = ProfileRegisterController();
 
+  final ufOptions = [
+    "AC",
+    "AL",
+    "AP",
+    "AM",
+    "BA",
+    "CE",
+    "DF",
+    "ES",
+    "GO",
+    "MA",
+    "MT",
+    "MS",
+    "MG",
+    "PA",
+    "PB",
+    "PR",
+    "PE",
+    "PI",
+    "RJ",
+    "RN",
+    "RS",
+    "RO",
+    "RR",
+    "SC",
+    "SP",
+    "SE",
+    "TO"
+  ];
+
   late ProfileRepository profile;
-  String? selectedValue;
+  String? selectedValueDegree;
+  String? selectedValueUf;
 
   void myCurriculumChange() async {
     if (profile.myProfile.name == '' &&
@@ -74,9 +105,12 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
   Widget build(BuildContext context) {
     profile = context.watch<ProfileRepository>();
 
-    if (selectedValue == profile.myProfile.degree || selectedValue == null) {
-      selectedValue =
+    if (selectedValueDegree == null) {
+      selectedValueDegree =
           ModalRoute.of(context)!.settings.arguments as String? ?? 'Estagiário';
+      selectedValueUf = profile.myProfile.address != ''
+        ? profile.myProfile.address.split(' - ')[1]
+        : 'PR';
 
       _controller.image.value = profile.myProfile.image;
       _controller.nameController.text = profile.myProfile.name;
@@ -85,41 +119,13 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
       _controller.aboutYouController.text = profile.myProfile.aboutYou;
       _controller.githubUsernameController.text =
           profile.myProfile.githubUsername ?? '';
-      _controller.addressController.text = profile.myProfile.address;
+      _controller.cityController.text =
+          profile.myProfile.address.split(' - ')[0];
+      _controller.ufController.text = selectedValueUf!;
       _controller.fieldOfExpertiseController.text =
           profile.myProfile.fieldOfExpertise;
-      _controller.selectedDegree.text = selectedValue!;
+      _controller.selectedDegree.text = selectedValueDegree!;
     }
-
-    final ufOptions = [
-      "AC",
-      "AL",
-      "AP",
-      "AM",
-      "BA",
-      "CE",
-      "DF",
-      "ES",
-      "GO",
-      "MA",
-      "MT",
-      "MS",
-      "MG",
-      "PA",
-      "PB",
-      "PR",
-      "PE",
-      "PI",
-      "RJ",
-      "RN",
-      "RS",
-      "RO",
-      "RR",
-      "SC",
-      "SP",
-      "SE",
-      "TO"
-    ];
 
     return MultiProvider(
       providers: [
@@ -204,14 +210,12 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                     if (value == null || value.isEmpty) {
                       return "Por favor insira algum valor.";
                     }
-
                     String sanitizedNumber =
                         value.replaceAll(RegExp(r'\D'), '');
 
                     if (sanitizedNumber.length != 11) {
                       return 'O número de telefone precisa ter 11 digitos.';
                     }
-
                     return null;
                   },
                 ),
@@ -262,7 +266,6 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                     if (value == null || value.isEmpty) {
                       return "Por favor insira algum valor";
                     }
-
                     return null;
                   },
                 ),
@@ -289,7 +292,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                   textEditingController: _controller.cityController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Por favor insira algum valor";
+                      return "Por favor insira sua cidade";
                     }
                     return null;
                   },
@@ -303,18 +306,17 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 ),
                 const SizedBox(height: 10),
                 FormDropdown(
-                  value: _controller.ufController ?? 'PR',
+                  value: selectedValueUf ?? 'PR',
                   items: ufOptions
-                      .map((grade) => DropdownMenuItem<String>(
-                            value: grade,
-                            child: Text(grade),
+                      .map((uf) => DropdownMenuItem<String>(
+                            value: uf,
+                            child: Text(uf),
                           ))
                       .toList(),
-                  onChanged: (selectedGrade) {
-                    setState(() {
-                      _controller.ufController = selectedGrade;
-                    });
-                  },
+                  onChanged: (uf) => setState(() => {
+                        selectedValueUf = uf,
+                        _controller.ufController.text = selectedValueUf!,
+                      }),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Por favor insira algum valor";
@@ -335,7 +337,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                   textEditingController: _controller.fieldOfExpertiseController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Por favor insira algum valor";
+                      return "Por favor insira sua área de estudo";
                     }
                     return null;
                   },
@@ -349,20 +351,20 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
                 ),
                 const SizedBox(height: 10),
                 FormDropdown(
-                  value: selectedValue ?? 'Estagiário',
+                  value: selectedValueDegree ?? 'Estagiário',
                   items: ['Estagiário', 'Júnior', 'Sênior', 'Pleno']
                       .map((grade) => DropdownMenuItem<String>(
                             value: grade,
                             child: Text(grade),
                           ))
                       .toList(),
-                  onChanged: (value) => setState(() => {
-                        selectedValue = value,
-                        _controller.selectedDegree.text = selectedValue!,
+                  onChanged: (degree) => setState(() => {
+                        selectedValueDegree = degree,
+                        _controller.selectedDegree.text = selectedValueDegree!,
                       }),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Por favor insira algum valor";
+                      return "Por favor insira um nível";
                     }
                     return null;
                   },
