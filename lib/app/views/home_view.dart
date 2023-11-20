@@ -45,14 +45,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     print("Home initState");
-    context.read<CurriculumRepository>().getMyCurriculum();
-    context.read<ProfileRepository>().getProfiles();
-    context.read<ProfileRepository>().getMyProfile();
-    context.read<CertificateRepository>().getCertificates();
-    context.read<CompetenceRepository>().getCompetences();
-    context.read<CourseRepository>().getCourses();
-    context.read<GitProjectRepository>().getProjects();
-    context.read<LanguageRepository>().getLanguages();
+    
   }
 
   @override
