@@ -13,15 +13,8 @@ class CertificateRepository extends ChangeNotifier {
   UnmodifiableListView<CertificateModel> get list =>
       UnmodifiableListView(_certificates);
 
-  CertificateRepository() {
-    _initRepository();
-  }
-
-  _initRepository() async {
-    await getCertificates();
-  }
-
   getCertificates() async {
+    print("get certificates function");
     _certificates.clear();
 
     final snapshot = await _db

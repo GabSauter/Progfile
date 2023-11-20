@@ -18,7 +18,6 @@ class LanguageRepository extends ChangeNotifier {
 
   _initRepository() async {
     await getLanguages();
-    notifyListeners();
   }
 
   getLanguages() async {

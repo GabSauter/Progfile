@@ -17,6 +17,7 @@ class CompetenceRepository extends ChangeNotifier {
   }
 
   _initRepository() async {
+    print("testando init");
     await getCompetences();
   }
 
