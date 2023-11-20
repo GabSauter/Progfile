@@ -267,6 +267,7 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
         const SizedBox(height: 10),
         Text(
           myProfile.name,
+          textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
