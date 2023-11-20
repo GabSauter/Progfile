@@ -12,14 +12,6 @@ class LanguageRepository extends ChangeNotifier {
   UnmodifiableListView<LanguageModel> get list =>
       UnmodifiableListView(_languages);
 
-  LanguageRepository() {
-    _initRepository();
-  }
-
-  _initRepository() async {
-    await getLanguages();
-  }
-
   getLanguages() async {
     _languages.clear();
 

@@ -12,15 +12,6 @@ class CompetenceRepository extends ChangeNotifier {
   UnmodifiableListView<CompetenceModel> get list =>
       UnmodifiableListView(_competences);
 
-  CompetenceRepository() {
-    _initRepository();
-  }
-
-  _initRepository() async {
-    print("testando init");
-    await getCompetences();
-  }
-
   getCompetences() async {
     _competences.clear();
 

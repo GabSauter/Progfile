@@ -14,7 +14,6 @@ class CertificateRepository extends ChangeNotifier {
       UnmodifiableListView(_certificates);
 
   getCertificates() async {
-    print("get certificates function");
     _certificates.clear();
 
     final snapshot = await _db
