@@ -12,14 +12,6 @@ class CourseRepository extends ChangeNotifier {
 
   UnmodifiableListView<CourseModel> get list => UnmodifiableListView(_courses);
 
-  CourseRepository() {
-    _initRepository();
-  }
-
-  _initRepository() async {
-    await getCourses();
-  }
-
   getCourses() async {
     _courses.clear();
 

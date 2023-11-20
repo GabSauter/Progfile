@@ -13,14 +13,6 @@ class GitProjectRepository extends ChangeNotifier {
   UnmodifiableListView<GitProjectModel> get list =>
       UnmodifiableListView(_projects);
 
-  GitProjectRepository() {
-    _initRepository();
-  }
-
-  _initRepository() async {
-    await getProjects();
-  }
-
   getProjects() async {
     _projects.clear();
 

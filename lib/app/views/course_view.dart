@@ -28,34 +28,33 @@ class _CourseViewState extends State<CourseView> {
         ),
       ),
       body: ListView.builder(
-                itemCount: courses.list.length,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                    key: Key(courses.list[index].name),
-                    direction: DismissDirection.endToStart,
-                    background: Container(
-                      alignment: AlignmentDirectional.centerEnd,
-                      color: Colors.red,
-                      child: const Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                        child: Icon(Icons.delete, color: Colors.white),
-                      ),
-                    ),
-                    onDismissed: (direction) {
-                      courses.delete(courses.list[index].id!);
-                    },
-                    child: ListTile(
-                      title: Text(courses.list[index].name),
-                      subtitle: Text(courses.list[index].university),
-                      trailing: Text(
-                        '${courses.list[index].startDate} - ${courses.list[index].finishDate}',
-                      ),
-                      onTap: () =>
-                          _showAddCourseDialog(course: courses.list[index]),
-                    ),
-                  );
-                },
+        itemCount: courses.list.length,
+        itemBuilder: (context, index) {
+          return Dismissible(
+            key: Key(courses.list[index].name),
+            direction: DismissDirection.endToStart,
+            background: Container(
+              alignment: AlignmentDirectional.centerEnd,
+              color: Colors.red,
+              child: const Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                child: Icon(Icons.delete, color: Colors.white),
               ),
+            ),
+            onDismissed: (direction) {
+              courses.delete(courses.list[index].id!);
+            },
+            child: ListTile(
+              title: Text(courses.list[index].name),
+              subtitle: Text(courses.list[index].university),
+              trailing: Text(
+                '${courses.list[index].startDate} - ${courses.list[index].finishDate}',
+              ),
+              onTap: () => _showAddCourseDialog(course: courses.list[index]),
+            ),
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddCourseDialog(),
         child: const Icon(Icons.add),
