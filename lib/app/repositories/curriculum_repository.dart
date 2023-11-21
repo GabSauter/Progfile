@@ -45,6 +45,11 @@ class CurriculumRepository extends ChangeNotifier {
   }
 
   Future<CurriculumModel> getItems(String userId) async {
+    _curriculum.courses = [];
+    notifyListeners();
+// variavel para loading na tela
+
+
     await getCertificates(userId);
     await getCompetences(userId);
     await getCourses(userId);
