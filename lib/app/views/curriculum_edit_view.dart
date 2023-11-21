@@ -1,6 +1,9 @@
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:progfile/app/models/profile_model.dart';
 import 'package:progfile/app/repositories/certificate_repository.dart';
 import 'package:progfile/app/repositories/language_repository.dart';
 import 'package:progfile/app/views/components/form_dropdown.dart';
@@ -70,11 +73,13 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
     }
   }
 
-  void editCurriculum() {
+  void editCurriculum() async {
     if (_controller.formKey.currentState!.validate()) {
       try {
-        profile.edit(_controller.editProfile(profile.myProfile));
-        profile.getMyProfile();
+        ProfileModel profileModel =
+            await _controller.editProfile(profile.myProfile);
+        await profile.edit(profileModel);
+        await profile.getMyProfile();
         if (context.mounted) {
           SnackBarHelper.showSuccessSnackBar(
               'Currículo editado com sucesso!', context);
@@ -86,10 +91,11 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
     Navigator.pop(context);
   }
 
-  void addCurriculum() {
+  void addCurriculum() async {
     if (_controller.formKey.currentState!.validate()) {
       try {
-        profile.create(_controller.generateProfile());
+        ProfileModel profileModel = await _controller.generateProfile();
+        await profile.create(profileModel);
         if (context.mounted) {
           SnackBarHelper.showSuccessSnackBar(
               'Currículo adicionado com sucesso!', context);
@@ -116,7 +122,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
         selectedValueUf = 'PR';
       }
 
-      _controller.image.value = profile.myProfile.image;
+      _controller.downloadImageURL = profile.myProfile.image;
       _controller.nameController.text = profile.myProfile.name;
       _controller.emailController.text = profile.myProfile.email;
       _controller.phoneNumberController.text = profile.myProfile.phoneNumber;

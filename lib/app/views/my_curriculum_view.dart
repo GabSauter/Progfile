@@ -256,9 +256,13 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
     return Column(
       children: [
         myProfile.image != null
-            ? Image.file(
-                myProfile.image!,
-                height: 150,
+            ? ClipOval(
+                child: Image.network(
+                  myProfile.image!,
+                  height: 150,
+                  width: 150,
+                  fit: BoxFit.cover,
+                ),
               )
             : const Image(
                 image: AssetImage('assets/images/user.png'),

@@ -253,7 +253,7 @@ class _CurriculumViewState extends State<CurriculumView> {
     return Column(
       children: [
         profile.image != null
-            ? Image.file(
+            ? Image.network(
                 profile.image!,
                 height: 150,
               )

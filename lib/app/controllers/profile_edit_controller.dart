@@ -5,6 +5,7 @@ import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progfile/app/models/profile_model.dart';
+import 'package:progfile/app/repositories/profile_repository.dart';
 import 'package:progfile/app/views/popups/popup_image_selection.dart';
 
 class ProfileRegisterController {
@@ -18,12 +19,19 @@ class ProfileRegisterController {
   final selectedDegree = TextEditingController();
   final cityController = TextEditingController();
   final ufController = TextEditingController();
+  XFile? pickedImage;
+  String? downloadImageURL;
 
   final _image = ValueNotifier<File?>(null);
 
-  ProfileModel generateProfile() {
+  Future<ProfileModel> generateProfile() async {
+    if (pickedImage != null) {
+      ProfileRepository profileRepository = ProfileRepository();
+      downloadImageURL = await profileRepository.saveImage(pickedImage!);
+    }
+
     return ProfileModel(
-      image: _image.value,
+      image: downloadImageURL,
       name: nameController.text,
       email: emailController.text,
       phoneNumber: phoneNumberController.text,
@@ -35,16 +43,20 @@ class ProfileRegisterController {
     );
   }
 
-  ProfileModel editProfile(ProfileModel curriculum) {
-    curriculum.image = _image.value;
+  Future<ProfileModel> editProfile(ProfileModel curriculum) async {
+    if (pickedImage != null) {
+      ProfileRepository profileRepository = ProfileRepository();
+      downloadImageURL = await profileRepository.saveImage(pickedImage!);
+    }
+
+    curriculum.image = downloadImageURL;
     curriculum.name = nameController.text;
     curriculum.email = emailController.text;
     curriculum.phoneNumber = phoneNumberController.text;
     curriculum.githubUsername = githubUsernameController.text;
     curriculum.address = '${cityController.text} - ${ufController.text}';
     curriculum.fieldOfExpertise = fieldOfExpertiseController.text;
-    curriculum.degree =
-        selectedDegree.text;
+    curriculum.degree = selectedDegree.text;
     curriculum.aboutYou = aboutYouController.text;
 
     return curriculum;
@@ -65,18 +77,17 @@ class ProfileRegisterController {
 
   Future<void> getImageFromCamera(BuildContext context) async {
     final imagePicker = ImagePicker();
-    final pickedImage = await imagePicker.pickImage(source: ImageSource.camera);
+    pickedImage = await imagePicker.pickImage(source: ImageSource.camera);
     if (pickedImage != null) {
-      _setImage(File(pickedImage.path));
+      _setImage(File(pickedImage!.path));
     }
   }
 
   Future<void> getImageFromGallery(BuildContext context) async {
     final imagePicker = ImagePicker();
-    final pickedImage =
-        await imagePicker.pickImage(source: ImageSource.gallery);
+    pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
-      _setImage(File(pickedImage.path));
+      _setImage(File(pickedImage!.path));
     }
   }
 
