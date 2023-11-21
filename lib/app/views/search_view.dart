@@ -128,11 +128,19 @@ class SearchViewState extends State<SearchView> {
                       ),
                       child: ListTile(
                         contentPadding: const EdgeInsets.all(16.0),
-                        leading: const CircleAvatar(
-                          backgroundColor: Colors.black,
-                          backgroundImage: AssetImage("assets/images/user.png"),
-                          radius: 40,
-                        ),
+                        leading: filteredResumes[index].image != null
+                            ? CircleAvatar(
+                                backgroundColor: Colors.black,
+                                backgroundImage:
+                                    NetworkImage(filteredResumes[index].image!),
+                                radius: 40,
+                              )
+                            : const CircleAvatar(
+                                backgroundColor: Colors.black,
+                                backgroundImage:
+                                    AssetImage("assets/images/user.png"),
+                                radius: 40,
+                              ),
                         title: Text(
                           filteredResumes[index].name,
                           style: const TextStyle(fontWeight: FontWeight.bold),
