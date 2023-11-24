@@ -14,17 +14,27 @@ class ImageDisplay extends StatefulWidget {
 class _ImageDisplayState extends State<ImageDisplay> {
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor: Theme.of(context).primaryColor,
-      foregroundColor: const Color.fromARGB(255, 255, 255, 255),
-      radius: 70.0,
-      backgroundImage: widget.image != null ? FileImage(widget.image!) : null,
-      child: widget.image == null
-          ? const Icon(
-              Icons.camera_alt,
-              size: 32,
-            )
-          : null,
+    return SizedBox(
+      width: 150.0,
+      height: 150.0,
+      child: CircleAvatar(
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+        radius: 70.0,
+        child: widget.image != null
+            ? ClipOval(
+                child: Image(
+                  image: FileImage(widget.image!),
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                ),
+              )
+            : const Icon(
+                Icons.camera_alt,
+                size: 32,
+              ),
+      ),
     );
   }
 }

@@ -1,9 +1,11 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-
+import 'package:image_picker/image_picker.dart';
 import '../models/profile_model.dart';
 
 class ProfileRepository extends ChangeNotifier {
@@ -73,7 +75,7 @@ class ProfileRepository extends ChangeNotifier {
 
     curriculum.id = doc.id;
     _profiles.add(curriculum);
-
+    getMyProfile();
     notifyListeners();
   }
 
@@ -96,6 +98,19 @@ class ProfileRepository extends ChangeNotifier {
     _profiles.removeWhere((element) => element.id == curriculumId);
 
     notifyListeners();
+  }
+
+  saveImage(XFile image) async {
+    final storageRef = FirebaseStorage.instance.ref();
+    final imagesRef = storageRef.child("Images");
+    if (FirebaseAuth.instance.currentUser != null) {
+      final userImageRef =
+          imagesRef.child(FirebaseAuth.instance.currentUser!.uid);
+      await userImageRef.putFile(File(image.path));
+      final downloadImageURL = await userImageRef.getDownloadURL();
+      return downloadImageURL;
+    }
+    return null;
   }
 
   void reset() {

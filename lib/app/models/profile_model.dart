@@ -1,8 +1,6 @@
-import 'dart:io';
-
 class ProfileModel {
   String? id;
-  File? image;
+  String? image;
   String name;
   String email;
   String phoneNumber;
