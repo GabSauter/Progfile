@@ -45,58 +45,65 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     profileRepository = context.watch<ProfileRepository>();
 
-    return Scaffold(
-      body: Padding(
-        padding:
-            const EdgeInsets.only(top: 80, right: 50, left: 50, bottom: 10),
-        child: Column(
-          children: [
-            if (profileRepository.myProfile.name == '')
-              const TitleText(
-                text: 'Olá!',
-              )
-            else
-              TitleText(
-                text: 'Olá, ${profileRepository.myProfile.name.split(' ')[0]}!',
-              ),
-            const SizedBox(height: 80),
-            if (profileRepository.myProfile.name == '' &&
-                profileRepository.myProfile.email == '' &&
-                profileRepository.myProfile.phoneNumber == '' &&
-                profileRepository.myProfile.address == '')
-              MainButton(
-                text: 'Adicionar Curriculo',
-                onPressedCallback: () =>
-                    Navigator.pushNamed(context, '/curriculumEdit'),
-              )
-            else
-              MainButton(
-                text: 'Meu Curriculo',
-                onPressedCallback: () =>
-                    Navigator.pushNamed(context, '/myCurriculum'),
-              ),
-            const SizedBox(height: 20),
-            MainButton(
-              text: 'Procurar Currículo',
-              onPressedCallback: () => {
-                loadProfiles(context),
-                Navigator.pushNamed(context, '/search')
-              },
+    return !profileRepository.isloaded
+        ? const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
             ),
-            const SizedBox(height: 20),
-            MainButton(
-              text: 'Editar Conta',
-              onPressedCallback: () =>
-                  Navigator.pushNamed(context, '/editAccount'),
+          )
+        : Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.only(
+                  top: 80, right: 50, left: 50, bottom: 10),
+              child: Column(
+                children: [
+                  if (profileRepository.myProfile.name == '')
+                    const TitleText(
+                      text: 'Olá!',
+                    )
+                  else
+                    TitleText(
+                      text:
+                          'Olá, ${profileRepository.myProfile.name.split(' ')[0]}!',
+                    ),
+                  const SizedBox(height: 80),
+                  if (profileRepository.myProfile.name == '' &&
+                      profileRepository.myProfile.email == '' &&
+                      profileRepository.myProfile.phoneNumber == '' &&
+                      profileRepository.myProfile.address == '')
+                    MainButton(
+                      text: 'Adicionar Curriculo',
+                      onPressedCallback: () =>
+                          Navigator.pushNamed(context, '/curriculumEdit'),
+                    )
+                  else
+                    MainButton(
+                      text: 'Meu Curriculo',
+                      onPressedCallback: () =>
+                          Navigator.pushNamed(context, '/myCurriculum'),
+                    ),
+                  const SizedBox(height: 20),
+                  MainButton(
+                    text: 'Procurar Currículo',
+                    onPressedCallback: () => {
+                      loadProfiles(context),
+                      Navigator.pushNamed(context, '/search')
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  MainButton(
+                    text: 'Editar Conta',
+                    onPressedCallback: () =>
+                        Navigator.pushNamed(context, '/editAccount'),
+                  ),
+                  const SizedBox(height: 20),
+                  MainButton(
+                    text: 'Logout',
+                    onPressedCallback: () => onSignOut(context),
+                  )
+                ],
+              ),
             ),
-            const SizedBox(height: 20),
-            MainButton(
-              text: 'Logout',
-              onPressedCallback: () => onSignOut(context),
-            )
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

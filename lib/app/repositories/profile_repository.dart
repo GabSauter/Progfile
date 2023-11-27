@@ -9,6 +9,7 @@ import '../models/profile_model.dart';
 class ProfileRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
   List<ProfileModel> _profiles = [];
+  bool _loaded = false;
 
   ProfileModel _myProfile = ProfileModel(
       id: null,
@@ -25,6 +26,8 @@ class ProfileRepository extends ChangeNotifier {
 
   ProfileModel get myProfile => _myProfile;
 
+  bool get isloaded => _loaded;
+
   ProfileRepository() {
     _initRepository();
   }
@@ -35,6 +38,9 @@ class ProfileRepository extends ChangeNotifier {
   }
 
   getMyProfile() async {
+    _loaded = false;
+    notifyListeners();
+
     final snapshot = await _db
         .collection("curriculum")
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -47,10 +53,14 @@ class ProfileRepository extends ChangeNotifier {
     _myProfile = ProfileModel.fromMap(snapshot.data()!);
     _myProfile.id = snapshot.id;
 
+    _loaded = true;
     notifyListeners();
   }
 
   getProfiles() async {
+    _loaded = false;
+    notifyListeners();
+
     _profiles.clear();
 
     final snapshot = await _db.collection("curriculum").get();
@@ -61,6 +71,7 @@ class ProfileRepository extends ChangeNotifier {
       _profiles.add(profile);
     }
 
+    _loaded = true;
     notifyListeners();
   }
 
@@ -108,7 +119,9 @@ class ProfileRepository extends ChangeNotifier {
         address: '',
         fieldOfExpertise: '',
         degree: '',
-        aboutYou: '');
+        aboutYou: '',);
+    
+    _loaded = false;
     notifyListeners();
   }
 }

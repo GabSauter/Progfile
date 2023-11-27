@@ -10,6 +10,7 @@ import 'package:progfile/app/models/language_model.dart';
 
 class CurriculumRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
+  bool _loaded = false;
 
   final CurriculumModel _curriculum = CurriculumModel(
     certificates: [],
@@ -29,6 +30,7 @@ class CurriculumRepository extends ChangeNotifier {
 
   CurriculumModel get curriculum => _curriculum;
   CurriculumModel get myCurriculum => _myCurriculum;
+  bool get isloaded => _loaded;
 
   CurriculumRepository() {
     _initRepository();
@@ -40,15 +42,17 @@ class CurriculumRepository extends ChangeNotifier {
   }
 
   Future<void> getMyCurriculum() async {
+    _loaded = false;
+    notifyListeners();
+
     _myCurriculum = await getItems(FirebaseAuth.instance.currentUser!.uid);
+    _loaded = true;
     notifyListeners();
   }
 
   Future<CurriculumModel> getItems(String userId) async {
     _curriculum.courses = [];
     notifyListeners();
-// variavel para loading na tela
-
 
     await getCertificates(userId);
     await getCompetences(userId);
@@ -174,6 +178,7 @@ class CurriculumRepository extends ChangeNotifier {
     _myCurriculum.gitProjects = [];
     _myCurriculum.languages = [];
 
+    _loaded = false;
     notifyListeners();
   }
 
