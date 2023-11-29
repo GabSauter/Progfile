@@ -13,6 +13,13 @@ class GitProjectRepository extends ChangeNotifier {
   UnmodifiableListView<GitProjectModel> get list =>
       UnmodifiableListView(_projects);
 
+  // fazer o construtor pegar o username do git para puxar os projetos.
+  // fazer uma condicao para que o getProjects pegue os projetos somente se o
+  // o username do git estiver preenchido.
+  // fazer a logica para quando puxar do git e quando puxar do banco de dados,
+  // sempre puxar do banco no primeiro loading e quando o username do git for
+  // adicionado ou alterado preencher o banco,
+
   getProjects() async {
     _projects.clear();
 
