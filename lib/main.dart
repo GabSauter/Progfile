@@ -25,9 +25,12 @@ void main() async {
       ChangeNotifierProvider(create: (context) => LanguageRepository()),
       ChangeNotifierProvider(create: (context) => CourseRepository()),
       ChangeNotifierProvider(create: (context) => GitProjectRepository()),
-      ChangeNotifierProvider(create: (context) => ProfileRepository()),
       ChangeNotifierProvider(create: (context) => CompetenceRepository()),
-      ChangeNotifierProvider(create: (context) => CurriculumRepository()),
+      ChangeNotifierProvider(create: (context) => CurriculumRepository(
+        'gitUsername',
+        context.read<GitProjectRepository>(),
+      ),),
+      ChangeNotifierProvider(create: (context) => ProfileRepository()),
     ],
     child: const MainApp(),
   ));

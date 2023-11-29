@@ -7,10 +7,14 @@ import 'package:progfile/app/models/course_model.dart';
 import 'package:progfile/app/models/curriculum_model.dart';
 import 'package:progfile/app/models/git_project_model.dart';
 import 'package:progfile/app/models/language_model.dart';
+import 'package:progfile/app/repositories/git_project_repository.dart';
 
 class CurriculumRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
   bool _loaded = false;
+
+  GitProjectRepository _gitProjectRepository;
+  String _gitUsername;
 
   final CurriculumModel _curriculum = CurriculumModel(
     certificates: [],
@@ -32,7 +36,8 @@ class CurriculumRepository extends ChangeNotifier {
   CurriculumModel get myCurriculum => _myCurriculum;
   bool get isloaded => _loaded;
 
-  CurriculumRepository() {
+  CurriculumRepository(String gitUsername, GitProjectRepository gitProjectRepository)
+      : _gitProjectRepository = gitProjectRepository, _gitUsername = gitUsername {
     _initRepository();
   }
 
@@ -125,22 +130,8 @@ class CurriculumRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getGitProjects(String userId) async {
-    List<GitProjectModel> gitProjects = [];
-
-    final snapshot = await _db
-        .collection("curriculum")
-        .doc(userId)
-        .collection("gitProject")
-        .get();
-
-    for (var doc in snapshot.docs) {
-      GitProjectModel gitProject = GitProjectModel.fromMap(doc.data());
-      gitProject.id = doc.id;
-      gitProjects.add(gitProject);
-    }
-
-    _curriculum.gitProjects = gitProjects;
+    getGitProjects() {
+    _curriculum.gitProjects = _gitProjectRepository.list;
 
     notifyListeners();
   }
