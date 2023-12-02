@@ -1,20 +1,26 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/git_project_model.dart';
 
 class GitProjectRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
-  final List<GitProjectModel> _projects = [];
+  final List<GitProjectModel> _favorites = [];
+  final List<GitProjectModel> _projectsApi = [];
 
-  UnmodifiableListView<GitProjectModel> get list =>
-      UnmodifiableListView(_projects);
+  UnmodifiableListView<GitProjectModel> get listFavorite =>
+      UnmodifiableListView(_favorites);
 
-  getProjects() async {
-    _projects.clear();
+  UnmodifiableListView<GitProjectModel> get listGit =>
+      UnmodifiableListView(_projectsApi);
+
+  Future<void> getFavoriteProjects() async {
+    _favorites.clear();
 
     final snapshot = await _db
         .collection("curriculum")
@@ -23,12 +29,42 @@ class GitProjectRepository extends ChangeNotifier {
         .get();
 
     for (var doc in snapshot.docs) {
-      GitProjectModel project = GitProjectModel.fromMap(doc.data());
+      GitProjectModel project = GitProjectModel.fromMapDB(doc.data());
       project.id = doc.id;
-      _projects.add(project);
+      _favorites.add(project);
     }
 
     notifyListeners();
+  }
+
+  Future<List<GitProjectModel>> getApiProjects(String username) async {
+    List<GitProjectModel> projects = [];
+
+    if (username == '') {
+      return [];
+    }
+
+    print(username);
+
+    projects.clear();
+    notifyListeners();
+
+    String url = "https://api.github.com/users/$username/repos";
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      List<dynamic> repos = json.decode(response.body);
+
+      for (var repo in repos) {
+        GitProjectModel project = GitProjectModel.fromMap(repo);
+        projects.add(project);
+      }
+
+      notifyListeners();
+      return projects;
+    }
+    return [];
   }
 
   Future<void> create(GitProjectModel project) async {
@@ -39,7 +75,7 @@ class GitProjectRepository extends ChangeNotifier {
         .add(project.toMap());
 
     project.id = doc.id;
-    _projects.add(project);
+    _favorites.add(project);
 
     notifyListeners();
   }
@@ -52,8 +88,8 @@ class GitProjectRepository extends ChangeNotifier {
         .doc(project.id)
         .update(project.toMap());
 
-    int indexToEdit = _projects.indexWhere((proj) => proj.id == project.id);
-    _projects[indexToEdit] = project;
+    int indexToEdit = _favorites.indexWhere((proj) => proj.id == project.id);
+    _favorites[indexToEdit] = project;
 
     notifyListeners();
   }
@@ -66,7 +102,7 @@ class GitProjectRepository extends ChangeNotifier {
         .doc(projectId)
         .delete();
 
-    _projects.removeWhere((proj) => proj.id == projectId);
+    _favorites.removeWhere((proj) => proj.id == projectId);
 
     notifyListeners();
   }

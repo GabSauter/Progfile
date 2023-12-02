@@ -14,21 +14,28 @@ class ProfileRepository extends ChangeNotifier {
   bool _loaded = false;
 
   ProfileModel _myProfile = ProfileModel(
-      id: null,
-      name: '',
-      email: '',
-      phoneNumber: '',
-      address: '',
-      fieldOfExpertise: '',
-      degree: '',
-      aboutYou: '');
+    id: null,
+    name: '',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    fieldOfExpertise: '',
+    degree: '',
+    aboutYou: '',
+    githubUsername: '',
+  );
 
   UnmodifiableListView<ProfileModel> get list =>
       UnmodifiableListView(_profiles);
 
   ProfileModel get myProfile => _myProfile;
+  bool get isLoaded => _loaded;
 
-  bool get isloaded => _loaded;
+  String getGitUsername(String userId) {
+    final index = _profiles.indexWhere((element) => element.id == userId);
+
+    return _profiles[index].githubUsername;
+  }
 
   ProfileRepository() {
     _initRepository();
@@ -127,15 +134,17 @@ class ProfileRepository extends ChangeNotifier {
   void reset() {
     _profiles = [];
     _myProfile = ProfileModel(
-        id: null,
-        name: '',
-        email: '',
-        phoneNumber: '',
-        address: '',
-        fieldOfExpertise: '',
-        degree: '',
-        aboutYou: '',);
-    
+      id: null,
+      name: '',
+      email: '',
+      phoneNumber: '',
+      address: '',
+      fieldOfExpertise: '',
+      degree: '',
+      aboutYou: '',
+      githubUsername: '',
+    );
+
     _loaded = false;
     notifyListeners();
   }

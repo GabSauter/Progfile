@@ -18,7 +18,7 @@ class RepositoryCard extends StatelessWidget {
       heightFactor: 1.1,
       child: SizedBox(
         width: MediaQuery.of(context).size.width * .8,
-        height: 130,
+        height: 150,
         child: Card(
           clipBehavior: Clip.hardEdge,
           shape: const RoundedRectangleBorder(
@@ -43,14 +43,16 @@ class RepositoryCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 Text(
                   description,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 14,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 Text(
                   languages,
                   style: const TextStyle(

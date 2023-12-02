@@ -73,8 +73,6 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
   }
 
   Widget get githubInfo {
-    return Consumer<CurriculumRepository>(
-      builder: (context, curriculumInfo, child) {
         return Column(
           children: [
             Row(
@@ -88,7 +86,9 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  myProfile.githubUsername ?? 'Não informado',
+                  myProfile.githubUsername == ''
+                      ? 'Não informado'
+                      : myProfile.githubUsername,
                   style: const TextStyle(
                     decoration: TextDecoration.underline,
                     fontSize: 16,
@@ -98,18 +98,16 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
             ),
             const SizedBox(height: 30),
             Column(
-              children: curriculumInfo.curriculum.gitProjects.map((item) {
+              children: myCurriculum.gitProjects.map((item) {
                 return RepositoryCard(
                   title: item.name,
-                  description: item.description,
-                  languages: item.language,
+                  description: item.description ?? 'Sem descrição',
+                  languages: item.language ?? 'Linguagem não informada',
                 );
               }).toList(),
             ),
           ],
         );
-      },
-    );
   }
 
   Container userAcademicInfo(BuildContext context) {
@@ -229,8 +227,9 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
       Center(
         child: MainButton(
           text: 'Meus Certificados',
-          onPressedCallback: () =>
-              {Navigator.pushNamed(context, '/certificate')},
+          onPressedCallback: () {
+            Navigator.pushNamed(context, '/certificate');
+          },
         ),
       ),
     ];

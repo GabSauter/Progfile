@@ -76,7 +76,9 @@ class _CurriculumViewState extends State<CurriculumView> {
             ),
             const SizedBox(width: 10),
             Text(
-              profile.githubUsername ?? 'Não informado',
+              profile.githubUsername == ''
+                  ? 'Não informado'
+                  : profile.githubUsername,
               style: const TextStyle(
                 decoration: TextDecoration.underline,
                 fontSize: 16,
@@ -86,14 +88,13 @@ class _CurriculumViewState extends State<CurriculumView> {
         ),
         const SizedBox(height: 30),
         Column(
-          children: [
-            for (GitProjectModel item in curriculumInfo.curriculum.gitProjects)
-              RepositoryCard(
-                title: item.name,
-                description: item.description,
-                languages: item.language,
-              ),
-          ],
+          children: curriculumInfo.curriculum.gitProjects.map((item) {
+                return RepositoryCard(
+                  title: item.name,
+                  description: item.description ?? 'Sem descrição',
+                  languages: item.language ?? 'Linguagem não informada',
+                );
+              }).toList(),
         ),
       ],
     );
