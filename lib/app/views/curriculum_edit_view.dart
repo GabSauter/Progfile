@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_brace_in_string_interps, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -128,7 +128,7 @@ class _CurriculumEditViewState extends State<CurriculumEditView> {
       _controller.phoneNumberController.text = profile.myProfile.phoneNumber;
       _controller.aboutYouController.text = profile.myProfile.aboutYou;
       _controller.githubUsernameController.text =
-          profile.myProfile.githubUsername ?? '';
+          profile.myProfile.githubUsername;
       _controller.cityController.text =
           profile.myProfile.address.contains(' - ')
               ? profile.myProfile.address.split(' - ')[0]

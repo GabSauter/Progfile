@@ -4,7 +4,7 @@ class ProfileModel {
   String name;
   String email;
   String phoneNumber;
-  String? githubUsername;
+  String githubUsername;
   String address;
   String fieldOfExpertise;
   String degree;
@@ -16,7 +16,7 @@ class ProfileModel {
     required this.name,
     required this.email,
     required this.phoneNumber,
-    this.githubUsername,
+    required this.githubUsername,
     required this.address,
     required this.fieldOfExpertise,
     required this.degree,

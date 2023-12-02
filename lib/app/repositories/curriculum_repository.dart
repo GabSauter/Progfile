@@ -5,16 +5,17 @@ import 'package:progfile/app/models/certificate_model.dart';
 import 'package:progfile/app/models/competence_model.dart';
 import 'package:progfile/app/models/course_model.dart';
 import 'package:progfile/app/models/curriculum_model.dart';
-import 'package:progfile/app/models/git_project_model.dart';
 import 'package:progfile/app/models/language_model.dart';
 import 'package:progfile/app/repositories/git_project_repository.dart';
+import 'package:progfile/app/repositories/profile_repository.dart';
 
 class CurriculumRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
+  final user = FirebaseAuth.instance.currentUser!;
   bool _loaded = false;
 
-  GitProjectRepository _gitProjectRepository;
-  String _gitUsername;
+  GitProjectRepository gitProjects;
+  ProfileRepository profile;
 
   final CurriculumModel _curriculum = CurriculumModel(
     certificates: [],
@@ -24,7 +25,7 @@ class CurriculumRepository extends ChangeNotifier {
     languages: [],
   );
 
-  CurriculumModel _myCurriculum = CurriculumModel(
+  final CurriculumModel _myCurriculum = CurriculumModel(
     certificates: [],
     competences: [],
     courses: [],
@@ -36,38 +37,48 @@ class CurriculumRepository extends ChangeNotifier {
   CurriculumModel get myCurriculum => _myCurriculum;
   bool get isloaded => _loaded;
 
-  CurriculumRepository(String gitUsername, GitProjectRepository gitProjectRepository)
-      : _gitProjectRepository = gitProjectRepository, _gitUsername = gitUsername {
-    _initRepository();
-  }
-
-  _initRepository() async {
-    await getItems(FirebaseAuth.instance.currentUser!.uid);
-    await getMyCurriculum();
-  }
+  CurriculumRepository({
+    required this.gitProjects,
+    required this.profile,
+  });
 
   Future<void> getMyCurriculum() async {
     _loaded = false;
     notifyListeners();
 
-    _myCurriculum = await getItems(FirebaseAuth.instance.currentUser!.uid);
+    await getItems(user.uid);
+
     _loaded = true;
     notifyListeners();
   }
 
-  Future<CurriculumModel> getItems(String userId) async {
-    _curriculum.courses = [];
+  Future<void> getItems(String userId) async {
+    reset(userId);
     notifyListeners();
 
     await getCertificates(userId);
     await getCompetences(userId);
     await getCourses(userId);
-    await getGitProjects(userId);
     await getLanguages(userId);
+    await getGitProjects(userId);
 
     notifyListeners();
+  }
 
-    return _curriculum;
+  Future<void> getGitProjects(String userId) async {
+    final username = profile.getGitUsername(userId);
+
+    if (username == '') {
+      return;
+    }
+
+    if (user.uid == userId) {
+      _myCurriculum.gitProjects = await gitProjects.getApiProjects(username);
+    } else {
+      _curriculum.gitProjects = await gitProjects.getApiProjects(username);
+    }
+
+    notifyListeners();
   }
 
   Future<void> getCertificates(String userId) async {
@@ -85,7 +96,11 @@ class CurriculumRepository extends ChangeNotifier {
       certificates.add(certificate);
     }
 
-    _curriculum.certificates = certificates;
+    if (user.uid == userId) {
+      _myCurriculum.certificates = certificates;
+    } else {
+      _curriculum.certificates = certificates;
+    }
 
     notifyListeners();
   }
@@ -105,7 +120,11 @@ class CurriculumRepository extends ChangeNotifier {
       competences.add(competence);
     }
 
-    _curriculum.competences = competences;
+    if (user.uid == userId) {
+      _myCurriculum.competences = competences;
+    } else {
+      _curriculum.competences = competences;
+    }
 
     notifyListeners();
   }
@@ -125,13 +144,11 @@ class CurriculumRepository extends ChangeNotifier {
       courses.add(course);
     }
 
-    _curriculum.courses = courses;
-
-    notifyListeners();
-  }
-
-    getGitProjects() {
-    _curriculum.gitProjects = _gitProjectRepository.list;
+    if (user.uid == userId) {
+      _myCurriculum.courses = courses;
+    } else {
+      _curriculum.courses = courses;
+    }
 
     notifyListeners();
   }
@@ -151,34 +168,39 @@ class CurriculumRepository extends ChangeNotifier {
       languages.add(language);
     }
 
-    _curriculum.languages = languages;
+    if (user.uid == userId) {
+      _myCurriculum.languages = languages;
+    } else {
+      _curriculum.languages = languages;
+    }
 
     notifyListeners();
   }
 
-  void reset() {
-    _curriculum.certificates = [];
-    _curriculum.competences = [];
-    _curriculum.courses = [];
-    _curriculum.gitProjects = [];
-    _curriculum.languages = [];
-
-    _myCurriculum.certificates = [];
-    _myCurriculum.competences = [];
-    _myCurriculum.courses = [];
-    _myCurriculum.gitProjects = [];
-    _myCurriculum.languages = [];
+  void reset(String? userId) {
+    if (userId != null) {
+      if (user.uid == userId) {
+        _myCurriculum.certificates = [];
+        _myCurriculum.competences = [];
+        _myCurriculum.courses = [];
+        _myCurriculum.gitProjects = [];
+        _myCurriculum.languages = [];
+      } else {
+        _curriculum.certificates = [];
+        _curriculum.competences = [];
+        _curriculum.courses = [];
+        _curriculum.gitProjects = [];
+        _curriculum.languages = [];
+      }
+    }
 
     _loaded = false;
     notifyListeners();
   }
 
   Future<void> deleteCurriculum() async {
-    await _db
-        .collection("curriculum")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .delete();
+    await _db.collection("curriculum").doc(user.uid).delete();
 
-    reset();
+    reset(null);
   }
 }

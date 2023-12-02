@@ -2,8 +2,8 @@ class GitProjectModel {
   String? id;
   String name;
   String url;
-  String description;
-  String language;
+  String? description;
+  String? language;
 
   GitProjectModel({
     this.id,
@@ -23,6 +23,15 @@ class GitProjectModel {
   }
 
   factory GitProjectModel.fromMap(Map<String, dynamic> map) {
+    return GitProjectModel(
+      name: map['name'],
+      url: map['html_url'],
+      description: map['description'],
+      language: map['language'],
+    );
+  }
+
+  factory GitProjectModel.fromMapDB(Map<String, dynamic> map) {
     return GitProjectModel(
       id: map['id'],
       name: map['name'],

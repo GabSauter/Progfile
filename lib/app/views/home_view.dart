@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/home_controller.dart';
 import 'package:progfile/app/repositories/curriculum_repository.dart';
+import 'package:progfile/app/repositories/git_project_repository.dart';
 import 'package:progfile/app/repositories/profile_repository.dart';
 import 'package:progfile/app/views/components/main_button.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +24,9 @@ class _HomeViewState extends State<HomeView> {
     try {
       await homeController.signOut();
       if (context.mounted) {
-        context.read<CurriculumRepository>().reset();
+        context.read<CurriculumRepository>().reset(null);
         context.read<ProfileRepository>().reset();
+
         Navigator.pushReplacementNamed(context, '/');
       }
     } catch (e) {
@@ -44,8 +46,9 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     profileRepository = context.watch<ProfileRepository>();
+    context.read<GitProjectRepository>();
 
-    return !profileRepository.isloaded
+    return !profileRepository.isLoaded
         ? const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),

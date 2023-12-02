@@ -28,38 +28,65 @@ class _GitProjectViewState extends State<GitProjectView> {
         ),
       ),
       body: ListView.builder(
-        itemCount: projects.list.length,
-        itemBuilder: (context, index) {
-          return Dismissible(
-            key: Key(projects.list[index].name),
-            direction: DismissDirection.endToStart,
-            background: Container(
-              alignment: AlignmentDirectional.centerEnd,
-              color: Colors.red,
-              child: const Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-                child: Icon(Icons.delete, color: Colors.white),
+          itemCount: projects.listGit.length,
+          itemBuilder: (context, index) {
+            return Dismissible(
+              key: Key(projects.listGit[index].name),
+              direction: DismissDirection.endToStart,
+              background: Container(
+                alignment: AlignmentDirectional.centerEnd,
+                color: Colors.red,
+                child: const Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+                  child: Icon(Icons.delete, color: Colors.white),
+                ),
               ),
-            ),
-            onDismissed: (direction) {
-              projects.delete(projects.list[index].id!);
-            },
-            child: ListTile(
-              title: Text(projects.list[index].name),
-              subtitle: Text(
-                UrlParser.githubUsernameDisplay(projects.list[index].url),
+              onDismissed: (direction) {
+                projects.delete(projects.listGit[index].id!);
+              },
+              child: ListTile(
+                title: Text(projects.listGit[index].name),
+                subtitle: Text(
+                  UrlParser.githubUsernameDisplay(projects.listGit[index].url),
+                ),
+                trailing: Text(projects.listGit[index].language ?? ''),
+                onTap: () => _showAddRepositoryDialog(
+                    repository: projects.listGit[index]),
               ),
-              trailing: Text(projects.list[index].language),
-              onTap: () =>
-                  _showAddRepositoryDialog(repository: projects.list[index]),
-            ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddRepositoryDialog(),
-        child: const Icon(Icons.add),
-      ),
+            );
+          }
+          // itemCount: projects.list.length,
+          // itemBuilder: (context, index) {
+          //   return Dismissible(
+          //     key: Key(projects.list[index].name),
+          //     direction: DismissDirection.endToStart,
+          //     background: Container(
+          //       alignment: AlignmentDirectional.centerEnd,
+          //       color: Colors.red,
+          //       child: const Padding(
+          //         padding: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
+          //         child: Icon(Icons.delete, color: Colors.white),
+          //       ),
+          //     ),
+          //     onDismissed: (direction) {
+          //       projects.delete(projects.list[index].id!);
+          //     },
+          //     child: ListTile(
+          //       title: Text(projects.list[index].name),
+          //       subtitle: Text(
+          //         UrlParser.githubUsernameDisplay(projects.list[index].url),
+          //       ),
+          //       trailing: Text(projects.list[index].language),
+          //       onTap: () =>
+          //           _showAddRepositoryDialog(repository: projects.list[index]),
+          //     ),
+          //   );
+          // },
+          ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => _showAddRepositoryDialog(),
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 

@@ -24,13 +24,15 @@ void main() async {
       ChangeNotifierProvider(create: (context) => CertificateRepository()),
       ChangeNotifierProvider(create: (context) => LanguageRepository()),
       ChangeNotifierProvider(create: (context) => CourseRepository()),
-      ChangeNotifierProvider(create: (context) => GitProjectRepository()),
       ChangeNotifierProvider(create: (context) => CompetenceRepository()),
-      ChangeNotifierProvider(create: (context) => CurriculumRepository(
-        'gitUsername',
-        context.read<GitProjectRepository>(),
-      ),),
       ChangeNotifierProvider(create: (context) => ProfileRepository()),
+      ChangeNotifierProvider(create: (context) => GitProjectRepository()),
+      ChangeNotifierProvider(
+        create: (context) => CurriculumRepository(
+          gitProjects: context.read<GitProjectRepository>(),
+          profile: context.read<ProfileRepository>(),
+        ),
+      ),
     ],
     child: const MainApp(),
   ));

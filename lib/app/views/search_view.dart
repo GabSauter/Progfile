@@ -105,7 +105,7 @@ class SearchViewState extends State<SearchView> {
                 itemCount: filteredResumes.length,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () {
+                    onTap: () async {
                       final profile = filteredResumes[index];
                       context
                           .read<CurriculumRepository>()

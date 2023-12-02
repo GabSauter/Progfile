@@ -15,6 +15,7 @@ class CertificateRepository extends ChangeNotifier {
 
   getCertificates() async {
     _certificates.clear();
+    notifyListeners();
 
     final snapshot = await _db
         .collection("curriculum")
@@ -70,6 +71,11 @@ class CertificateRepository extends ChangeNotifier {
     await ref.delete();
 
     _certificates.removeWhere((cert) => cert.id == certificateId);
+    notifyListeners();
+  }
+
+  void reset() {
+    _certificates.clear();
     notifyListeners();
   }
 }
