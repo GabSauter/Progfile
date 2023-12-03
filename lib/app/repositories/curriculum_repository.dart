@@ -11,7 +11,6 @@ import 'package:progfile/app/repositories/profile_repository.dart';
 
 class CurriculumRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
-  final user = FirebaseAuth.instance.currentUser!;
   bool _loaded = false;
 
   GitProjectRepository gitProjects;
@@ -46,7 +45,7 @@ class CurriculumRepository extends ChangeNotifier {
     _loaded = false;
     notifyListeners();
 
-    await getItems(user.uid);
+    await getItems(FirebaseAuth.instance.currentUser!.uid);
 
     _loaded = true;
     notifyListeners();
@@ -71,8 +70,8 @@ class CurriculumRepository extends ChangeNotifier {
     if (username == '') {
       return;
     }
-
-    if (user.uid == userId) {
+    
+    if (FirebaseAuth.instance.currentUser!.uid == userId) {
       _myCurriculum.gitProjects = await gitProjects.getApiProjects(username);
     } else {
       _curriculum.gitProjects = await gitProjects.getApiProjects(username);
@@ -96,7 +95,7 @@ class CurriculumRepository extends ChangeNotifier {
       certificates.add(certificate);
     }
 
-    if (user.uid == userId) {
+    if (FirebaseAuth.instance.currentUser!.uid == userId) {
       _myCurriculum.certificates = certificates;
     } else {
       _curriculum.certificates = certificates;
@@ -120,7 +119,7 @@ class CurriculumRepository extends ChangeNotifier {
       competences.add(competence);
     }
 
-    if (user.uid == userId) {
+    if (FirebaseAuth.instance.currentUser!.uid == userId) {
       _myCurriculum.competences = competences;
     } else {
       _curriculum.competences = competences;
@@ -144,7 +143,7 @@ class CurriculumRepository extends ChangeNotifier {
       courses.add(course);
     }
 
-    if (user.uid == userId) {
+    if (FirebaseAuth.instance.currentUser!.uid == userId) {
       _myCurriculum.courses = courses;
     } else {
       _curriculum.courses = courses;
@@ -168,7 +167,7 @@ class CurriculumRepository extends ChangeNotifier {
       languages.add(language);
     }
 
-    if (user.uid == userId) {
+    if (FirebaseAuth.instance.currentUser!.uid == userId) {
       _myCurriculum.languages = languages;
     } else {
       _curriculum.languages = languages;
@@ -179,7 +178,7 @@ class CurriculumRepository extends ChangeNotifier {
 
   void reset(String? userId) {
     if (userId != null) {
-      if (user.uid == userId) {
+      if (FirebaseAuth.instance.currentUser!.uid == userId) {
         _myCurriculum.certificates = [];
         _myCurriculum.competences = [];
         _myCurriculum.courses = [];
@@ -199,7 +198,7 @@ class CurriculumRepository extends ChangeNotifier {
   }
 
   Future<void> deleteCurriculum() async {
-    await _db.collection("curriculum").doc(user.uid).delete();
+    await _db.collection("curriculum").doc(FirebaseAuth.instance.currentUser!.uid).delete();
 
     reset(null);
   }

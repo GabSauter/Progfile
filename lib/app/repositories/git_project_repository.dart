@@ -13,12 +13,6 @@ class GitProjectRepository extends ChangeNotifier {
   final List<GitProjectModel> _favorites = [];
   final List<GitProjectModel> _projectsApi = [];
 
-  UnmodifiableListView<GitProjectModel> get listFavorite =>
-      UnmodifiableListView(_favorites);
-
-  UnmodifiableListView<GitProjectModel> get listGit =>
-      UnmodifiableListView(_projectsApi);
-
   Future<void> getFavoriteProjects() async {
     _favorites.clear();
 
@@ -43,8 +37,6 @@ class GitProjectRepository extends ChangeNotifier {
     if (username == '') {
       return [];
     }
-
-    print(username);
 
     projects.clear();
     notifyListeners();
