@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +10,6 @@ import '../models/git_project_model.dart';
 class GitProjectRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
   final List<GitProjectModel> _favorites = [];
-  final List<GitProjectModel> _projectsApi = [];
 
   Future<void> getFavoriteProjects() async {
     _favorites.clear();
