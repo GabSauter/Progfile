@@ -37,7 +37,7 @@ class ProfileRepository extends ChangeNotifier {
     if (index == -1) {
       return '';
     }
-    
+
     return _profiles[index].githubUsername;
   }
 

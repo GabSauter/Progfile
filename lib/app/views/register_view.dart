@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progfile/app/controllers/register_controller.dart';
+import 'package:progfile/app/repositories/profile_repository.dart';
 import 'package:progfile/app/views/components/back_button.dart';
 import 'package:progfile/app/views/components/form_password_textfield.dart';
+import 'package:provider/provider.dart';
 
 import 'components/form_text.dart';
 import 'components/form_textfield.dart';
@@ -30,6 +32,8 @@ class _RegisterViewState extends State<RegisterView> {
     try {
       await registerController.signUp();
       if (context.mounted) {
+        context.read<ProfileRepository>().getProfiles();
+        context.read<ProfileRepository>().getMyProfile();
         Navigator.pushReplacementNamed(context, '/home');
       }
     } on FirebaseAuthException catch (e) {
