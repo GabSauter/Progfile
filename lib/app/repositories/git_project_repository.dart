@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,13 +10,6 @@ import '../models/git_project_model.dart';
 class GitProjectRepository extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
   final List<GitProjectModel> _favorites = [];
-  final List<GitProjectModel> _projectsApi = [];
-
-  UnmodifiableListView<GitProjectModel> get listFavorite =>
-      UnmodifiableListView(_favorites);
-
-  UnmodifiableListView<GitProjectModel> get listGit =>
-      UnmodifiableListView(_projectsApi);
 
   Future<void> getFavoriteProjects() async {
     _favorites.clear();
@@ -43,8 +35,6 @@ class GitProjectRepository extends ChangeNotifier {
     if (username == '') {
       return [];
     }
-
-    print(username);
 
     projects.clear();
     notifyListeners();

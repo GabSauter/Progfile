@@ -4,7 +4,6 @@ import 'package:progfile/app/models/git_project_model.dart';
 import 'package:progfile/app/repositories/git_project_repository.dart';
 import 'package:provider/provider.dart';
 import '../components/form_textfield.dart';
-import '../components/main_button.dart';
 
 class PopupGitProject extends StatefulWidget {
   final GitProjectModel? repository;
@@ -53,10 +52,8 @@ class _PopupGitProjectState extends State<PopupGitProject> {
 
     return AlertDialog(
       scrollable: true,
-      title: Center(
-        child: Text(widget.repository != null
-            ? 'Editar Repositório'
-            : 'Adicionar Repositório'),
+      title: const Center(
+        child: Text('Editar Repositório'),
       ),
       titlePadding: const EdgeInsets.symmetric(vertical: 20),
       contentPadding: EdgeInsets.symmetric(
@@ -67,41 +64,6 @@ class _PopupGitProjectState extends State<PopupGitProject> {
         horizontal: MediaQuery.of(context).size.width * 0.08,
         vertical: 20,
       ),
-      actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Expanded(
-              child: MainButton(
-                text: 'Cancelar',
-                onPressedCallback: () {
-                  _repositoryController.nameController.text = "";
-                  _repositoryController.urlController.text = "";
-                  _repositoryController.descriptionController.text = "";
-                  _repositoryController.languageController.text = "";
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            const SizedBox(width: 5),
-            Expanded(
-              child: MainButton(
-                text: 'Salvar',
-                onPressedCallback: () {
-                  if (_repositoryController.formKey.currentState!.validate()) {
-                    if (widget.repository != null) {
-                      listProjects.edit(_repositoryController.editGitRepository(widget.repository!));
-                    } else {
-                      listProjects.create(_repositoryController.generateGitRepository());
-                    }
-                    _onDialogClose();
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
@@ -161,6 +123,7 @@ class _PopupGitProjectState extends State<PopupGitProject> {
                 return null;
               },
             ),
+            const SizedBox(height: 30),
           ],
         ),
       ),

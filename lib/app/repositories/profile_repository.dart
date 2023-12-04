@@ -34,6 +34,10 @@ class ProfileRepository extends ChangeNotifier {
   String getGitUsername(String userId) {
     final index = _profiles.indexWhere((element) => element.id == userId);
 
+    if (index == -1) {
+      return '';
+    }
+    
     return _profiles[index].githubUsername;
   }
 

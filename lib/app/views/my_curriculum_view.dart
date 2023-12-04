@@ -98,7 +98,7 @@ class _MyCurriculumViewState extends State<MyCurriculumView> {
             ),
             const SizedBox(height: 30),
             Column(
-              children: myCurriculum.gitProjects.map((item) {
+              children: myCurriculum.gitProjects.take(5).map((item) {
                 return RepositoryCard(
                   title: item.name,
                   description: item.description ?? 'Sem descrição',
